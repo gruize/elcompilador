@@ -32,7 +32,7 @@ public class prueba {
 			i++;
 		}
 		System.out.println(codigo);
-		//System.out.println(GestorErrores.escribe());
+		System.out.println(GestorErrores.escribe());
 	}
 
 }
