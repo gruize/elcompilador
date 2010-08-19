@@ -17,9 +17,6 @@ public class PalabrasReservadas {
 		palabrasReservadas.put("and","tkand");
 		palabrasReservadas.put("or","tkor");
 		palabrasReservadas.put("not","tknot");
-		palabrasReservadas.put("nat","tknat");
-		palabrasReservadas.put("int","tkint");
-		palabrasReservadas.put("char","tkchar");
 		palabrasReservadas.put("in","tkin");
 		palabrasReservadas.put("out","tkout");
 		palabrasReservadas.put("if","tkif");
