@@ -5,9 +5,9 @@ import tablaDeSimbolos.util.Clase;
 public class TParam extends Tipo {
 
 	private Tipo tipobase;
-	private Clase modo;
+	private String modo;
 	
-	public TParam(Tipo tipobase, Clase modo) {
+	public TParam(Tipo tipobase, String modo) {
 		this.tipobase = tipobase;
 		this.modo = modo;
 	}
@@ -20,11 +20,11 @@ public class TParam extends Tipo {
 		this.tipobase = tipobase;
 	}
 
-	public Clase getModo() {
+	public String getModo() {
 		return modo;
 	}
 
-	public void setModo(Clase modo) {
+	public void setModo(String modo) {
 		this.modo = modo;
 	}
 

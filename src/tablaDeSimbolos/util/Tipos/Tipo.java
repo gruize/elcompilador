@@ -28,7 +28,7 @@ public class Tipo {
 		return null;
 	}
 
-	public Clase getModo() {
+	public String getModo() {
 		return null;
 	}
 	
