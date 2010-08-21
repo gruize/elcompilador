@@ -12,7 +12,7 @@ public class Errores {
 		errores.put(2,"Caracter desconocido");
 		errores.put(3, "Caracter erroneo. Se esperaba un =");
 		errores.put(4, "Caracter erroneo. Se esperaba un digito entre 1..9");
-		errores.put(5, "Caracter erroneo. Se esperaba un > o un digito entre 1..9");
+		errores.put(5, "Caracter erroneo. Se esperaba un >");
 		errores.put(6, "Caracter erroneo. Se esperaba un digito");
 		errores.put(7, "Caracter erroneo. Se esperaba un digito o un simbolo -");
 		errores.put(8, "Caracter erroneo. Se esperaba un digito o una letra");

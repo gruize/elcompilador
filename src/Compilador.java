@@ -11,7 +11,7 @@ public class Compilador {
 		String programa = null;
 		String codigo = "";
 		//Lectura de archivo
-		BufferedReader in = new BufferedReader(new FileReader("C://Documents and Settings//Gabi//Escritorio//II 2009-2010//PLG//ultramegacompiladordelamuerte//pruebas//factorialIterativo.txt"));
+		BufferedReader in = new BufferedReader(new FileReader("C://Documents and Settings//Gabi//Escritorio//II 2009-2010//PLG//ultramegacompiladordelamuerte//pruebas//factorialRecursivo.txt"));
 		StringBuffer sb = new StringBuffer();
 		String st;
 		boolean fin = false;

@@ -78,7 +78,6 @@ public class AnalizadorLexico {
 	private static final int CORCHETE1 = 63;
 	private static final int CORCHETE2 = 64;
 	private static final int FLECHA = 65;
-	private static final int LITINTNEG = 66;
 	
 	private PalabrasReservadas palabrasReserva = new PalabrasReservadas();
 	private String lexema; 
@@ -94,6 +93,7 @@ public class AnalizadorLexico {
 	private int parentesis_indice;
 	private int parentesis_fila;
 	private int parentesis_columna;
+		
 	
 	public AnalizadorLexico(String program){
 		this.programa = program;
@@ -442,26 +442,16 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk+";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				//this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case RESTA:
 				if(next_char == '>')
 					transita(FLECHA);
 				else{
-					if(sigDigito()){
-						if(next_char != 0)
-							transita(LITINTNEG);
-						else{
-							//TODO: A la espera de la decision de Alicia
-							GestorErrores.agregaError(4, getFila(), getColumna(), getNext_char() + "");
-							transitaSinLexema(RESTA);
-						}
-					}else{
-						GestorErrores.agregaError(5, getFila(), getColumna(), getNext_char() + "");
-						transitaSinLexema(VACIO);
-						this.lexema = "";
-					}
+					encontrado = true;
+					this.token_actual = "tk-";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.estado = VACIO;
 				}
 				break;
 			case MULTIPLICACION:
@@ -1090,17 +1080,6 @@ public class AnalizadorLexico {
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
 //				this.lexema = "";
 				this.estado = VACIO;
-				break;
-			case LITINTNEG:
-				if(sigDigito())
-					transita(LITINTNEG);
-				else{
-					encontrado = true;
-					this.token_actual = "tkint";
-					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-//					this.lexema = "";
-					this.estado = VACIO;
-				}
 				break;
 			default:
 				GestorErrores.agregaError(2,getFila(),getColumna(),getNext_char() + "");
