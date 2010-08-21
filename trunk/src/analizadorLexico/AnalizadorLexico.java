@@ -774,14 +774,32 @@ public class AnalizadorLexico {
 			case CASTI:
 				if(next_char == 'n')
 					transita(CASTIN);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTIN:
 				if(next_char == 't')
 					transita(CASTINT);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTINT:
 				switch(next_char){
@@ -816,14 +834,32 @@ public class AnalizadorLexico {
 			case CASTN:
 				if(next_char == 'a')
 					transita(CASTNA);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTNA:
 				if(next_char == 't')
 					transita(CASTNAT);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTNAT:
 				switch(next_char){
@@ -858,20 +894,47 @@ public class AnalizadorLexico {
 			case CASTC:
 				if(next_char == 'h')
 					transita(CASTCH);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTCH:
 				if(next_char == 'a')
 					transita(CASTCHA);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTCHA:
 				if(next_char == 'r')
 					transita(CASTCHAR);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTCHAR:
 				switch(next_char){
@@ -906,26 +969,62 @@ public class AnalizadorLexico {
 			case CASTF:
 				if(next_char == 'l')
 					transita(CASTFL);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTFL:
 				if(next_char == 'o')
 					transita(CASTFLO);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTFLO:
 				if(next_char == 'a')
 					transita(CASTFLOA);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTFLOA:
 				if(next_char == 't')
 					transita(CASTFLOAT);
-				else
-					transita(CADENA);
+				else{
+					encontrado = true;
+					this.indice = this.parentesis_indice;
+					this.fila = this.parentesis_fila;
+					this.columna = this.parentesis_columna;
+					this.token_actual = "tk(";
+					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+					this.lexema = "(";
+					this.estado = VACIO;
+					this.next_char = programa.charAt(this.indice);
+				}
 				break;
 			case CASTFLOAT:
 				switch(next_char){
