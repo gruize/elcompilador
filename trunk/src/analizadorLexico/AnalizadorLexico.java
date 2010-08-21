@@ -83,7 +83,6 @@ public class AnalizadorLexico {
 	private PalabrasReservadas palabrasReserva = new PalabrasReservadas();
 	private String lexema; 
 	private int estado;
-	private boolean error_lexico;
 	private String programa;
 	private boolean fin_programa;
 	private int fila;
@@ -97,7 +96,6 @@ public class AnalizadorLexico {
 	private int parentesis_columna;
 	
 	public AnalizadorLexico(String program){
-		this.error_lexico = false;
 		this.programa = program;
 		this.fin_programa = false;
 		this.fila = 0;
@@ -140,14 +138,6 @@ public class AnalizadorLexico {
 
 	public void setEstado(int estado) {
 		this.estado = estado;
-	}
-
-	public boolean isError_lexico() {
-		return error_lexico;
-	}
-
-	public void setError_lexico(boolean error_lexico) {
-		this.error_lexico = error_lexico;
 	}
 
 	public String getPrograma() {
@@ -225,10 +215,11 @@ public class AnalizadorLexico {
 	// Lee el siguiente caracter del programa
 	public char siguienteCaracter(){
 		char next = ' ';
-		if(indice <= programa.length() - 1)
+		if(indice <= programa.length() - 1){
 			next = programa.charAt(indice);
-		else
+		}else{
 			fin_programa = true;
+		}
 		return next;
 	}
 	
@@ -263,8 +254,11 @@ public class AnalizadorLexico {
 	
 	public void scanner(){
 		this.estado = VACIO;
+		this.lexema = "";
 		boolean encontrado = false;
 		while(!encontrado && !fin_programa){
+			if(programa.length() == indice + 1)
+				fin_programa = true;
 			switch(estado){
 			case VACIO:	
 				if(sigDigito()){
@@ -340,14 +334,14 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk&";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case PUNTOYCOMA:
 				encontrado = true;
 				this.token_actual = "tk;";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+	//			this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DOSPUNTOS:
@@ -357,7 +351,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					this.token_actual = "tk:";
 					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					this.lexema = "";
+		//			this.lexema = "";
 					this.estado = VACIO;
 				}
 				break;
@@ -365,14 +359,14 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk.";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DOSPUNTOSIGUAL:
 				encontrado = true;
 				this.token_actual = "tk:=";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case MENOR:
@@ -384,7 +378,7 @@ public class AnalizadorLexico {
 				default:	encontrado = true;
 							this.token_actual = "tk<";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-							this.lexema = "";
+					//		this.lexema = "";
 							this.estado = VACIO;
 							break;
 				}
@@ -398,7 +392,7 @@ public class AnalizadorLexico {
 				default:	encontrado = true;
 							this.token_actual = "tk>";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-							this.lexema = "";
+						//	this.lexema = "";
 							this.estado = VACIO;
 							break;
 				}
@@ -407,14 +401,14 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk<=";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case MAYORIGUAL:
 				encontrado = true;
 				this.token_actual = "tk>=";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case IGUAL:
@@ -424,7 +418,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					this.token_actual = "tk=";
 					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					this.lexema = "";
+				//	this.lexema = "";
 					this.estado = VACIO;
 				}
 				break;
@@ -441,14 +435,14 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk=/=";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case SUMA:
 				encontrado = true;
 				this.token_actual = "tk+";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+				//this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case RESTA:
@@ -474,42 +468,42 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk*";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+		//		this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DIVISION:
 				encontrado = true;
 				this.token_actual = "tk/";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case MODULO:
 				encontrado = true;
 				this.token_actual = "tk%";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+				//this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DESP_IZQ:
 				encontrado = true;
 				this.token_actual = "tk<<";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DESP_DER:
 				encontrado = true;
 				this.token_actual = "tk>>";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case ABSOLUTO:
 				encontrado = true;
 				this.token_actual = "tk|";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case PARENTESIS1:
@@ -534,7 +528,7 @@ public class AnalizadorLexico {
 				default:	encontrado = true;
 							this.token_actual = "tk(";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-							this.lexema = "";
+//							this.lexema = "";
 							this.estado = VACIO;
 							break;
 				}
@@ -543,7 +537,7 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk)";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+	//			this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case NUMERAL:
@@ -551,7 +545,7 @@ public class AnalizadorLexico {
 					transita(COMENT);
 				else{
 					encontrado = true;
-					this.lexema = "";
+		//			this.lexema = "";
 					this.fila++;
 					this.columna = 0;
 					this.estado = VACIO;
@@ -561,7 +555,7 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk,";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case LITNAT:	
@@ -578,7 +572,7 @@ public class AnalizadorLexico {
 					default:	encontrado = true;
 								this.token_actual = "tknat";
 								this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-								this.lexema = "";
+	//							this.lexema = "";
 								this.estado = VACIO;
 								break;
 					}
@@ -595,7 +589,7 @@ public class AnalizadorLexico {
 				default:	encontrado = true;
 							this.token_actual = "tknatint";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-							this.lexema = "";
+//							this.lexema = "";
 							this.estado = VACIO;
 							break;
 				}
@@ -627,7 +621,7 @@ public class AnalizadorLexico {
 						encontrado = true;
 						this.token_actual = "tkreal";
 						this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-						this.lexema = "";
+	//					this.lexema = "";
 						this.estado = VACIO;
 					}
 				}
@@ -657,7 +651,7 @@ public class AnalizadorLexico {
 						encontrado = true;
 						this.token_actual = "tkreal";
 						this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-						this.lexema = "";
+		//				this.lexema = "";
 						this.estado = VACIO;
 					}
 				}
@@ -687,7 +681,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					this.token_actual = "tkreal";
 					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					this.lexema = "";
+//					this.lexema = "";
 					this.estado = VACIO;
 				}
 				break;
@@ -725,7 +719,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					this.token_actual = "tkreal";
 					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					this.lexema = "";
+//					this.lexema = "";
 					this.estado = VACIO;
 				}
 				break;
@@ -751,7 +745,7 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tkchar";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case COMENT:
@@ -773,7 +767,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					this.token_actual = this.palabrasReserva.obtenerToken(getLexema());
 					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					this.lexema = "";
+	//				this.lexema = "";
 					this.estado = VACIO;
 				}
 				break;
@@ -806,7 +800,7 @@ public class AnalizadorLexico {
 							this.columna = this.parentesis_columna;
 							this.token_actual = "tk(";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-							this.lexema = "";
+							this.lexema = "(";
 							this.estado = VACIO;
 							this.next_char = programa.charAt(this.indice);
 							break;
@@ -816,7 +810,7 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tkcastint";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case CASTN:
@@ -842,7 +836,15 @@ public class AnalizadorLexico {
 							break;
 				case ')':	transita(CAST_NAT);
 							break;
-				default:	transita(CADENA);
+				default:	encontrado = true;
+							this.indice = this.parentesis_indice;
+							this.fila = this.parentesis_fila;
+							this.columna = this.parentesis_columna;
+							this.token_actual = "tk(";
+							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+							this.lexema = "(";
+							this.estado = VACIO;
+							this.next_char = programa.charAt(this.indice);
 							break;
 				}
 				break;
@@ -850,7 +852,7 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tkcastnat";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case CASTC:
@@ -882,7 +884,15 @@ public class AnalizadorLexico {
 							break;
 				case ')':	transita(CAST_CHAR);
 							break;
-				default:	transita(CADENA);
+				default:	encontrado = true;
+							this.indice = this.parentesis_indice;
+							this.fila = this.parentesis_fila;
+							this.columna = this.parentesis_columna;
+							this.token_actual = "tk(";
+							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
+							this.lexema = "(";
+							this.estado = VACIO;
+							this.next_char = programa.charAt(this.indice);
 							break;
 				}
 				break;
@@ -890,7 +900,7 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tkcastchar";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+	//			this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case CASTF:
@@ -934,7 +944,7 @@ public class AnalizadorLexico {
 							this.columna = this.parentesis_columna;
 							this.token_actual = "tk(";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-							this.lexema = "";
+							this.lexema = "(";
 							this.estado = VACIO;
 							this.next_char = programa.charAt(this.indice);
 							break;
@@ -944,42 +954,42 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tkcastfloat";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case LLAVE1:
 				encontrado = true;
 				this.token_actual = "tk{";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case LLAVE2:
 				encontrado = true;
 				this.token_actual = "tk}";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case CORCHETE1:
 				encontrado = true;
 				this.token_actual = "tk[";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case CORCHETE2:
 				encontrado = true;
 				this.token_actual = "tk]";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case FLECHA:
 				encontrado = true;
 				this.token_actual = "tk->";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				this.lexema = "";
+//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case LITINTNEG:
@@ -989,7 +999,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					this.token_actual = "tkint";
 					this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					this.lexema = "";
+//					this.lexema = "";
 					this.estado = VACIO;
 				}
 				break;

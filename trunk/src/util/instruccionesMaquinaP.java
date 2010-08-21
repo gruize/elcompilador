@@ -1,21 +1,21 @@
 package util;
 
-public class instruccionesMaquinaP {
+public class InstruccionesMaquinaP {
 
-	private operacionesMaquinaP op;
+	private OperacionesMaquinaP op;
 	private Object arg;
 	
-	public instruccionesMaquinaP(operacionesMaquinaP op) {
+	public InstruccionesMaquinaP(OperacionesMaquinaP op) {
 		this.op = op;
 	}
-	public instruccionesMaquinaP(operacionesMaquinaP op, Object arg) {
+	public InstruccionesMaquinaP(OperacionesMaquinaP op, Object arg) {
 		this.op = op;
 		this.arg = arg;
 	}
-	public operacionesMaquinaP getOp() {
+	public OperacionesMaquinaP getOp() {
 		return op;
 	}
-	public void setOp(operacionesMaquinaP op) {
+	public void setOp(OperacionesMaquinaP op) {
 		this.op = op;
 	}
 	public Object getArg() {

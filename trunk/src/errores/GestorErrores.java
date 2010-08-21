@@ -56,7 +56,7 @@ public class GestorErrores {
 		String error = "No hay errores";
 		int i = 0;
 		int num_error = 1;
-		if(errores_propios.size() != 0){
+		if(getErrores_propios() != null && !getErrores_propios().isEmpty()){
 			error = "";
 			while(i < errores_propios.size()){
 				Error temp = errores_propios.elementAt(i);

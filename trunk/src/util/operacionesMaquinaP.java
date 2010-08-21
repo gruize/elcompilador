@@ -1,6 +1,6 @@
 package util;
 
-public enum operacionesMaquinaP {
+public enum OperacionesMaquinaP {
 	MENOR,
 	MAYOR,
 	MENOR_IGUAL,
