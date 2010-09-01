@@ -13,6 +13,7 @@ public class TProc extends Tipo{
 	
 	public TProc(int tamanyo, Vector<TParam> parametros,
 			Clase clase, Tipo tipop) {
+		super(TipoDec.TipoProc,0);
 		this.parametros = parametros;
 		this.clase = clase;
 		tipo = tipop;

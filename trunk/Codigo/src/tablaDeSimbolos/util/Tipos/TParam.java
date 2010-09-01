@@ -6,10 +6,12 @@ public class TParam extends Tipo {
 
 	private Tipo tipobase;
 	private String modo;
+	private int dir;
 	
-	public TParam(Tipo tipobase, String modo) {
+	public TParam(Tipo tipobase, String modo, int dir) {		
 		this.tipobase = tipobase;
 		this.modo = modo;
+		this.dir = dir;
 	}
 
 	public Tipo getTipobase() {
@@ -28,10 +30,18 @@ public class TParam extends Tipo {
 		this.modo = modo;
 	}
 
+	public int getDir() {
+		return dir;
+	}
+
+	public void setDir(int dir) {
+		this.dir = dir;
+	}
+
 	@Override
 	public String toString() {
-		return "TParam [tipobase=" + tipobase + ", modo=" + modo + ", tipo="
-				+ tipo + "]";
+		return "TParam [tipobase=" + tipobase + ", modo=" + modo + ", dir="
+				+ dir + "]";
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 import tablaDeSimbolos.util.Clase;
 import tablaDeSimbolos.util.Detalles;
 import tablaDeSimbolos.util.Tipos.Tipo;
+import tablaDeSimbolos.util.Tipos.TipoDec;
 
 public class TS {
 
@@ -78,5 +79,12 @@ public class TS {
 				details = tabla.get(clave_actual);
 				System.out.println(details.toString());				
 			}
+		}
+		
+		public boolean refErronea(Tipo tip){
+			boolean ref = false;
+			if(!existeID(tip.getId()) && tip.getTipo().equals(TipoDec.TipoReferencia))
+				ref = true;
+			return ref;
 		}
 }

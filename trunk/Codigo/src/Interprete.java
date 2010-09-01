@@ -6,10 +6,11 @@ import java.util.Enumeration;
 import java.util.Stack;
 import java.util.Vector;
 
+import maquinaP.InstruccionesMaquinaP;
+import maquinaP.Memoria;
+import maquinaP.OperacionesMaquinaP;
+
 import tablaDeSimbolos.util.Tipos.TipoDec;
-import util.Memoria;
-import util.OperacionesMaquinaP;
-import util.InstruccionesMaquinaP;
 
 public class Interprete {
 
@@ -630,6 +631,33 @@ public class Interprete {
 				getPila().push(resultado);
 				contador++;			
 				break;
+			case ABS:
+				cima = getPila().pop();
+				if(esReal(cima)){
+					Float float_abs = Float.valueOf(String.valueOf(cima));
+					if(float_abs < 0){						
+						resultado = String.valueOf(0 - float_abs);
+					}else{
+						resultado = String.valueOf(cima);
+					}
+				}else{
+					if(esEntero(cima) || esNatural(cima)){
+						if(esEntero(cima)){
+							Integer intabs = Integer.valueOf(String.valueOf(cima));
+							if(intabs < 0){
+								resultado = String.valueOf(0 - intabs);
+							}else{
+								resultado = String.valueOf(cima);
+							}
+						}else{
+							resultado = String.valueOf(cima);
+						}
+					}else{
+						throw new Exception("Tipo de operador inadecuado");
+					}
+				}
+				getPila().push(resultado);
+				contador++;
 			case APILA:
 				getPila().push(String.valueOf(getCodigo().get(getContador()).getArg()));
 				contador++;
