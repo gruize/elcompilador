@@ -366,7 +366,6 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk:=";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case MENOR:
@@ -378,7 +377,6 @@ public class AnalizadorLexico {
 				default:	encontrado = true;
 							this.token_actual = "tk<";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-					//		this.lexema = "";
 							this.estado = VACIO;
 							break;
 				}
@@ -392,7 +390,6 @@ public class AnalizadorLexico {
 				default:	encontrado = true;
 							this.token_actual = "tk>";
 							this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-						//	this.lexema = "";
 							this.estado = VACIO;
 							break;
 				}
@@ -401,7 +398,6 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk<=";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case MAYORIGUAL:
@@ -458,35 +454,30 @@ public class AnalizadorLexico {
 				encontrado = true;
 				this.token_actual = "tk*";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-		//		this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DIVISION:
 				encontrado = true;
 				this.token_actual = "tk/";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-			//	this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case MODULO:
 				encontrado = true;
 				this.token_actual = "tk%";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-				//this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DESP_IZQ:
 				encontrado = true;
 				this.token_actual = "tk<<";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case DESP_DER:
 				encontrado = true;
 				this.token_actual = "tk>>";
 				this.tokens.add(new DatosToken(getToken_actual(), getIndice()));
-//				this.lexema = "";
 				this.estado = VACIO;
 				break;
 			case ABSOLUTO:

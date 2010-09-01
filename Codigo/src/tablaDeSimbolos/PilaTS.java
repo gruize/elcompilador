@@ -1,7 +1,9 @@
 package tablaDeSimbolos;
 
 import java.util.Stack;
+import java.util.Vector;
 
+import tablaDeSimbolos.util.Campo;
 import tablaDeSimbolos.util.Clase;
 import tablaDeSimbolos.util.Detalles;
 import tablaDeSimbolos.util.Tipos.Tipo;
@@ -175,4 +177,123 @@ public class PilaTS {
 	public void salidaTSActual(){
 		pilats.peek().salidaTS();
 	}
+	
+	public boolean refErronea(Tipo tip){
+		boolean ref = false;
+		int nivel = 0;
+		int i = 1;
+		while(!ref && i <= pilats.size()){
+			TS temp = pilats.elementAt(pilats.size() - i);
+			if(temp.refErronea(tip)){
+				ref = true;
+			}
+			i++;
+		}
+		return ref; 
+	}
+	
+	public boolean compatibles(Tipo tipo1, Tipo tipo2){
+		boolean compatibles = false;
+		if(tipo1.getTipo().equals(TipoDec.TipoPuntero) && tipo2.getTipo().equals(TipoDec.TipoNull)){
+			compatibles = true;
+		}else{
+		if(tipo1.getTipo().equals(TipoDec.TipoFloat)){
+			if(tipo2.getTipo().equals(TipoDec.TipoFloat) || tipo2.getTipo().equals(TipoDec.TipoInteger) ||
+				tipo2.getTipo().equals(TipoDec.TipoNatural)){
+				compatibles = true;
+			}
+		}else{
+			if(tipo1.getTipo().equals(TipoDec.TipoInteger)){
+				if(tipo2.getTipo().equals(TipoDec.TipoInteger)  || tipo2.getTipo().equals(TipoDec.TipoNatural)){
+					compatibles = true;
+				}
+			}else{
+				if(tipo1.getTipo().equals(TipoDec.TipoNatural)){
+					if(tipo2.getTipo().equals(TipoDec.TipoNatural))
+						compatibles = true;
+				}else{
+					if(tipo1.getTipo().equals(TipoDec.TipoCharacter)){
+						if(tipo2.getTipo().equals(TipoDec.TipoCharacter))
+							compatibles = true;
+					}else{
+						if(tipo1.getTipo().equals(TipoDec.TipoBoolean) && tipo2.getTipo().equals(TipoDec.TipoBoolean)){
+							compatibles = true;
+						}else{
+							if(tipo1.getTipo().equals(TipoDec.TipoReferencia)){
+								compatibles = compatibles(referencia(tipo1), tipo2);
+							}else{
+								if(tipo2.getTipo().equals(TipoDec.TipoReferencia)){
+									compatibles = compatibles(tipo1, referencia(tipo2));
+								}else{
+									if(tipo2.getTipo().equals(TipoDec.TipoPuntero)){
+										//TODO:
+									}else{
+										if(tipo1.getTipo().equals(TipoDec.TipoArray) && tipo2.getTipo().equals(TipoDec.TipoArray)){
+											compatibles = compatibles(tipo1.getTipobase(), tipo2.getTipobase());
+										}else{
+											if(tipo1.getTipo().equals(TipoDec.TipoRegistro) && tipo2.getTipo().equals(TipoDec.TipoRegistro)){
+												if(tipo1.getCampos().size() == tipo2.getCampos().size()){
+													boolean comp = true;
+													for(int i = 0; i < tipo1.getCampos().size(); i++){
+														if(!compatibles(tipo1.getCampos().get(i).getTipo(),tipo2.getCampos().get(i).getTipo())){
+															comp = false;
+														}
+													}
+													compatibles = comp;
+												}
+											}else{
+												if(tipo1.getTipo().equals(TipoDec.TipoPuntero) && tipo2.getTipo().equals(TipoDec.TipoPuntero)){
+													compatibles = compatibles(tipo1.getTipobase(),tipo2.getTipobase());
+												}else{
+													if(tipo1.getTipo().equals(TipoDec.TipoPuntero)){
+														compatibles = compatibles(referencia(tipo1.getTipobase()),tipo2);
+													}else{
+														if(tipo2.getTipo().equals(TipoDec.TipoPuntero)){
+															compatibles = compatibles(tipo1,referencia(tipo2.getTipobase()));
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+								
+							}
+						}
+					}
+				}
+			}
+		}}
+		return compatibles;
+	}
+	
+	public Tipo referencia(Tipo tip){
+		TS temp = null;
+		boolean ref = false;
+		int nivel = 0;
+		int i = 1;
+		while(!ref && i <= pilats.size()){
+			temp = pilats.elementAt(pilats.size() - i);
+			if(temp.existeID(tip.getId())){
+				ref = true;
+			}
+			i++;
+		}
+		return temp.getDetalles(tip.getId()).getTipo();
+	}
+	
+	//campoExiste es equivalente a campo?
+	public boolean campoExiste(Vector<Campo> camp,String idcampo){
+		boolean existe = false;
+		Campo temp = null;
+		int i = 0;
+		while(!existe && i <= camp.size()){
+			temp = camp.get(i);
+			if(temp.getId().equals(idcampo))
+				existe = true;
+			i++;
+		}
+		return existe;
+	}
+	
 }
