@@ -29,11 +29,11 @@ public class DatoPila {
 	}
 
 	public Integer getEntero() {
-		return (Integer) valor;
+		return (valor instanceof Integer ? (Integer) valor :  ((Float) valor).intValue());
 	}
 
 	public Float getReal() {
-		return (Float) valor;
+		return (valor instanceof Float ? (Float) valor :  ((Integer) valor).floatValue());
 	}
 
 	public void setValor(Object valor) {

@@ -10,6 +10,7 @@ import interprete.instrucciones.Desapilar;
 import interprete.instrucciones.DesapilarDir;
 import interprete.instrucciones.Distinto;
 import interprete.instrucciones.Dividir;
+import interprete.instrucciones.Entrada;
 import interprete.instrucciones.Igual;
 import interprete.instrucciones.Mayor;
 import interprete.instrucciones.MayorIg;
@@ -154,7 +155,9 @@ public class LectorPila {
 		case InstruccionInterprete.CODIGO_SALIDA:
 			inst = new Salida();
 			break;
-
+		case InstruccionInterprete.CODIGO_ENTRADA:
+			inst = new Entrada();
+			break;
 		}
 		return inst;
 	}
