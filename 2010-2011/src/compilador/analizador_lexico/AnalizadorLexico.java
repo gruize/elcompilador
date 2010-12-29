@@ -2,7 +2,6 @@ package compilador.analizador_lexico;
 
 import java.util.Vector;
 
-import errores.GestorErrores;
 
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
@@ -188,8 +187,8 @@ public class AnalizadorLexico {
 							transita(AMPERSAND);
 							break;
 						default:
-							GestorErrores.agregaError(2, fila, columna,
-									next_char + "");
+//							GestorErrores.agregaError(2, fila, columna,
+//									next_char + "");
 							transitaSinLexema(VACIO);
 							break;
 						}
@@ -413,7 +412,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REAL3);
 				} else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
+//					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -446,7 +445,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REAL3);
 				else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
+//					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -480,8 +479,8 @@ public class AnalizadorLexico {
 					if (next_char == '-')
 						transita(LIT_REAL6);
 					else {
-						GestorErrores.agregaError(7, fila, columna, next_char
-								+ "");
+//						GestorErrores.agregaError(7, fila, columna, next_char
+//								+ "");
 						transitaSinLexema(VACIO);
 						this.lexema = "";
 					}
@@ -491,8 +490,8 @@ public class AnalizadorLexico {
 			case LIT_REAL5:
 
 				if (sigDigito()) {
-					GestorErrores
-							.agregaError(10, fila, columna, next_char + "");
+//					GestorErrores
+//							.agregaError(10, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				} else {
@@ -509,7 +508,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REALF);
 				else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
+//					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -523,7 +522,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REALF);
 				else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
+//					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -708,7 +707,7 @@ public class AnalizadorLexico {
 				if (next_char == '&')
 					transita(Y_LOGICA);
 				else {
-					GestorErrores.agregaError(3, fila, columna, next_char + "");
+//					GestorErrores.agregaError(3, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 				}
 				break;
@@ -724,7 +723,7 @@ public class AnalizadorLexico {
 				break;
 
 			default:
-				GestorErrores.agregaError(2, fila, columna, next_char + "");
+//				GestorErrores.agregaError(2, fila, columna, next_char + "");
 				transitaSinLexema(VACIO);
 				break;
 			}

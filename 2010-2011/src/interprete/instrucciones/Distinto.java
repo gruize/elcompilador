@@ -1,5 +1,6 @@
 package interprete.instrucciones;
 
+import interprete.InstruccionInterprete;
 import interprete.Interprete;
 import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
@@ -14,7 +15,7 @@ public class Distinto extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_DISTINTO);
 		throw new InterpreteException("La instrucción no acepta argumentos");
 	}
-	
+
 	@Override
 	public String toString() {
 		return "distinto";
@@ -22,8 +23,15 @@ public class Distinto extends InstruccionInterprete {
 
 	@Override
 	public boolean ejecutate(Interprete interprete) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
+		DatoPila d1 = interprete.getPila().pop();
+		DatoPila d2 = interprete.getPila().pop();
+
+		DatoPila resultado = new DatoPila(
+				DatoPila.INT, (!d1.getValor().equals(d2.getValor()) ? 1: 0));
+
+		interprete.getPila().push(resultado);
+
+		return true;
+	}
 }

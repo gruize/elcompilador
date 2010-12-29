@@ -1,5 +1,6 @@
 package interprete.instrucciones;
 
+import interprete.InstruccionInterprete;
 import interprete.Interprete;
 import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;

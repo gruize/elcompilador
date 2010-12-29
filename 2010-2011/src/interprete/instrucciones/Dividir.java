@@ -1,5 +1,6 @@
 package interprete.instrucciones;
 
+import interprete.InstruccionInterprete;
 import interprete.Interprete;
 import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
@@ -14,7 +15,7 @@ public class Dividir extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_DIVIDE);
 		throw new InterpreteException("La instrucción no acepta argumentos");
 	}
-	
+
 	@Override
 	public String toString() {
 		return "dividir";
@@ -22,8 +23,23 @@ public class Dividir extends InstruccionInterprete {
 
 	@Override
 	public boolean ejecutate(Interprete interprete) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
+		DatoPila d1 = interprete.getPila().pop();
+		DatoPila d2 = interprete.getPila().pop();
+
+		Byte tipoRes = getTipoResult(d1.getTipo(), d2.getTipo());
+		DatoPila resultado;
+
+		if (tipoRes == DatoPila.INT)
+			resultado = new DatoPila(DatoPila.INT,
+					(Integer) (d1.getEntero() / (Integer) d2
+							.getEntero()));
+		else
+			resultado = new DatoPila(DatoPila.REAL,
+					(Float) ((Float) d1.getReal() / (Float) d2.getReal()));
+
+		interprete.getPila().push(resultado);
+		
+		return true;
+	}
 }

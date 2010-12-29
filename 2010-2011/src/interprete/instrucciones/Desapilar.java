@@ -1,5 +1,6 @@
 package interprete.instrucciones;
 
+import interprete.InstruccionInterprete;
 import interprete.Interprete;
 import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
@@ -22,8 +23,8 @@ public class Desapilar extends InstruccionInterprete {
     
 	@Override
 	public boolean ejecutate(Interprete interprete) {
-		// TODO Auto-generated method stub
-		return false;
+		interprete.getPila().pop();
+        return true;
 	}
 
 }
