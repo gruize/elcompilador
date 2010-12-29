@@ -1,9 +1,9 @@
 package interprete;
 
 import interprete.datoPila.DatoPila;
-import interprete.instrucciones.ValorAbsoluto;
 import interprete.instrucciones.Apilar;
 import interprete.instrucciones.ApilarDir;
+import interprete.instrucciones.CambioSigno;
 import interprete.instrucciones.CastInt;
 import interprete.instrucciones.CastReal;
 import interprete.instrucciones.Desapilar;
@@ -11,12 +11,10 @@ import interprete.instrucciones.DesapilarDir;
 import interprete.instrucciones.Distinto;
 import interprete.instrucciones.Dividir;
 import interprete.instrucciones.Igual;
-import interprete.instrucciones.InstruccionInterprete;
 import interprete.instrucciones.Mayor;
 import interprete.instrucciones.MayorIg;
 import interprete.instrucciones.Menor;
 import interprete.instrucciones.MenorIg;
-import interprete.instrucciones.CambioSigno;
 import interprete.instrucciones.Modulo;
 import interprete.instrucciones.Multiplicar;
 import interprete.instrucciones.Negacion;
@@ -25,6 +23,7 @@ import interprete.instrucciones.Parar;
 import interprete.instrucciones.Restar;
 import interprete.instrucciones.Salida;
 import interprete.instrucciones.Sumar;
+import interprete.instrucciones.ValorAbsoluto;
 import interprete.instrucciones.Y_Logica;
 
 import java.io.DataInputStream;
@@ -162,14 +161,14 @@ public class LectorPila {
 
 	public ArrayList<InstruccionInterprete> leerPrograma(File f)
 			throws FileNotFoundException, IOException, InterpreteException {
-		
+
 		ArrayList<InstruccionInterprete> ad = new ArrayList<InstruccionInterprete>();
 		DataInputStream dis = new DataInputStream(new FileInputStream(f));
-		
+
 		while (dis.available() > 0) {
 			ad.add(leerInstruccion(dis));
 		}
-		
+
 		return ad;
 	}
 

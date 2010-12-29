@@ -1,7 +1,6 @@
 package interprete;
 
 import interprete.datoPila.DatoPila;
-import interprete.instrucciones.InstruccionInterprete;
 
 public class InterpreteException extends Exception {
 

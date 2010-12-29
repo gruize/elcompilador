@@ -1,7 +1,6 @@
 package interprete;
 
 import interprete.datoPila.DatoPila;
-import interprete.instrucciones.InstruccionInterprete;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -150,7 +149,7 @@ public class Interprete {
 
 		boolean tiene_algo = false;
 		sb.append("Contenido de la memoria:\n");
-		for (int i = 0; i <= memoria.length; i++) {
+		for (int i = 0; i < memoria.length; i++) {
 			if (memoria[i] != null) {
 				sb.append("\t" + i + ") " + memoria[i] + "\n");
 				tiene_algo = true;
@@ -173,28 +172,23 @@ public class Interprete {
 			sb.append("Vacia\n");
 		}
 
-		sb.append("\nProxima instruccion: (" + getCp() + ") "
-				+ programa.get(getCp()).toString() + "\n");
-
+		if (getCp() < programa.size()) 
+			sb.append("\nProxima instruccion: (" + getCp() + ") "
+					+ programa.get(getCp()).toString() + "\n");
+		else
+			sb.append("\nFin del programa\n");
+		
 		return new String(sb);
 	}
 
 	/**
 	 * Ejecuta el programa que se haya leído con anterioridad
 	 * 
-	 * @throws InstruccionExc
-	 *             si ocurre un error en ejecuciÃ³n
-	 * @throws NullPointerException
-	 *             si no se ha cargado ningÃºn programa
-	 */
-
-	/**
-	 * Ejecuta el programa que se haya leído con anterioridad
-	 * 
 	 * @throws IOException
 	 *             Si no se puede leer del fichero del programa
+	 * @throws InterpreteException 
 	 */
-	public void ejecutarPrograma() throws IOException {
+	public void ejecutarPrograma() throws IOException, InterpreteException {
 		if (programa == null)
 			throw new NullPointerException("Programa no iniciado");
 		setCp(0);

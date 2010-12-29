@@ -1,5 +1,6 @@
 package interprete.instrucciones;
 
+import interprete.InstruccionInterprete;
 import interprete.Interprete;
 import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
@@ -14,8 +15,7 @@ public class Salida extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_SALIDA, d);
 		throw new InterpreteException("La instrucción no acepta argumentos");
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		return "salida";
@@ -23,8 +23,12 @@ public class Salida extends InstruccionInterprete {
 
 	@Override
 	public boolean ejecutate(Interprete interprete) {
-		// TODO Auto-generated method stub
-		return false;
+		DatoPila d1 = interprete.getPila().pop();
+
+		interprete.getWriter().println(d1.getValor().toString());
+
+		return true;
+
 	}
 
 }
