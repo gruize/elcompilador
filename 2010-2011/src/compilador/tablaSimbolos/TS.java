@@ -14,8 +14,10 @@ public class TS {
 		tabla = new Hashtable<String,Detalles>();
 	}
 	
-	public void añadeID(String id, Integer dir, Tipo tipo){
+	public Integer añadeID(String id, Integer dir, Tipo tipo){
 		tabla.put(id, new Detalles(id,dir,tipo));
+		Integer prim_dir_disponible = dir + tipo.getTamanyo();
+		return prim_dir_disponible;
 	}
 	
 	public Tipo getTipo(String id){
