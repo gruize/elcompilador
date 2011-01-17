@@ -2,6 +2,8 @@ package compilador.analizador_lexico;
 
 import java.util.Vector;
 
+import compilador.gestorErrores.GestorErrores;
+
 
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
@@ -91,6 +93,54 @@ public class AnalizadorLexico {
 		this.token_actual = null;
 		this.lexema = "";
 		this.estado = VACIO;
+	}
+
+	public String getLexema() {
+		return lexema;
+	}
+
+	public void setLexema(String lexema) {
+		this.lexema = lexema;
+	}
+
+	public String getPrograma() {
+		return programa;
+	}
+
+	public void setPrograma(String programa) {
+		this.programa = programa;
+	}
+
+	public int getFila() {
+		return fila;
+	}
+
+	public void setFila(int fila) {
+		this.fila = fila;
+	}
+
+	public int getColumna() {
+		return columna;
+	}
+
+	public void setColumna(int columna) {
+		this.columna = columna;
+	}
+
+	public String getToken_actual() {
+		return token_actual;
+	}
+
+	public void setToken_actual(String tokenActual) {
+		token_actual = tokenActual;
+	}
+
+	public int getIndice() {
+		return indice;
+	}
+
+	public void setIndice(int indice) {
+		this.indice = indice;
 	}
 
 	/**
@@ -187,8 +237,8 @@ public class AnalizadorLexico {
 							transita(AMPERSAND);
 							break;
 						default:
-//							GestorErrores.agregaError(2, fila, columna,
-//									next_char + "");
+							GestorErrores.agregaError(2, fila, columna,
+									next_char + "");
 							transitaSinLexema(VACIO);
 							break;
 						}
@@ -199,13 +249,13 @@ public class AnalizadorLexico {
 			case PUNTO_Y_COMA:
 
 				encontrado = true;
-				encontrado("tk;");
+				encontrado(PalabrasReservadas.TOKEN_PUNTO_COMA);
 				break;
 
 			case PUNTO:
 
 				encontrado = true;
-				encontrado("tk.");
+				encontrado(PalabrasReservadas.TOKEN_PUNTO);
 				break;
 
 			case MENOR:
@@ -218,7 +268,7 @@ public class AnalizadorLexico {
 
 				default:
 					encontrado = true;
-					encontrado("tk<");
+					encontrado(PalabrasReservadas.TOKEN_MENOR);
 					break;
 				}
 
@@ -234,7 +284,7 @@ public class AnalizadorLexico {
 
 				default:
 					encontrado = true;
-					encontrado("tk>");
+					encontrado(PalabrasReservadas.TOKEN_MAYOR);
 					break;
 				}
 
@@ -243,13 +293,13 @@ public class AnalizadorLexico {
 			case MENOR_IGUAL:
 
 				encontrado = true;
-				encontrado("tk<=");
+				encontrado(PalabrasReservadas.TOKEN_MENOR_IGUAL);
 				break;
 
 			case MAYOR_IGUAL:
 
 				encontrado = true;
-				encontrado("tk>=");
+				encontrado(PalabrasReservadas.TOKEN_MAYOR_IGUAL);
 				break;
 
 			case IGUAL:
@@ -262,7 +312,7 @@ public class AnalizadorLexico {
 
 				default:
 					encontrado = true;
-					encontrado("tk=");
+					encontrado(PalabrasReservadas.TOKEN_ASIGNACION);
 				}
 
 				break;
@@ -270,7 +320,7 @@ public class AnalizadorLexico {
 			case IGUAL_IGUAL:
 
 				encontrado = true;
-				encontrado("tk==");
+				encontrado(PalabrasReservadas.TOKEN_IGUAL);
 				break;
 
 			case NEGACION:
@@ -283,7 +333,7 @@ public class AnalizadorLexico {
 
 				default:
 					encontrado = true;
-					encontrado("tk!");
+					encontrado(PalabrasReservadas.TOKEN_NEGACION);
 				}
 
 				break;
@@ -291,37 +341,37 @@ public class AnalizadorLexico {
 			case DISTINTO:
 
 				encontrado = true;
-				encontrado("tk!=");
+				encontrado(PalabrasReservadas.TOKEN_DISTINTO);
 				break;
 
 			case SUMA:
 
 				encontrado = true;
-				encontrado("tk+");
+				encontrado(PalabrasReservadas.TOKEN_SUMA);
 				break;
 
 			case RESTA:
 
 				encontrado = true;
-				encontrado("tk-");
+				encontrado(PalabrasReservadas.TOKEN_MENOR);
 				break;
 
 			case MULTIPLICACION:
 
 				encontrado = true;
-				encontrado("tk*");
+				encontrado(PalabrasReservadas.TOKEN_MULT);
 				break;
 
 			case DIVISION:
 
 				encontrado = true;
-				encontrado("tk/");
+				encontrado(PalabrasReservadas.TOKEN_DIV);
 				break;
 
 			case MODULO:
 
 				encontrado = true;
-				encontrado("tk%");
+				encontrado(PalabrasReservadas.TOKEN_MODULO);
 				break;
 
 			case BARRA:
@@ -330,7 +380,7 @@ public class AnalizadorLexico {
 					transita(O_LOGICA);
 				else {
 					encontrado = true;
-					encontrado("tk|");
+					encontrado(PalabrasReservadas.TOKEN_BARRA);
 				}
 				break;
 
@@ -360,7 +410,7 @@ public class AnalizadorLexico {
 					break;
 				default:
 					encontrado = true;
-					encontrado("tk(");
+					encontrado(PalabrasReservadas.TOKEN_PARENTESIS_AP);
 					break;
 				}
 				break;
@@ -368,7 +418,7 @@ public class AnalizadorLexico {
 			case PARENTESIS_CERRADO:
 
 				encontrado = true;
-				encontrado("tk)");
+				encontrado(PalabrasReservadas.TOKEN_PARENTESIS_CE);
 				break;
 
 			case ARROBA:
@@ -398,7 +448,7 @@ public class AnalizadorLexico {
 						break;
 					default:
 						encontrado = true;
-						encontrado("tkint");
+						encontrado(PalabrasReservadas.TOKEN_LIT_INT);
 						break;
 					}
 				}
@@ -412,7 +462,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REAL3);
 				} else {
-//					GestorErrores.agregaError(6, fila, columna, next_char + "");
+					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -431,8 +481,8 @@ public class AnalizadorLexico {
 						transita(LIT_REAL4);
 					} else {
 						encontrado = true;
-						this.token_actual = "tkreal";
-						encontrado("tkreal");
+						this.token_actual = PalabrasReservadas.TOKEN_LIT_REAL;
+						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
 					}
 				}
 				break;
@@ -445,7 +495,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REAL3);
 				else {
-//					GestorErrores.agregaError(6, fila, columna, next_char + "");
+					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -463,7 +513,7 @@ public class AnalizadorLexico {
 						transita(LIT_REAL4);
 					else {
 						encontrado = true;
-						encontrado("tkreal");
+						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
 					}
 				}
 				break;
@@ -479,8 +529,8 @@ public class AnalizadorLexico {
 					if (next_char == '-')
 						transita(LIT_REAL6);
 					else {
-//						GestorErrores.agregaError(7, fila, columna, next_char
-//								+ "");
+						GestorErrores.agregaError(7, fila, columna, next_char
+								+ "");
 						transitaSinLexema(VACIO);
 						this.lexema = "";
 					}
@@ -490,13 +540,13 @@ public class AnalizadorLexico {
 			case LIT_REAL5:
 
 				if (sigDigito()) {
-//					GestorErrores
-//							.agregaError(10, fila, columna, next_char + "");
+					GestorErrores
+							.agregaError(10, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				} else {
 					encontrado = true;
-					encontrado("tkreal");
+					encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
 				}
 				break;
 
@@ -508,7 +558,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REALF);
 				else {
-//					GestorErrores.agregaError(6, fila, columna, next_char + "");
+					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -522,7 +572,7 @@ public class AnalizadorLexico {
 					else
 						transita(LIT_REALF);
 				else {
-//					GestorErrores.agregaError(6, fila, columna, next_char + "");
+					GestorErrores.agregaError(6, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 					this.lexema = "";
 				}
@@ -537,7 +587,7 @@ public class AnalizadorLexico {
 						transita(LIT_REALF);
 				} else {
 					encontrado = true;
-					encontrado("tkreal");
+					encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
 				}
 				break;
 
@@ -578,7 +628,7 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
 					this.tokens.add(new DatosToken(token_actual, fila, columna,
 							indice));
 					this.lexema = "(";
@@ -595,8 +645,8 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
-					encontrado("tk(");
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+					encontrado(PalabrasReservadas.TOKEN_PARENTESIS_AP);
 					this.next_char = programa.charAt(this.indice);
 				}
 				break;
@@ -609,7 +659,7 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
 					this.tokens.add(new DatosToken(token_actual, fila, columna,
 							indice));
 					this.lexema = "(";
@@ -621,7 +671,7 @@ public class AnalizadorLexico {
 			case CAST_INT_FIN:
 
 				encontrado = true;
-				encontrado("tkcastint");
+				encontrado(PalabrasReservadas.TOKEN_CAST_INT);
 				break;
 
 			case CAST_R:
@@ -633,7 +683,7 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
 					this.tokens.add(new DatosToken(token_actual, fila, columna,
 							indice));
 					this.lexema = "(";
@@ -651,7 +701,7 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
 					this.tokens.add(new DatosToken(token_actual, fila, columna,
 							indice));
 					this.lexema = "(";
@@ -669,7 +719,7 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
 					this.tokens.add(new DatosToken(token_actual, fila, columna,
 							indice));
 					this.lexema = "(";
@@ -687,7 +737,7 @@ public class AnalizadorLexico {
 					this.indice = this.parentesis_indice;
 					this.fila = this.parentesis_fila;
 					this.columna = this.parentesis_columna;
-					this.token_actual = "tk(";
+					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
 					this.tokens.add(new DatosToken(token_actual, fila, columna,
 							indice));
 					this.lexema = "(";
@@ -699,7 +749,7 @@ public class AnalizadorLexico {
 			case CAST_REAL_FIN:
 
 				encontrado = true;
-				encontrado("tkcastreal");
+				encontrado(PalabrasReservadas.TOKEN_CAST_REAL);
 				break;
 
 			case AMPERSAND:
@@ -707,23 +757,23 @@ public class AnalizadorLexico {
 				if (next_char == '&')
 					transita(Y_LOGICA);
 				else {
-//					GestorErrores.agregaError(3, fila, columna, next_char + "");
+					GestorErrores.agregaError(3, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
 				}
 				break;
 
 			case Y_LOGICA:
 				encontrado = true;
-				encontrado("tk&&");
+				encontrado(PalabrasReservadas.TOKEN_Y_LOGICA);
 				break;
 
 			case O_LOGICA:
 				encontrado = true;
-				encontrado("tk||");
+				encontrado(PalabrasReservadas.TOKEN_O_LOGICA);
 				break;
 
 			default:
-//				GestorErrores.agregaError(2, fila, columna, next_char + "");
+				GestorErrores.agregaError(2, fila, columna, next_char + "");
 				transitaSinLexema(VACIO);
 				break;
 			}
