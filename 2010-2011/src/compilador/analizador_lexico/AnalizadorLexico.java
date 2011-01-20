@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import compilador.gestorErrores.GestorErrores;
 
-
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
  * 
@@ -161,621 +160,628 @@ public class AnalizadorLexico {
 		this.estado = VACIO;
 		this.lexema = "";
 
-		while (!encontrado || !fin_programa) {
+		if (!fin_programa) {
+			while (!encontrado) {
 
-			if (programa.length() == indice + 1)
-				fin_programa = true;
+				if (programa.length() == indice + 1)
+					fin_programa = true;
 
-			switch (estado) {
+				switch (estado) {
 
-			case VACIO:
+				case VACIO:
 
-				if (sigDigito()) {
-					if (next_char == '0')
-						transita(LIT_REAL);
-					else
-						transita(LIT_INT);
-				} else {
-					if (sigLetra())
-						transita(CADENA);
-					else {
-						switch (next_char) {
-						case '\n':
-							transitaSinLexema(VACIO);
-							this.fila++;
-							this.columna = 0;
-							break;
-						case ' ':
-							transitaSinLexema(VACIO);
-							break;
-						case '\t':
-							transitaSinLexema(VACIO);
-							break;
-						case ';':
-							transita(PUNTO_Y_COMA);
-							break;
-						case '.':
-							transita(PUNTO);
-							break;
-						case '<':
-							transita(MENOR);
-							break;
-						case '>':
-							transita(MAYOR);
-							break;
-						case '=':
-							transita(IGUAL);
-							break;
-						case '+':
-							transita(SUMA);
-							break;
-						case '-':
-							transita(RESTA);
-							break;
-						case '*':
-							transita(MULTIPLICACION);
-							break;
-						case '/':
-							transita(DIVISION);
-							break;
-						case '%':
-							transita(MODULO);
-							break;
-						case '|':
-							transita(BARRA);
-							break;
-						case '(':
-							transita(PARENTESIS_ABIERTO);
-							break;
-						case ')':
-							transita(PARENTESIS_CERRADO);
-							break;
-						case '@':
-							transita(ARROBA);
-							break;
-						case '&':
-							transita(AMPERSAND);
-							break;
-						default:
-							GestorErrores.agregaError(2, fila, columna,
-									next_char + "");
-							transitaSinLexema(VACIO);
-							break;
+					if (sigDigito()) {
+						if (next_char == '0')
+							transita(LIT_REAL);
+						else
+							transita(LIT_INT);
+					} else {
+						if (sigLetra())
+							transita(CADENA);
+						else {
+							switch (next_char) {
+							case '\n':
+								transitaSinLexema(VACIO);
+								this.fila++;
+								this.columna = 0;
+								break;
+							case ' ':
+								transitaSinLexema(VACIO);
+								break;
+							case '\t':
+								transitaSinLexema(VACIO);
+								break;
+							case ';':
+								transita(PUNTO_Y_COMA);
+								break;
+							case '.':
+								transita(PUNTO);
+								break;
+							case '<':
+								transita(MENOR);
+								break;
+							case '>':
+								transita(MAYOR);
+								break;
+							case '=':
+								transita(IGUAL);
+								break;
+							case '+':
+								transita(SUMA);
+								break;
+							case '-':
+								transita(RESTA);
+								break;
+							case '*':
+								transita(MULTIPLICACION);
+								break;
+							case '/':
+								transita(DIVISION);
+								break;
+							case '%':
+								transita(MODULO);
+								break;
+							case '|':
+								transita(BARRA);
+								break;
+							case '(':
+								transita(PARENTESIS_ABIERTO);
+								break;
+							case ')':
+								transita(PARENTESIS_CERRADO);
+								break;
+							case '@':
+								transita(ARROBA);
+								break;
+							case '&':
+								transita(AMPERSAND);
+								break;
+							default:
+								GestorErrores.agregaError(2, fila, columna,
+										next_char + "");
+								transitaSinLexema(VACIO);
+								break;
+							}
 						}
 					}
-				}
-				break;
-
-			case PUNTO_Y_COMA:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_PUNTO_COMA);
-				break;
-
-			case PUNTO:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_PUNTO);
-				break;
-
-			case MENOR:
-
-				switch (next_char) {
-
-				case '=':
-					transita(MENOR_IGUAL);
 					break;
 
-				default:
+				case PUNTO_Y_COMA:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_PUNTO_COMA);
+					break;
+
+				case PUNTO:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_PUNTO);
+					break;
+
+				case MENOR:
+
+					switch (next_char) {
+
+					case '=':
+						transita(MENOR_IGUAL);
+						break;
+
+					default:
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_MENOR);
+						break;
+					}
+
+					break;
+
+				case MAYOR:
+
+					switch (next_char) {
+
+					case '=':
+						transita(MAYOR_IGUAL);
+						break;
+
+					default:
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_MAYOR);
+						break;
+					}
+
+					break;
+
+				case MENOR_IGUAL:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_MENOR_IGUAL);
+					break;
+
+				case MAYOR_IGUAL:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_MAYOR_IGUAL);
+					break;
+
+				case IGUAL:
+
+					switch (next_char) {
+
+					case '=':
+						transita(IGUAL_IGUAL);
+						break;
+
+					default:
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_ASIGNACION);
+					}
+
+					break;
+
+				case IGUAL_IGUAL:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_IGUAL);
+					break;
+
+				case NEGACION:
+
+					switch (next_char) {
+
+					case '=':
+						transita(DISTINTO);
+						break;
+
+					default:
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_NEGACION);
+					}
+
+					break;
+
+				case DISTINTO:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_DISTINTO);
+					break;
+
+				case SUMA:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_SUMA);
+					break;
+
+				case RESTA:
+
 					encontrado = true;
 					encontrado(PalabrasReservadas.TOKEN_MENOR);
 					break;
-				}
 
-				break;
+				case MULTIPLICACION:
 
-			case MAYOR:
-
-				switch (next_char) {
-
-				case '=':
-					transita(MAYOR_IGUAL);
-					break;
-
-				default:
 					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_MAYOR);
-					break;
-				}
-
-				break;
-
-			case MENOR_IGUAL:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_MENOR_IGUAL);
-				break;
-
-			case MAYOR_IGUAL:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_MAYOR_IGUAL);
-				break;
-
-			case IGUAL:
-
-				switch (next_char) {
-
-				case '=':
-					transita(IGUAL_IGUAL);
+					encontrado(PalabrasReservadas.TOKEN_MULT);
 					break;
 
-				default:
+				case DIVISION:
+
 					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_ASIGNACION);
-				}
-
-				break;
-
-			case IGUAL_IGUAL:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_IGUAL);
-				break;
-
-			case NEGACION:
-
-				switch (next_char) {
-
-				case '=':
-					transita(DISTINTO);
+					encontrado(PalabrasReservadas.TOKEN_DIV);
 					break;
 
-				default:
+				case MODULO:
+
 					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_NEGACION);
-				}
-
-				break;
-
-			case DISTINTO:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_DISTINTO);
-				break;
-
-			case SUMA:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_SUMA);
-				break;
-
-			case RESTA:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_MENOR);
-				break;
-
-			case MULTIPLICACION:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_MULT);
-				break;
-
-			case DIVISION:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_DIV);
-				break;
-
-			case MODULO:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_MODULO);
-				break;
-
-			case BARRA:
-
-				if (next_char == '|')
-					transita(O_LOGICA);
-				else {
-					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_BARRA);
-				}
-				break;
-
-			case PARENTESIS_ABIERTO:
-
-				this.parentesis_indice = indice;
-				this.parentesis_columna = columna;
-				this.parentesis_fila = fila;
-
-				switch (next_char) {
-				case ' ':
-					transitaSinLexema(PARENTESIS_ABIERTO);
+					encontrado(PalabrasReservadas.TOKEN_MODULO);
 					break;
-				case '\t':
-					transitaSinLexema(PARENTESIS_ABIERTO);
+
+				case BARRA:
+
+					if (next_char == '|')
+						transita(O_LOGICA);
+					else {
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_BARRA);
+					}
 					break;
-				case '\n':
-					transitaSinLexema(PARENTESIS_ABIERTO);
-					break;
-				case 'i':
-				case 'I':
-					transita(CAST_I);
-					break;
-				case 'r':
-				case 'R':
-					transita(CAST_R);
-					break;
-				default:
-					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_PARENTESIS_AP);
-					break;
-				}
-				break;
 
-			case PARENTESIS_CERRADO:
+				case PARENTESIS_ABIERTO:
 
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_PARENTESIS_CE);
-				break;
+					this.parentesis_indice = indice;
+					this.parentesis_columna = columna;
+					this.parentesis_fila = fila;
 
-			case ARROBA:
-
-				if (next_char != '\n')
-					transita(COMENTARIO_INC);
-				else {
-					encontrado = true;
-					this.fila++;
-					this.columna = 0;
-					this.estado = VACIO;
-				}
-				break;
-
-			case LIT_INT:
-
-				if (sigDigito())
-					transita(LIT_INT);
-				else {
 					switch (next_char) {
-					case '.':
-						transita(LIT_REAL);
+					case ' ':
+						transitaSinLexema(PARENTESIS_ABIERTO);
 						break;
-					case 'e':
-					case 'E':
-						transita(LIT_REAL4);
+					case '\t':
+						transitaSinLexema(PARENTESIS_ABIERTO);
+						break;
+					case '\n':
+						transitaSinLexema(PARENTESIS_ABIERTO);
+						break;
+					case 'i':
+					case 'I':
+						transita(CAST_I);
+						break;
+					case 'r':
+					case 'R':
+						transita(CAST_R);
 						break;
 					default:
 						encontrado = true;
-						encontrado(PalabrasReservadas.TOKEN_LIT_INT);
+						encontrado(PalabrasReservadas.TOKEN_PARENTESIS_AP);
 						break;
 					}
-				}
-				break;
+					break;
 
-			case LIT_REAL:
+				case PARENTESIS_CERRADO:
 
-				if (sigDigito()) {
-					if (next_char == '0')
-						transita(LIT_REAL1);
-					else
-						transita(LIT_REAL3);
-				} else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
-					transitaSinLexema(VACIO);
-					this.lexema = "";
-				}
-				break;
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_PARENTESIS_CE);
+					break;
 
-			case LIT_REAL1:
+				case ARROBA:
 
-				if (sigDigito()) {
-					if (next_char == '0')
-						transita(LIT_REAL2);
-					else
-						transita(LIT_REAL3);
+					if (next_char != '\n')
+						transita(COMENTARIO_INC);
+					else {
+						encontrado = true;
+						this.fila++;
+						this.columna = 0;
+						this.estado = VACIO;
+					}
+					break;
 
-				} else {
-					if (next_char == 'e' || next_char == 'E') {
-						transita(LIT_REAL4);
+				case LIT_INT:
+
+					if (sigDigito())
+						transita(LIT_INT);
+					else {
+						switch (next_char) {
+						case '.':
+							transita(LIT_REAL);
+							break;
+						case 'e':
+						case 'E':
+							transita(LIT_REAL4);
+							break;
+						default:
+							encontrado = true;
+							encontrado(PalabrasReservadas.TOKEN_LIT_INT);
+							break;
+						}
+					}
+					break;
+
+				case LIT_REAL:
+
+					if (sigDigito()) {
+						if (next_char == '0')
+							transita(LIT_REAL1);
+						else
+							transita(LIT_REAL3);
 					} else {
-						encontrado = true;
-						this.token_actual = PalabrasReservadas.TOKEN_LIT_REAL;
-						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
-					}
-				}
-				break;
-
-			case LIT_REAL2:
-
-				if (sigDigito())
-					if (next_char == '0')
-						transita(LIT_REAL2);
-					else
-						transita(LIT_REAL3);
-				else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
-					transitaSinLexema(VACIO);
-					this.lexema = "";
-				}
-				break;
-
-			case LIT_REAL3:
-
-				if (sigDigito()) {
-					if (next_char == '0')
-						transita(LIT_REAL2);
-					else
-						transita(LIT_REAL3);
-				} else {
-					if (next_char == 'e' || next_char == 'E')
-						transita(LIT_REAL4);
-					else {
-						encontrado = true;
-						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
-					}
-				}
-				break;
-
-			case LIT_REAL4:
-
-				if (sigDigito()) {
-					if (next_char == '0')
-						transita(LIT_REAL5);
-					else
-						transita(LIT_REALF);
-				} else {
-					if (next_char == '-')
-						transita(LIT_REAL6);
-					else {
-						GestorErrores.agregaError(7, fila, columna, next_char
+						GestorErrores.agregaError(6, fila, columna, next_char
 								+ "");
 						transitaSinLexema(VACIO);
 						this.lexema = "";
 					}
-				}
-				break;
+					break;
 
-			case LIT_REAL5:
+				case LIT_REAL1:
 
-				if (sigDigito()) {
-					GestorErrores
-							.agregaError(10, fila, columna, next_char + "");
-					transitaSinLexema(VACIO);
+					if (sigDigito()) {
+						if (next_char == '0')
+							transita(LIT_REAL2);
+						else
+							transita(LIT_REAL3);
+
+					} else {
+						if (next_char == 'e' || next_char == 'E') {
+							transita(LIT_REAL4);
+						} else {
+							encontrado = true;
+							this.token_actual = PalabrasReservadas.TOKEN_LIT_REAL;
+							encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+						}
+					}
+					break;
+
+				case LIT_REAL2:
+
+					if (sigDigito())
+						if (next_char == '0')
+							transita(LIT_REAL2);
+						else
+							transita(LIT_REAL3);
+					else {
+						GestorErrores.agregaError(6, fila, columna, next_char
+								+ "");
+						transitaSinLexema(VACIO);
+						this.lexema = "";
+					}
+					break;
+
+				case LIT_REAL3:
+
+					if (sigDigito()) {
+						if (next_char == '0')
+							transita(LIT_REAL2);
+						else
+							transita(LIT_REAL3);
+					} else {
+						if (next_char == 'e' || next_char == 'E')
+							transita(LIT_REAL4);
+						else {
+							encontrado = true;
+							encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+						}
+					}
+					break;
+
+				case LIT_REAL4:
+
+					if (sigDigito()) {
+						if (next_char == '0')
+							transita(LIT_REAL5);
+						else
+							transita(LIT_REALF);
+					} else {
+						if (next_char == '-')
+							transita(LIT_REAL6);
+						else {
+							GestorErrores.agregaError(7, fila, columna,
+									next_char + "");
+							transitaSinLexema(VACIO);
+							this.lexema = "";
+						}
+					}
+					break;
+
+				case LIT_REAL5:
+
+					if (sigDigito()) {
+						GestorErrores.agregaError(10, fila, columna, next_char
+								+ "");
+						transitaSinLexema(VACIO);
+						this.lexema = "";
+					} else {
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+					}
+					break;
+
+				case LIT_REAL6:
+
+					if (sigDigito())
+						if (next_char == '0')
+							transita(LIT_REAL7);
+						else
+							transita(LIT_REALF);
+					else {
+						GestorErrores.agregaError(6, fila, columna, next_char
+								+ "");
+						transitaSinLexema(VACIO);
+						this.lexema = "";
+					}
+					break;
+
+				case LIT_REAL7:
+
+					if (sigDigito())
+						if (next_char == '0')
+							transita(LIT_REAL7);
+						else
+							transita(LIT_REALF);
+					else {
+						GestorErrores.agregaError(6, fila, columna, next_char
+								+ "");
+						transitaSinLexema(VACIO);
+						this.lexema = "";
+					}
+					break;
+
+				case LIT_REALF:
+
+					if (sigDigito()) {
+						if (next_char == '0')
+							transita(LIT_REAL7);
+						else
+							transita(LIT_REALF);
+					} else {
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+					}
+					break;
+
+				case COMENTARIO_INC:
+
+					if (next_char == '\n') {
+						transita(COMENTARIO);
+					} else
+						transita(COMENTARIO_INC);
+					break;
+
+				case COMENTARIO:
+
+					this.estado = VACIO;
 					this.lexema = "";
-				} else {
+					this.fila++;
+					this.columna = 0;
+					break;
+
+				case CADENA:
+
+					if (sigDigito() || sigLetra())
+						transita(CADENA);
+					else {
+						encontrado = true;
+						this.token_actual = this.palabrasReserva
+								.obtenerToken(lexema);
+						encontrado(token_actual);
+					}
+					break;
+
+				case CAST_I:
+
+					if ((next_char == 'n') || (next_char == 'N'))
+						transita(CAST_IN);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						this.tokens.add(new DatosToken(token_actual, fila,
+								columna, indice));
+						this.lexema = "(";
+						this.estado = VACIO;
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_IN:
+					if ((next_char == 't') || (next_char == 'T'))
+						transita(CAST_INT);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						encontrado(PalabrasReservadas.TOKEN_PARENTESIS_AP);
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_INT:
+					if (next_char == ')')
+						transita(CAST_INT_FIN);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						this.tokens.add(new DatosToken(token_actual, fila,
+								columna, indice));
+						this.lexema = "(";
+						this.estado = VACIO;
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_INT_FIN:
+
 					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
-				}
-				break;
+					encontrado(PalabrasReservadas.TOKEN_CAST_INT);
+					break;
 
-			case LIT_REAL6:
+				case CAST_R:
 
-				if (sigDigito())
-					if (next_char == '0')
-						transita(LIT_REAL7);
-					else
-						transita(LIT_REALF);
-				else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
+					if ((next_char == 'e') || (next_char == 'E'))
+						transita(CAST_RE);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						this.tokens.add(new DatosToken(token_actual, fila,
+								columna, indice));
+						this.lexema = "(";
+						this.estado = VACIO;
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_RE:
+
+					if ((next_char == 'a') || (next_char == 'A'))
+						transita(CAST_REA);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						this.tokens.add(new DatosToken(token_actual, fila,
+								columna, indice));
+						this.lexema = "(";
+						this.estado = VACIO;
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_REA:
+
+					if ((next_char == 'l') || (next_char == 'L'))
+						transita(CAST_REAL);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						this.tokens.add(new DatosToken(token_actual, fila,
+								columna, indice));
+						this.lexema = "(";
+						this.estado = VACIO;
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_REAL:
+
+					if (next_char == ')')
+						transita(CAST_REAL_FIN);
+					else {
+						encontrado = true;
+						this.indice = this.parentesis_indice;
+						this.fila = this.parentesis_fila;
+						this.columna = this.parentesis_columna;
+						this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
+						this.tokens.add(new DatosToken(token_actual, fila,
+								columna, indice));
+						this.lexema = "(";
+						this.estado = VACIO;
+						this.next_char = programa.charAt(this.indice);
+					}
+					break;
+
+				case CAST_REAL_FIN:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_CAST_REAL);
+					break;
+
+				case AMPERSAND:
+
+					if (next_char == '&')
+						transita(Y_LOGICA);
+					else {
+						GestorErrores.agregaError(3, fila, columna, next_char
+								+ "");
+						transitaSinLexema(VACIO);
+					}
+					break;
+
+				case Y_LOGICA:
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_Y_LOGICA);
+					break;
+
+				case O_LOGICA:
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_O_LOGICA);
+					break;
+
+				default:
+					GestorErrores.agregaError(2, fila, columna, next_char + "");
 					transitaSinLexema(VACIO);
-					this.lexema = "";
+					break;
 				}
-				break;
-
-			case LIT_REAL7:
-
-				if (sigDigito())
-					if (next_char == '0')
-						transita(LIT_REAL7);
-					else
-						transita(LIT_REALF);
-				else {
-					GestorErrores.agregaError(6, fila, columna, next_char + "");
-					transitaSinLexema(VACIO);
-					this.lexema = "";
-				}
-				break;
-
-			case LIT_REALF:
-
-				if (sigDigito()) {
-					if (next_char == '0')
-						transita(LIT_REAL7);
-					else
-						transita(LIT_REALF);
-				} else {
-					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
-				}
-				break;
-
-			case COMENTARIO_INC:
-
-				if (next_char == '\n') {
-					transita(COMENTARIO);
-				} else
-					transita(COMENTARIO_INC);
-				break;
-
-			case COMENTARIO:
-
-				this.estado = VACIO;
-				this.lexema = "";
-				this.fila++;
-				this.columna = 0;
-				break;
-
-			case CADENA:
-
-				if (sigDigito() || sigLetra())
-					transita(CADENA);
-				else {
-					encontrado = true;
-					this.token_actual = this.palabrasReserva
-							.obtenerToken(lexema);
-					encontrado(token_actual);
-				}
-				break;
-
-			case CAST_I:
-
-				if ((next_char == 'n') || (next_char == 'N'))
-					transita(CAST_IN);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					this.tokens.add(new DatosToken(token_actual, fila, columna,
-							indice));
-					this.lexema = "(";
-					this.estado = VACIO;
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_IN:
-				if ((next_char == 't') || (next_char == 'T'))
-					transita(CAST_INT);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					encontrado(PalabrasReservadas.TOKEN_PARENTESIS_AP);
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_INT:
-				if (next_char == ')')
-					transita(CAST_INT_FIN);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					this.tokens.add(new DatosToken(token_actual, fila, columna,
-							indice));
-					this.lexema = "(";
-					this.estado = VACIO;
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_INT_FIN:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_CAST_INT);
-				break;
-
-			case CAST_R:
-
-				if ((next_char == 'e') || (next_char == 'E'))
-					transita(CAST_RE);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					this.tokens.add(new DatosToken(token_actual, fila, columna,
-							indice));
-					this.lexema = "(";
-					this.estado = VACIO;
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_RE:
-
-				if ((next_char == 'a') || (next_char == 'A'))
-					transita(CAST_REA);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					this.tokens.add(new DatosToken(token_actual, fila, columna,
-							indice));
-					this.lexema = "(";
-					this.estado = VACIO;
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_REA:
-
-				if ((next_char == 'l') || (next_char == 'L'))
-					transita(CAST_REAL);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					this.tokens.add(new DatosToken(token_actual, fila, columna,
-							indice));
-					this.lexema = "(";
-					this.estado = VACIO;
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_REAL:
-
-				if (next_char == ')')
-					transita(CAST_REAL_FIN);
-				else {
-					encontrado = true;
-					this.indice = this.parentesis_indice;
-					this.fila = this.parentesis_fila;
-					this.columna = this.parentesis_columna;
-					this.token_actual = PalabrasReservadas.TOKEN_PARENTESIS_AP;
-					this.tokens.add(new DatosToken(token_actual, fila, columna,
-							indice));
-					this.lexema = "(";
-					this.estado = VACIO;
-					this.next_char = programa.charAt(this.indice);
-				}
-				break;
-
-			case CAST_REAL_FIN:
-
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_CAST_REAL);
-				break;
-
-			case AMPERSAND:
-
-				if (next_char == '&')
-					transita(Y_LOGICA);
-				else {
-					GestorErrores.agregaError(3, fila, columna, next_char + "");
-					transitaSinLexema(VACIO);
-				}
-				break;
-
-			case Y_LOGICA:
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_Y_LOGICA);
-				break;
-
-			case O_LOGICA:
-				encontrado = true;
-				encontrado(PalabrasReservadas.TOKEN_O_LOGICA);
-				break;
-
-			default:
-				GestorErrores.agregaError(2, fila, columna, next_char + "");
-				transitaSinLexema(VACIO);
-				break;
 			}
 		}
 	}
@@ -825,7 +831,6 @@ public class AnalizadorLexico {
 		this.next_char = siguienteCaracter();
 	}
 
-	
 	/**
 	 * @return Siguiente caracter a procesar
 	 */
@@ -840,16 +845,18 @@ public class AnalizadorLexico {
 		return next;
 	}
 
-	
 	/**
-	 * Realiza las operaciones pertinentes cuando se ha encontrado un token válido
-	 * @param token Nombre del token de entrada
+	 * Realiza las operaciones pertinentes cuando se ha encontrado un token
+	 * válido
+	 * 
+	 * @param token
+	 *            Nombre del token de entrada
 	 */
 	public void encontrado(String token) {
 		this.token_actual = token;
 		this.tokens.add(new DatosToken(token_actual, fila, columna, indice));
 		this.estado = VACIO;
-		this.lexema = "";
+//		this.lexema = "";
 	}
 
 }

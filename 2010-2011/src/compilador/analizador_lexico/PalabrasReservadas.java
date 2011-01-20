@@ -10,8 +10,8 @@ public class PalabrasReservadas {
 	
 	public static String TOKEN_INT = "tkint";
 	public static String TOKEN_REAL = "tkreal";
-	public static String TOKEN_IN = "tkint";
-	public static String TOKEN_OUT = "tkin";
+	public static String TOKEN_IN = "tkin";
+	public static String TOKEN_OUT = "tkout";
 	public static String TOKEN_ID = "tkid";
 	public static String TOKEN_PUNTO_COMA = "tk;";
 	public static String TOKEN_PUNTO = "tk.";
