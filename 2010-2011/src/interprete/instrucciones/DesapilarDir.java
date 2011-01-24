@@ -27,7 +27,7 @@ public class DesapilarDir extends InstruccionInterprete {
 	@Override
 	public boolean ejecutate(Interprete interprete) throws InterpreteException {
 
-		DatoPila dato = interprete.getPila().pop();
+		DatoPila dato = interprete.getPila().getLast();
 		Integer dir = this.getDato().getEntero();
 
 		if (dir < interprete.getMemoria().length && dir >= 0)

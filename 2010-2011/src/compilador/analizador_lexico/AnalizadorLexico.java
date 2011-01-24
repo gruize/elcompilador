@@ -94,6 +94,10 @@ public class AnalizadorLexico {
 		this.estado = VACIO;
 	}
 
+	public boolean isFin_programa() {
+		return fin_programa;
+	}
+
 	public String getLexema() {
 		return lexema;
 	}
@@ -163,7 +167,7 @@ public class AnalizadorLexico {
 		if (!fin_programa) {
 			while (!encontrado) {
 
-				if (programa.length() == indice + 1)
+				if (programa.length() < indice + 1)
 					fin_programa = true;
 
 				switch (estado) {
@@ -353,7 +357,7 @@ public class AnalizadorLexico {
 				case RESTA:
 
 					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_MENOR);
+					encontrado(PalabrasReservadas.TOKEN_RESTA);
 					break;
 
 				case MULTIPLICACION:
