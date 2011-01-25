@@ -61,16 +61,12 @@ public class AnalizadorSintactico {
 		return codigo;
 	}
 
-	public void setCodigo(ArrayList<InstruccionInterprete> codigo) {
-		this.codigo = codigo;
-	}
-
-	public int getDir() {
-		return dir;
-	}
-
 	public void setDir(int dir) {
 		this.dir = dir;
+	}
+
+	public boolean isError() {
+		return error;
 	}
 
 	public void iniciaSintactico() throws Exception {
@@ -94,12 +90,7 @@ public class AnalizadorSintactico {
 		if (error) {
 			System.out.println("¡¡¡COMPILADO CON ERRORES!!!");
 			System.out.println(GestorErrores.getErrores_propios().toString());
-		} else {
-			System.out.println("¡¡¡COMPILADO CON ÉXITO!!!");
-			System.out.println(this.codigo.toString());
 		}
-		System.out.println(this.codigo.toString());
-
 	}
 
 	public void declaraciones() throws Exception {
@@ -563,7 +554,8 @@ public class AnalizadorSintactico {
 			} else if (reconoce(PalabrasReservadas.TOKEN_ID)) {
 				if (GestorTS.getInstancia().existeID(lex)) {
 					tipo = GestorTS.getInstancia().getTipo(lex);
-					this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, GestorTS.getInstancia().getDir(lex))));
+					this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT,
+							GestorTS.getInstancia().getDir(lex))));
 				} else {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(), lexico
@@ -575,7 +567,6 @@ public class AnalizadorSintactico {
 						.getColumna(), "Expresion mal formada");
 			}
 		}
-		
 
 		return tipo;
 
