@@ -35,3 +35,13 @@ out -----(inT)(reAl)(iNt)b;
 @Finalizada la prueba de comentarios
 
 OUT 1;
+
+
+
+
+
+
+
+@Finalizada la prueba de comentarios
+
+OUT 1;
