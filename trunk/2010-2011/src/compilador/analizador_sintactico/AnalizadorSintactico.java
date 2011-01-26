@@ -508,8 +508,7 @@ public class AnalizadorSintactico {
 			} else if (reconoce(PalabrasReservadas.TOKEN_REAL)) {
 				if (cast(lex, new Tipo(TIPO_REAL, 1))) {
 					tipo = new Tipo(TIPO_REAL, 1);
-					codigo.add(new Apilar(new DatoPila(DatoPila.REAL, lexico
-							.getLexema())));
+					codigo.add(new Apilar(new DatoPila(DatoPila.REAL, lex)));
 				} else {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(),
