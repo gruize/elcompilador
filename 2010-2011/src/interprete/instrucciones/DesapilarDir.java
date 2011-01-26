@@ -2,20 +2,21 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class DesapilarDir extends InstruccionInterprete {
 
-	public DesapilarDir() throws Exception {
+	public DesapilarDir(){
 		super(InstruccionInterprete.CODIGO_DESAPILARDIR);
-		throw new Exception("La instrucción desapiladir necesita un parámetro");
+		GestorErrores.agregaError("La instrucción desapiladir necesita un parámetro");
 	}
 
-	public DesapilarDir(DatoPila d) throws InterpreteException {
+	public DesapilarDir(DatoPila d){
 		super(InstruccionInterprete.CODIGO_DESAPILARDIR, d);
 		if (d.getTipo() != DatoPila.INT)
-			throw new InterpreteException(
+			GestorErrores.agregaError(
 					"El parámetro de esta instrucción debe ser de tipo entero");
 	}
 
@@ -25,7 +26,7 @@ public class DesapilarDir extends InstruccionInterprete {
 	}
 
 	@Override
-	public boolean ejecutate(Interprete interprete) throws InterpreteException {
+	public boolean ejecutate(Interprete interprete){
 
 		DatoPila dato = interprete.getPila().getLast();
 		Integer dir = this.getDato().getEntero();
@@ -33,7 +34,7 @@ public class DesapilarDir extends InstruccionInterprete {
 		if (dir < interprete.getMemoria().length && dir >= 0)
 			interprete.getMemoria()[this.getDato().getEntero()] = dato;
 		else
-			throw new InterpreteException(
+			GestorErrores.agregaError(
 					"La dirección no se corresponde con una dirección válida de memoria");
 
 		return true;

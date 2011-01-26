@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Dividir extends InstruccionInterprete {
 
-	public Dividir() throws InterpreteException {
+	public Dividir(){
 		super(InstruccionInterprete.CODIGO_DIVIDE);
 	}
 
-	public Dividir(DatoPila d) throws InterpreteException {
+	public Dividir(DatoPila d){
 		super(InstruccionInterprete.CODIGO_DIVIDE);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 
 	@Override

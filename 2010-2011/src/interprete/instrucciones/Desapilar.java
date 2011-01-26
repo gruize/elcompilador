@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Desapilar extends InstruccionInterprete {
 
-    public Desapilar() throws InterpreteException {
+    public Desapilar(){
         super(InstruccionInterprete.CODIGO_DESAPILAR);
     }
 
-    public Desapilar(DatoPila d) throws InterpreteException{
+    public Desapilar(DatoPila d){
         super(InstruccionInterprete.CODIGO_DESAPILAR);
-        throw new InterpreteException("La instrucción no acepta argumentos");
+        GestorErrores.agregaError("La instrucción no acepta argumentos");
     }
 	
 	@Override

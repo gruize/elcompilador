@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Y_Logica extends InstruccionInterprete {
 
-	public Y_Logica() throws InterpreteException {
+	public Y_Logica(){
 		super(InstruccionInterprete.CODIGO_Y);
 	}
 
-	public Y_Logica(DatoPila d) throws InterpreteException {
+	public Y_Logica(DatoPila d){
 		super(InstruccionInterprete.CODIGO_Y);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 	
 	@Override
@@ -22,26 +23,26 @@ public class Y_Logica extends InstruccionInterprete {
 	}
 
 	@Override
-	public boolean ejecutate(Interprete interprete) throws InterpreteException {
+	public boolean ejecutate(Interprete interprete){
 
 		DatoPila d1 = interprete.getPila().pop();
 
 		if (d1.getTipo() != DatoPila.INT)
-			throw new InterpreteException(
+			GestorErrores.agregaError(
 					"Los operandos de esta instrucción deben ser enteros");
 
 		if (!(d1.getEntero() == 0 || d1.getEntero() == 1))
-			throw new InterpreteException(
+			GestorErrores.agregaError(
 					"Los operandos de esta instrucción deben ser 0 o 1");
 
 		DatoPila d2 = interprete.getPila().pop();
 
 		if (d2.getTipo() != DatoPila.INT)
-			throw new InterpreteException(
+			GestorErrores.agregaError(
 					"Los operandos de esta instrucción deben ser enteros");
 
 		if (!(d2.getEntero() == 0 || d2.getEntero() == 1))
-			throw new InterpreteException(
+			GestorErrores.agregaError(
 					"Los operandos de esta instrucción deben ser 0 o 1");
 
 		DatoPila resultado = new DatoPila(DatoPila.INT,

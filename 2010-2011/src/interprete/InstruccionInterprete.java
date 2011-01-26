@@ -57,8 +57,7 @@ public abstract class InstruccionInterprete {
 	 * @throws InstruccionExc
 	 *             Si ocurre un error al ejecutar la instrucción
 	 */
-	public abstract boolean ejecutate(Interprete interprete)
-			throws InterpreteException;
+	public abstract boolean ejecutate(Interprete interprete);
 
 	/**
 	 * @return the dato

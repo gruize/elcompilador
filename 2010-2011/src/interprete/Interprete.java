@@ -130,8 +130,7 @@ public class Interprete {
 	 * @throws IOException Si ocurren errores de entrada y salida
 	 * @throws InterpreteException Si el programa era invalido
 	 */
-	public void leerPrograma(File f) throws FileNotFoundException, IOException,
-			InterpreteException {
+	public void leerPrograma(File f) throws FileNotFoundException, IOException {
 		LectorPila lector = new LectorPila();
 		programa = lector.leerPrograma(f);
 		pila = new ArrayDeque<DatoPila>();
@@ -188,7 +187,7 @@ public class Interprete {
 	 *             Si no se puede leer del fichero del programa
 	 * @throws InterpreteException 
 	 */
-	public void ejecutarPrograma() throws IOException, InterpreteException {
+	public void ejecutarPrograma() throws IOException {
 		if (programa == null)
 			throw new NullPointerException("Programa no iniciado");
 		setCp(0);

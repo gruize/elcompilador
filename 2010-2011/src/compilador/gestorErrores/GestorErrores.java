@@ -52,6 +52,12 @@ public class GestorErrores {
 		getInstancia().add(temp);
 	}
 	
+	
+	public static void agregaError(String descripcion){
+		Error temp = new Error(0,0,descripcion,0);
+		getInstancia().add(temp);
+	}
+	
 	public static String escribe(){
 		String error = "No hay errores";
 		int i = 0;
@@ -60,7 +66,7 @@ public class GestorErrores {
 			error = "";
 			while(i < errores_propios.size()){
 				Error temp = errores_propios.elementAt(i);
-				error = error + "[nº " + num_error + "] [ErrorID: " + temp.getId() + " - Descripción: " + getDespcripcionError(temp.getId()) + " - Motivo: " + temp.getDescripcion() + " - [Fila: " + temp.getFila() + " - Columna: " + temp.getColumna() + "]]"+ "\n";
+				error = error + "[nï¿½ " + num_error + "] [ErrorID: " + temp.getId() + " - Descripciï¿½n: " + getDespcripcionError(temp.getId()) + " - Motivo: " + temp.getDescripcion() + " - [Fila: " + temp.getFila() + " - Columna: " + temp.getColumna() + "]]"+ "\n";
 				i++;
 				num_error++;
 			}

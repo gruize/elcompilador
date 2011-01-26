@@ -34,6 +34,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import compilador.gestorErrores.GestorErrores;
+
 public class LectorPila {
 
 	/**
@@ -45,7 +47,7 @@ public class LectorPila {
 	 * @throws LectorExc
 	 *             en el caso de que ocurra algún error al leer el dato
 	 */
-	private DatoPila leerDato(DataInputStream dis) throws InterpreteException {
+	private DatoPila leerDato(DataInputStream dis) {
 		try {
 			byte tipo = dis.readByte();
 
@@ -55,12 +57,14 @@ public class LectorPila {
 			case DatoPila.REAL:
 				return new DatoPila(DatoPila.REAL, dis.readFloat());
 			default:
-				throw new InterpreteException("Tipo de dato inválido: "
+				GestorErrores.agregaError("Tipo de dato inválido: "
 						+ Byte.toString(tipo));
 			}
 		} catch (IOException e) {
-			throw new InterpreteException(e.getMessage());
+			GestorErrores.agregaError(e.getMessage());
+			return null;
 		}
+		return null;
 
 	}
 
@@ -77,7 +81,7 @@ public class LectorPila {
 	 *             fuente (por ejemplo, apilar sin argumento)
 	 */
 	private InstruccionInterprete leerInstruccion(DataInputStream dis)
-			throws IOException, InterpreteException {
+			throws IOException {
 		byte tipoIns = dis.readByte();
 		InstruccionInterprete inst;
 		switch (tipoIns) {
@@ -163,7 +167,7 @@ public class LectorPila {
 	}
 
 	public ArrayList<InstruccionInterprete> leerPrograma(File f)
-			throws FileNotFoundException, IOException, InterpreteException {
+			throws FileNotFoundException, IOException {
 
 		ArrayList<InstruccionInterprete> ad = new ArrayList<InstruccionInterprete>();
 		DataInputStream dis = new DataInputStream(new FileInputStream(f));

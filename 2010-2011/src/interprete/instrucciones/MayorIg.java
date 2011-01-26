@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class MayorIg extends InstruccionInterprete {
 
-	public MayorIg() throws InterpreteException {
+	public MayorIg(){
 		super(InstruccionInterprete.CODIGO_MAYORIG);
 	}
 
-	public MayorIg(DatoPila d) throws InterpreteException {
+	public MayorIg(DatoPila d){
 		super(InstruccionInterprete.CODIGO_MAYORIG);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 	
 	@Override

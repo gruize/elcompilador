@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Parar extends InstruccionInterprete {
 
-	public Parar() throws InterpreteException {
+	public Parar(){
 		super(InstruccionInterprete.CODIGO_PARAR);
 	}
 
-	public Parar(DatoPila d) throws InterpreteException {
+	public Parar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_PARAR, d);
-		throw new InterpreteException(
+		GestorErrores.agregaError(
 				"La instrucción no necesita parámetros");
 	}
 	

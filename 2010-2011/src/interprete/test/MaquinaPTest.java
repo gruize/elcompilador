@@ -1,7 +1,6 @@
 package interprete.test;
 
 import interprete.Interprete;
-import interprete.InterpreteException;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,12 +19,8 @@ public class MaquinaPTest extends TestCase {
 
 		Interprete interprete = new Interprete(false);
 
-		try {
-			interprete.leerPrograma(f);
-			interprete.ejecutarPrograma();
-		} catch (InterpreteException e) {
-			e.printStackTrace();
-		}
+		interprete.leerPrograma(f);
+		interprete.ejecutarPrograma();
 
 	}
 }

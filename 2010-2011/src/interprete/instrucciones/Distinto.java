@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Distinto extends InstruccionInterprete {
 
-	public Distinto() throws InterpreteException {
+	public Distinto(){
 		super(InstruccionInterprete.CODIGO_DISTINTO);
 	}
 
-	public Distinto(DatoPila d) throws InterpreteException {
+	public Distinto(DatoPila d){
 		super(InstruccionInterprete.CODIGO_DISTINTO);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 
 	@Override

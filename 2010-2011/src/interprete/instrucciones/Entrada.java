@@ -1,20 +1,21 @@
 package interprete.instrucciones;
 
-import java.io.IOException;
-
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import java.io.IOException;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Entrada extends InstruccionInterprete {
 	public Entrada() {
 		super(InstruccionInterprete.CODIGO_ENTRADA);
 	}
 
-	public Entrada(DatoPila d) throws InterpreteException {
+	public Entrada(DatoPila d){
 		super(InstruccionInterprete.CODIGO_ENTRADA, d);
-		throw new InterpreteException("La instruccion no acepta argumentos");
+		GestorErrores.agregaError("La instruccion no acepta argumentos");
 	}
 	
 	@Override
@@ -23,10 +24,10 @@ public class Entrada extends InstruccionInterprete {
 	}
 
 	@Override
-	public boolean ejecutate(Interprete interprete) throws InterpreteException {
+	public boolean ejecutate(Interprete interprete){
 
-		String leido;
-		DatoPila datoLeido;
+		String leido = "";
+		DatoPila datoLeido = null;
 		
 		interprete.getWriter().print("Introduzca un número >>>");
 		interprete.getWriter().flush();
@@ -34,7 +35,7 @@ public class Entrada extends InstruccionInterprete {
 		try {
 			leido = interprete.getReader().readLine();
 		} catch (IOException e) {
-			throw new InterpreteException("Error al leer el dato");
+			GestorErrores.agregaError("Error al leer el dato");
 		}
 		
 		datoLeido = new DatoPila(DatoPila.REAL, Float.valueOf(leido));
