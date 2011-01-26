@@ -1,5 +1,5 @@
 real cantidad;
 int euros;
 real centimos;
-out euros = (int)(in cantidad)
+out euros = (int)(in cantidad);
 out centimos = cantidad - euros;

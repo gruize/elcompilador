@@ -290,12 +290,7 @@ public class AnalizadorSintactico {
 								.getColumna(),
 								"No se puede asignar un real a un entero");
 					}
-				} else if ((tipo1 = expresion2()) != null) {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(), "Se esperaba una variable");
 				}
-
 			}
 			// ¿Es una expresion 2?
 			else {
@@ -321,13 +316,6 @@ public class AnalizadorSintactico {
 				if ((op = op2()) != null) {
 					tipo = new Tipo(TIPO_INT, 1);
 					codigo.add(op);
-				}
-			} else {
-				if ((tipo = expresion3()) == null) {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
-							"Se esperaba una expresion de tipo 3");
 				}
 			}
 		}
@@ -438,11 +426,6 @@ public class AnalizadorSintactico {
 							} else
 								tipoRes = new Tipo(TIPO_REAL, 1);
 						}
-					} else {
-						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(), lexico
-								.getColumna(),
-								"Se esperaba una expresión de tipo 4");
 					}
 				} else {
 					error = true;
@@ -475,11 +458,6 @@ public class AnalizadorSintactico {
 								.getColumna(),
 								"El tipo de la expresión debe ser un entero");
 					}
-				} else {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
-							"Se esperaba una expresión de tipo 5");
 				}
 			} else if ((op = op5noAsoc()) != null) {
 				if ((tipo = expresion6()) != null) {
@@ -497,15 +475,10 @@ public class AnalizadorSintactico {
 							.getColumna(),
 							"Se esperaba una expresión de tipo 6");
 				}
-			} else {
-				if ((tipo = expresion6()) == null) {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
-							"Se esperaba una expresión de tipo 6");
-				}
+			} 
+			else
+				tipo = expresion6();
 			}
-		}
 
 		return tipo;
 	}
@@ -529,10 +502,9 @@ public class AnalizadorSintactico {
 							.getColumna(), "Expresion mal formada");
 				}
 			} else if (reconoce(PalabrasReservadas.TOKEN_LIT_INT)) {
-				if (cast(lex, tipo)) {
+				if (cast(lex, new Tipo(TIPO_INT, 1))) {
 					tipo = new Tipo(TIPO_INT, 1);
-					codigo.add(new Apilar(new DatoPila(DatoPila.INT, lexico
-							.getLexema())));
+					codigo.add(new Apilar(new DatoPila(DatoPila.INT, lex)));
 				} else {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(), lexico
@@ -540,8 +512,8 @@ public class AnalizadorSintactico {
 							"No se puede parsear el valor a entero");
 				}
 			} else if (reconoce(PalabrasReservadas.TOKEN_REAL)) {
-				if (cast(lex, tipo)) {
-					tipo = new Tipo(TIPO_INT, 1);
+				if (cast(lex, new Tipo(TIPO_REAL, 1))) {
+					tipo = new Tipo(TIPO_REAL, 1);
 					codigo.add(new Apilar(new DatoPila(DatoPila.REAL, lexico
 							.getLexema())));
 				} else {
@@ -560,10 +532,6 @@ public class AnalizadorSintactico {
 					GestorErrores.agregaError(11, lexico.getFila(), lexico
 							.getColumna(), "Variable no declarada");
 				}
-			} else {
-				error = true;
-				GestorErrores.agregaError(11, lexico.getFila(), lexico
-						.getColumna(), "Expresion mal formada");
 			}
 		}
 
