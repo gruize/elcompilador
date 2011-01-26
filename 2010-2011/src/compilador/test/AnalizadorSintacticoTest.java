@@ -20,11 +20,66 @@ public class AnalizadorSintacticoTest extends TestCase {
 		junit.textui.TestRunner.run(AnalizadorSintacticoTest.class);
 	}
 
-	public void test1() throws IOException {
+//	public void test1() throws IOException {
+//
+//		String programa = "";
+//		BufferedReader br = new BufferedReader(new FileReader(new File(
+//				"test/test1/code.txt")));
+//		String linea = br.readLine();
+//		if (linea != null) {
+//			programa += linea;
+//			linea = br.readLine();
+//			while (linea != null) {
+//				// Aquí lo que tengamos que hacer con la línea puede ser esto
+//				programa += System.getProperty("line.separator");
+//				programa += linea;
+//				linea = br.readLine();
+//			}
+//		}
+//
+//		System.out.println();
+//		System.out.println();
+//		System.out.println("TEST 1");
+//		System.out.println();
+//		System.out.println("----código:");
+//		System.out.println();
+//		System.out.println(programa);
+//		System.out.println();
+//
+//		AnalizadorLexico lexico = new AnalizadorLexico(programa);
+//		AnalizadorSintactico sintactico = new AnalizadorSintactico(lexico);
+//
+//		try {
+//			sintactico.iniciaSintactico();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+////		assertEquals(test1Result, sintactico.getCodigo().toString());
+////		assertEquals(false, sintactico.isError());
+//
+//		System.out.println();
+//		System.out.println("----código pila generado:");
+//		System.out.println();
+//		System.out.println(sintactico.getCodigo().toString());
+//
+//		EscritorPila ep = new EscritorPila();
+//		File f = new File("test/test1/codigoP.bc");
+//		if(!f.exists()){
+//			f.createNewFile();
+//		}
+//		try {
+//			ep.escribirPrograma(sintactico.getCodigo(), f);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public void test4() throws IOException {
 
 		String programa = "";
 		BufferedReader br = new BufferedReader(new FileReader(new File(
-				"test/test1/code.txt")));
+				"test/test4/code.txt")));
 		String linea = br.readLine();
 		if (linea != null) {
 			programa += linea;
@@ -39,7 +94,7 @@ public class AnalizadorSintacticoTest extends TestCase {
 
 		System.out.println();
 		System.out.println();
-		System.out.println("TEST 1");
+		System.out.println("TEST 4");
 		System.out.println();
 		System.out.println("----código:");
 		System.out.println();
@@ -64,7 +119,7 @@ public class AnalizadorSintacticoTest extends TestCase {
 		System.out.println(sintactico.getCodigo().toString());
 
 		EscritorPila ep = new EscritorPila();
-		File f = new File("test/test1/codigoP.bc");
+		File f = new File("test/test4/codigoP.bc");
 		if(!f.exists()){
 			f.createNewFile();
 		}
