@@ -18,7 +18,7 @@ public class MaquinaPTest extends TestCase {
 	public void test1() throws IOException {
 		File f = new File("test/test1/codigoP.bc");
 
-		Interprete interprete = new Interprete(true);
+		Interprete interprete = new Interprete(false);
 
 		try {
 			interprete.leerPrograma(f);

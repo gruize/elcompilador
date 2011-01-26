@@ -1,0 +1,18 @@
+int a;
+int b;
+real c;
+int d;
+real e;
+
+a = 1;
+b = 1;
+in c;
+in d;
+out a || b;
+out a * ( b/2);
+e = 0;
+out e && a;
+out !a;
+out e;
+
+
