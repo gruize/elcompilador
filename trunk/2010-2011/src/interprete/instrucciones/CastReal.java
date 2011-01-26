@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class CastReal extends InstruccionInterprete {
 
-	public CastReal() throws InterpreteException {
+	public CastReal(){
 		super(InstruccionInterprete.CODIGO_CASTREAL);
 	}
 
-	public CastReal(DatoPila d) throws InterpreteException {
+	public CastReal(DatoPila d){
 		super(InstruccionInterprete.CODIGO_CASTREAL);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 
 	@Override

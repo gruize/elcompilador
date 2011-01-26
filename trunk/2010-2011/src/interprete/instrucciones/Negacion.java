@@ -2,20 +2,21 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
 
 import java.util.ArrayDeque;
 
+import compilador.gestorErrores.GestorErrores;
+
 public class Negacion extends InstruccionInterprete {
 
-	public Negacion() throws InterpreteException {
+	public Negacion(){
 		super(InstruccionInterprete.CODIGO_NEGACION);
 	}
 
-	public Negacion(DatoPila d) throws InterpreteException {
+	public Negacion(DatoPila d){
 		super(InstruccionInterprete.CODIGO_NEGACION);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 
 	@Override
@@ -40,17 +41,17 @@ public class Negacion extends InstruccionInterprete {
 	 * @return siempre true (nunca modifica el cp del interprete)
 	 * @throws InstruccionExc si encuentra tipos de datos no booleanos
 	 */
-	public boolean ejecutate(Interprete interprete) throws InterpreteException {
+	public boolean ejecutate(Interprete interprete){
 		ArrayDeque<DatoPila> pila = interprete.getPila();
 		DatoPila d = pila.pop();
-		DatoPila res;
+		DatoPila res = null;
 
 		switch (d.getTipo()) {
 		case DatoPila.INT:
 			res = new DatoPila(DatoPila.INT, (d.getValor().equals(1) ? 0 : 1));
 			break;
 		default:
-			throw new InterpreteException(this, "Tipo inválido ("
+			GestorErrores.agregaError("Tipo inválido ("
 					+ d.toString() + ")");
 		}
 		pila.addFirst(res);

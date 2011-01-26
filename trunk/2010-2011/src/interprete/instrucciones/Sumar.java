@@ -1,19 +1,20 @@
 package interprete.instrucciones;
 
+import compilador.gestorErrores.GestorErrores;
+
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
 
 public class Sumar extends InstruccionInterprete {
 
-	public Sumar() throws InterpreteException {
+	public Sumar(){
 		super(InstruccionInterprete.CODIGO_SUMA);
 	}
 
-	public Sumar(DatoPila d) throws InterpreteException {
+	public Sumar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_SUMA);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 	
 	@Override

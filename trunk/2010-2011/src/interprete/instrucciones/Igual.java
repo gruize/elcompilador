@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Igual extends InstruccionInterprete {
 
-	public Igual() throws InterpreteException {
+	public Igual(){
 		super(InstruccionInterprete.CODIGO_IGUAL);
 	}
 
-	public Igual(DatoPila d) throws InterpreteException {
+	public Igual(DatoPila d){
 		super(InstruccionInterprete.CODIGO_IGUAL);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 	
 	@Override

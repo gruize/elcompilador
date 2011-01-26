@@ -2,21 +2,21 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class ApilarDir extends InstruccionInterprete {
 
-	public ApilarDir() throws Exception {
+	public ApilarDir(){
 		super(InstruccionInterprete.CODIGO_APILARDIR);
-		throw new Exception("La instrucción apiladir necesita un parámetro");
+		GestorErrores.agregaError("La instrucción apiladir necesita un parámetro");
 	}
 
-	public ApilarDir(DatoPila d) throws InterpreteException {
+	public ApilarDir(DatoPila d){
 		super(InstruccionInterprete.CODIGO_APILARDIR, d);
 		if (d.getTipo() != DatoPila.INT)
-			throw new InterpreteException(
-					"El parámetro de esta instrucción debe ser de tipo entero");
+			GestorErrores.agregaError("El parámetro de esta instrucción debe ser de tipo entero");
 	}
 
 	@Override

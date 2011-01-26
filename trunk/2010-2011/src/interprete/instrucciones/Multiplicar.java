@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Multiplicar extends InstruccionInterprete {
 
-	public Multiplicar() throws InterpreteException {
+	public Multiplicar(){
 		super(InstruccionInterprete.CODIGO_MULTIPLICA);
 	}
 
-	public Multiplicar(DatoPila d) throws InterpreteException {
+	public Multiplicar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_MULTIPLICA);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 
 	@Override

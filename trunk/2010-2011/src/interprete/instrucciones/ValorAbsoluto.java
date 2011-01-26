@@ -2,18 +2,17 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
 
 public class ValorAbsoluto extends InstruccionInterprete {
 
 	public byte tipo;
 
-	public ValorAbsoluto() throws InterpreteException {
+	public ValorAbsoluto(){
 		super(InstruccionInterprete.CODIGO_ABS);
 	}
 
-	public ValorAbsoluto(DatoPila d) throws InterpreteException {
+	public ValorAbsoluto(DatoPila d){
 		super(InstruccionInterprete.CODIGO_ABS, d);
 	}
 

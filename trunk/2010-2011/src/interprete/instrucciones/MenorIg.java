@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class MenorIg extends InstruccionInterprete {
 
-	public MenorIg() throws InterpreteException {
+	public MenorIg(){
 		super(InstruccionInterprete.CODIGO_MENORIG);
 	}
 
-	public MenorIg(DatoPila d) throws InterpreteException {
+	public MenorIg(DatoPila d){
 		super(InstruccionInterprete.CODIGO_MENORIG);
-		throw new InterpreteException("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instrucción no acepta argumentos");
 	}
 	
 	@Override

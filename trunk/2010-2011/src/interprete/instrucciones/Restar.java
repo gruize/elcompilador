@@ -2,18 +2,19 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Restar extends InstruccionInterprete {
 
-	public Restar() throws InterpreteException {
+	public Restar(){
 		super(InstruccionInterprete.CODIGO_RESTA);
 	}
 
-	public Restar(DatoPila d) throws InterpreteException {
+	public Restar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_RESTA);
-		throw new InterpreteException("La instrucción no admite operadores");
+		GestorErrores.agregaError("La instrucción no admite operadores");
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package compilador.analizador_sintactico;
 
 import interprete.InstruccionInterprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
 import interprete.instrucciones.Apilar;
 import interprete.instrucciones.ApilarDir;
@@ -533,7 +532,7 @@ public class AnalizadorSintactico {
 		return reconoce(PalabrasReservadas.TOKEN_ASIGNACION);
 	}
 
-	private InstruccionInterprete op2() throws InterpreteException {
+	private InstruccionInterprete op2() {
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_MENOR))
 				return new Menor();
@@ -553,7 +552,7 @@ public class AnalizadorSintactico {
 		return null;
 	}
 
-	private InstruccionInterprete op3() throws InterpreteException {
+	private InstruccionInterprete op3() {
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_O_LOGICA))
 				return new O_Logica();
@@ -567,7 +566,7 @@ public class AnalizadorSintactico {
 		return null;
 	}
 
-	private InstruccionInterprete op4() throws InterpreteException {
+	private InstruccionInterprete op4() {
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_MULT))
 				return new Multiplicar();
@@ -583,7 +582,7 @@ public class AnalizadorSintactico {
 		return null;
 	}
 
-	private InstruccionInterprete op5asoc() throws InterpreteException {
+	private InstruccionInterprete op5asoc() {
 
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_RESTA))
@@ -596,7 +595,7 @@ public class AnalizadorSintactico {
 		return null;
 	}
 
-	private InstruccionInterprete op5noAsoc() throws InterpreteException {
+	private InstruccionInterprete op5noAsoc() {
 
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_CAST_INT))

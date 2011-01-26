@@ -7,19 +7,20 @@ package interprete.instrucciones;
 
 import interprete.InstruccionInterprete;
 import interprete.Interprete;
-import interprete.InterpreteException;
 import interprete.datoPila.DatoPila;
+
+import compilador.gestorErrores.GestorErrores;
 
 public class Salida extends InstruccionInterprete{
     public byte tipo;
 
-    public Salida() throws InterpreteException {
+    public Salida(){
         super(InstruccionInterprete.CODIGO_SALIDA);
     }
 
-    public Salida(DatoPila d) throws InterpreteException {
+    public Salida(DatoPila d){
         super(InstruccionInterprete.CODIGO_SALIDA, d);
-        throw new InterpreteException("La instrucción no acepta argumentos");
+        GestorErrores.agregaError("La instrucción no acepta argumentos");
     }
     
     @Override
@@ -28,7 +29,7 @@ public class Salida extends InstruccionInterprete{
     }
 
     @Override
-    public boolean ejecutate(Interprete interprete) throws InterpreteException {
+    public boolean ejecutate(Interprete interprete){
         	
         	DatoPila d1 = interprete.getPila().pop();
         	
