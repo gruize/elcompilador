@@ -444,8 +444,8 @@ public class AnalizadorSintactico {
 
 				if ((tipo = expresion5()) != null) {
 					if (!(op instanceof Negacion)
-							|| !(tipo.getTipo().equals(TIPO_REAL))) {
-						codigo.add(op);
+							|| !(tipo.getTipo().equals(TIPO_REAL))) {	
+						codigo.add(new CambioSigno());
 					} else {
 						error = true;
 						GestorErrores.agregaError(11, lexico.getFila(),
