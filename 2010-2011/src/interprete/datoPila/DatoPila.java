@@ -29,7 +29,12 @@ public class DatoPila {
 	}
 
 	public Integer getEntero() {
-		return Integer.valueOf(valor.toString());
+		try {
+ 			return Integer.valueOf(valor.toString());
+		}
+		catch (Exception ex) {
+			return Float.valueOf(valor.toString()).intValue();
+		}
 	}
 
 	public Float getReal() {

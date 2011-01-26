@@ -27,18 +27,33 @@ public class Practica {
 				programa += linea;
 				linea = br.readLine();
 				while (linea != null) {
-					// Aquí lo que tengamos que hacer con la línea puede ser
-					// esto
 					programa += System.getProperty("line.separator");
 					programa += linea;
 					linea = br.readLine();
 				}
 			}
+			
+			System.out.println();
+			System.out.println(programa);
+			System.out.println();
+			System.out.print("¿Desea ejecutar el programa en modo depuración? (s/n)");
+			System.out.println();
+			
+			String sn = in.readLine();
+			boolean depuracion = (sn.equals("s"));
 
 			AnalizadorLexico lexico = new AnalizadorLexico(programa);
 			AnalizadorSintactico sintactico = new AnalizadorSintactico(lexico);
 
 			sintactico.iniciaSintactico();
+			System.out.println();
+			System.out.println();
+			if (depuracion) {
+				System.out.println("INSTRUCCIONES LEIDAS POR EL ANALIZADOR SINTÁCTICO: ");
+				System.out.print(sintactico.getCodigo().toString());
+			}
+			System.out.println();
+			System.out.println();
 
 			EscritorPila ep = new EscritorPila();
 			File f = new File(input.getParent() + "\\codigoP.bc");
@@ -47,7 +62,7 @@ public class Practica {
 			}
 			ep.escribirPrograma(sintactico.getCodigo(), f);
 
-			Interprete interprete = new Interprete(true);
+			Interprete interprete = new Interprete(depuracion);
 
 			interprete.leerPrograma(f);
 			interprete.ejecutarPrograma();
