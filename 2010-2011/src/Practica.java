@@ -1,12 +1,9 @@
 import interprete.EscritorPila;
 import interprete.Interprete;
-import interprete.InterpreteException;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import compilador.analizador_lexico.AnalizadorLexico;
@@ -44,7 +41,7 @@ public class Practica {
 			sintactico.iniciaSintactico();
 
 			EscritorPila ep = new EscritorPila();
-			File f = new File(input.getParent() + "codigoP.bc");
+			File f = new File(input.getParent() + "\\codigoP.bc");
 			if (!f.exists()) {
 				f.createNewFile();
 			}
