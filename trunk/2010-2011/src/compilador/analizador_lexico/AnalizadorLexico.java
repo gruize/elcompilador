@@ -195,6 +195,9 @@ public class AnalizadorLexico {
 							case '\t':
 								transitaSinLexema(VACIO);
 								break;
+							case '\r':
+								transitaSinLexema(VACIO);
+								break;
 							case ';':
 								transita(PUNTO_Y_COMA);
 								break;
@@ -239,6 +242,9 @@ public class AnalizadorLexico {
 								break;
 							case '&':
 								transita(AMPERSAND);
+								break;
+							case '!':
+								transita(NEGACION);
 								break;
 							default:
 								GestorErrores.agregaError(2, fila, columna,
@@ -845,7 +851,6 @@ public class AnalizadorLexico {
 			next = programa.charAt(indice);
 		else
 			fin_programa = true;
-
 		return next;
 	}
 
