@@ -809,8 +809,9 @@ public class AnalizadorLexico {
 	 *         categoría léxica "letra"
 	 */
 	public boolean sigLetra() {
-		return (next_char >= 'a' && next_char <= 'z')
-				|| (next_char >= 'A' && next_char <= 'Z');
+		if (next_char >= 'A' && next_char <= 'Z')
+			next_char = Character.toLowerCase(next_char);
+		return (next_char >= 'a' && next_char <= 'z');
 	}
 
 	/**
