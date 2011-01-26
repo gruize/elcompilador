@@ -1,0 +1,5 @@
+real cantidad;
+int euros;
+real centimos;
+out euros = (in cantidad);
+out euros = cantidad - euros;
