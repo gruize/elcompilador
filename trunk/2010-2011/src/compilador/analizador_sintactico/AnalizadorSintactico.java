@@ -308,8 +308,10 @@ public class AnalizadorSintactico {
 		if (!error) {
 			if ((tipo = expresion3()) != null) {
 				if ((op = op2()) != null) {
-					tipo = new Tipo(TIPO_INT, 1);
-					codigo.add(op);
+					if ((tipo = expresion3()) != null) {
+						tipo = new Tipo(TIPO_INT, 1);
+						codigo.add(op);
+					}
 				}
 			}
 		}
@@ -344,9 +346,9 @@ public class AnalizadorSintactico {
 			if ((op = op3()) != null) {
 				if ((tipo2 = expresion4()) != null) {
 					if ((tipo3 = expresion3RE(tipo2)) != null) {
-						if ((op instanceof O_Logica) && (!tipo2
-								.equals(TIPO_INT) || !tipo1.equals(TIPO_INT))) {
-							codigo.add(op);
+						if ((op instanceof O_Logica)
+								&& (!tipo2.equals(TIPO_INT) || !tipo1
+										.equals(TIPO_INT))) {
 							if (op instanceof O_Logica)
 								tipoRes = new Tipo(TIPO_INT, 1);
 							else if (tipo1.equals(TIPO_INT)
@@ -354,13 +356,8 @@ public class AnalizadorSintactico {
 								tipoRes = new Tipo(TIPO_INT, 1);
 							else
 								tipoRes = new Tipo(TIPO_REAL, 1);
-						} else {
-							error = true;
-							GestorErrores
-									.agregaError(11, lexico.getFila(),
-											lexico.getColumna(),
-											"El tipo de uno de los operadores es incorrecto");
 						}
+						codigo.add(op);
 					} else {
 						error = true;
 						GestorErrores.agregaError(11, lexico.getFila(),
@@ -409,17 +406,17 @@ public class AnalizadorSintactico {
 			if ((op = op4()) != null) {
 				if ((tipo2 = expresion5()) != null) {
 					if ((tipo3 = expresion4RE(tipo2)) != null) {
-//						if (tipo1.getTipo().equals(TIPO_INT)
-//								&& tipo2.getTipo().equals(TIPO_INT)) {
-							codigo.add(op);
-							if (op instanceof Y_Logica || op instanceof Modulo)
-								tipoRes = new Tipo(TIPO_INT, 1);
-							else if (tipo1.equals(TIPO_INT)
-									&& tipo3.equals(TIPO_INT)) {
-								tipoRes = new Tipo(TIPO_INT, 1);
-							} else
-								tipoRes = tipo3;
-//						}
+						// if (tipo1.getTipo().equals(TIPO_INT)
+						// && tipo2.getTipo().equals(TIPO_INT)) {
+						codigo.add(op);
+						if (op instanceof Y_Logica || op instanceof Modulo)
+							tipoRes = new Tipo(TIPO_INT, 1);
+						else if (tipo1.equals(TIPO_INT)
+								&& tipo3.equals(TIPO_INT)) {
+							tipoRes = new Tipo(TIPO_INT, 1);
+						} else
+							tipoRes = tipo3;
+						// }
 					}
 				} else {
 					error = true;
@@ -444,7 +441,7 @@ public class AnalizadorSintactico {
 
 				if ((tipo = expresion5()) != null) {
 					if (!(op instanceof Negacion)
-							|| !(tipo.getTipo().equals(TIPO_REAL))) {	
+							|| !(tipo.getTipo().equals(TIPO_REAL))) {
 						codigo.add(new CambioSigno());
 					} else {
 						error = true;
