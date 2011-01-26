@@ -30,7 +30,7 @@ public class Y_Logica extends InstruccionInterprete {
 			throw new InterpreteException(
 					"Los operandos de esta instrucción deben ser enteros");
 
-		if (d1.getEntero() == 0 || d1.getEntero() == 1)
+		if (!(d1.getEntero() == 0 || d1.getEntero() == 1))
 			throw new InterpreteException(
 					"Los operandos de esta instrucción deben ser 0 o 1");
 
@@ -40,7 +40,7 @@ public class Y_Logica extends InstruccionInterprete {
 			throw new InterpreteException(
 					"Los operandos de esta instrucción deben ser enteros");
 
-		if (d2.getEntero() == 0 || d2.getEntero() == 1)
+		if (!(d2.getEntero() == 0 || d2.getEntero() == 1))
 			throw new InterpreteException(
 					"Los operandos de esta instrucción deben ser 0 o 1");
 
