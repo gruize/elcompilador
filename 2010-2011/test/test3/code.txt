@@ -1,5 +1,16 @@
-real cantidad;
-int euros;
-real centimos;
-out euros = (int)(in cantidad);
-out centimos = cantidad - euros;
+iNt pEpe;
+rEal juan;
+real auX;
+
+out (3/juan/pePe/2)%2;
+iN pepE;
+in jUan;
+out pepe/juan;
+ouT pepe || (int)jUaN;
+aux = juan;
+pepe = juan;
+juan = (int)aux;
+out pepe;
+out juan;
+out aux;
+
