@@ -1,0 +1,3 @@
+in euros;
+euros = 5;
+out euros;
