@@ -14,5 +14,3 @@ e = 0;
 out e && a;
 out !a;
 out e;
-
-
