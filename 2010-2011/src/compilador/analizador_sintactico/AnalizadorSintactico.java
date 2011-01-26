@@ -123,8 +123,7 @@ public class AnalizadorSintactico {
 
 						// Si la variable no existe, la añado a la TS
 						if (!GestorTS.getInstancia().existeID(lex)) {
-							dir++;
-							GestorTS.getInstancia().annadeID(lex, dir, tipo);
+							dir = GestorTS.getInstancia().annadeID(lex, dir, tipo);
 						} else {
 							error = true;
 							GestorErrores.agregaError(11, lexico.getFila(),
@@ -247,6 +246,7 @@ public class AnalizadorSintactico {
 				codigo.add(new Entrada());
 				codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT, GestorTS
 						.getInstancia().getDir(lex))));
+				lexico.scanner();
 				return GestorTS.getInstancia().getTipo(lex);
 			} else if (reconoce(PalabrasReservadas.TOKEN_OUT)) {
 				Tipo tipo = expresion1();
@@ -518,7 +518,6 @@ public class AnalizadorSintactico {
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
 				if ((tipo = expresion()) != null) {
-					lexico.scanner();
 					if (!reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
 						error = true;
 						GestorErrores.agregaError(11, lexico.getFila(), lexico
