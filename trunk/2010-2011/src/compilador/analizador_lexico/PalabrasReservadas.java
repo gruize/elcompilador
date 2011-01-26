@@ -31,8 +31,6 @@ public class PalabrasReservadas {
 	public static String TOKEN_BARRA = "tk|";
 	public static String TOKEN_PARENTESIS_AP = "tk(";
 	public static String TOKEN_PARENTESIS_CE = "tk)";
-	public static String TOKEN_LIT_INT = "tkLitInt";
-	public static String TOKEN_LIT_REAL = "tkLitReal";
 	public static String TOKEN_CAST_INT = "tkcastint";
 	public static String TOKEN_CAST_REAL = "tkcastreal";
 	public static String TOKEN_Y_LOGICA = "tk&&";

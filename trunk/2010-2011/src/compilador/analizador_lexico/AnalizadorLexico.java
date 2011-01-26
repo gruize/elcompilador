@@ -33,6 +33,7 @@ public class AnalizadorLexico {
 	private static final int COMENTARIO = 26;
 	private static final int PUNTO_Y_COMA = 24;
 	private static final int LIT_INT = 25;
+	private static final int LIT_CERO = 48;
 	private static final int LIT_REAL = 27;
 	private static final int LIT_REAL1 = 28;
 	private static final int LIT_REAL2 = 29;
@@ -146,6 +147,62 @@ public class AnalizadorLexico {
 		this.indice = indice;
 	}
 
+	public PalabrasReservadas getPalabrasReserva() {
+		return palabrasReserva;
+	}
+
+	public void setPalabrasReserva(PalabrasReservadas palabrasReserva) {
+		this.palabrasReserva = palabrasReserva;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public char getNext_char() {
+		return next_char;
+	}
+
+	public void setNext_char(char next_char) {
+		this.next_char = next_char;
+	}
+
+	public int getParentesis_indice() {
+		return parentesis_indice;
+	}
+
+	public void setParentesis_indice(int parentesis_indice) {
+		this.parentesis_indice = parentesis_indice;
+	}
+
+	public int getParentesis_fila() {
+		return parentesis_fila;
+	}
+
+	public void setParentesis_fila(int parentesis_fila) {
+		this.parentesis_fila = parentesis_fila;
+	}
+
+	public int getParentesis_columna() {
+		return parentesis_columna;
+	}
+
+	public void setParentesis_columna(int parentesis_columna) {
+		this.parentesis_columna = parentesis_columna;
+	}
+
+	public void setFin_programa(boolean fin_programa) {
+		this.fin_programa = fin_programa;
+	}
+
+	public void setTokens(Vector<DatosToken> tokens) {
+		this.tokens = tokens;
+	}
+
 	/**
 	 * Devuelve un vector con los componentes léxicos procesados
 	 * 
@@ -167,7 +224,7 @@ public class AnalizadorLexico {
 		if (!fin_programa) {
 			while (!encontrado) {
 
-				if (programa.length() < indice + 1)
+				if (programa.length() < indice)
 					fin_programa = true;
 
 				switch (estado) {
@@ -176,7 +233,7 @@ public class AnalizadorLexico {
 
 					if (sigDigito()) {
 						if (next_char == '0')
-							transita(LIT_REAL);
+							transita(LIT_CERO);
 						else
 							transita(LIT_INT);
 					} else {
@@ -458,7 +515,7 @@ public class AnalizadorLexico {
 							break;
 						default:
 							encontrado = true;
-							encontrado(PalabrasReservadas.TOKEN_LIT_INT);
+							encontrado(PalabrasReservadas.TOKEN_INT);
 							break;
 						}
 					}
@@ -472,10 +529,7 @@ public class AnalizadorLexico {
 						else
 							transita(LIT_REAL3);
 					} else {
-						GestorErrores.agregaError(6, fila, columna, next_char
-								+ "");
-						transitaSinLexema(VACIO);
-						this.lexema = "";
+						transita(LIT_REALF);
 					}
 					break;
 
@@ -492,8 +546,8 @@ public class AnalizadorLexico {
 							transita(LIT_REAL4);
 						} else {
 							encontrado = true;
-							this.token_actual = PalabrasReservadas.TOKEN_LIT_REAL;
-							encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+							this.token_actual = PalabrasReservadas.TOKEN_REAL;
+							encontrado(PalabrasReservadas.TOKEN_REAL);
 						}
 					}
 					break;
@@ -525,7 +579,7 @@ public class AnalizadorLexico {
 							transita(LIT_REAL4);
 						else {
 							encontrado = true;
-							encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+							encontrado(PalabrasReservadas.TOKEN_REAL);
 						}
 					}
 					break;
@@ -558,7 +612,7 @@ public class AnalizadorLexico {
 						this.lexema = "";
 					} else {
 						encontrado = true;
-						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+						encontrado(PalabrasReservadas.TOKEN_REAL);
 					}
 					break;
 
@@ -601,7 +655,20 @@ public class AnalizadorLexico {
 							transita(LIT_REALF);
 					} else {
 						encontrado = true;
-						encontrado(PalabrasReservadas.TOKEN_LIT_REAL);
+						encontrado(PalabrasReservadas.TOKEN_REAL);
+					}
+					break;
+					
+				case LIT_CERO:
+
+					if (sigDigito()) {
+						if (next_char == '.')
+							transita(LIT_REAL);
+						else
+							transita(LIT_INT);
+					} else {
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_REAL);
 					}
 					break;
 
@@ -866,7 +933,7 @@ public class AnalizadorLexico {
 		this.token_actual = token;
 		this.tokens.add(new DatosToken(token_actual, fila, columna, indice));
 		this.estado = VACIO;
-//		this.lexema = "";
+		// this.lexema = "";
 	}
 
 }

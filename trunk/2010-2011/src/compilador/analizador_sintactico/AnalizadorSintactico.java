@@ -123,7 +123,8 @@ public class AnalizadorSintactico {
 
 						// Si la variable no existe, la añado a la TS
 						if (!GestorTS.getInstancia().existeID(lex)) {
-							dir = GestorTS.getInstancia().annadeID(lex, dir, tipo);
+							dir = GestorTS.getInstancia().annadeID(lex, dir,
+									tipo);
 						} else {
 							error = true;
 							GestorErrores.agregaError(11, lexico.getFila(),
@@ -132,14 +133,17 @@ public class AnalizadorSintactico {
 						}
 					} else {
 						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(), lexico
-								.getColumna(), "Falta un punto y coma");
+						GestorErrores.agregaError(11, lexico.getFila(),
+								lexico.getColumna(), "Falta un punto y coma");
 					}
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(), "Se esperaba un tkid en lugar de"
-							+ lexico.getToken_actual());
+					GestorErrores.agregaError(
+							11,
+							lexico.getFila(),
+							lexico.getColumna(),
+							"Se esperaba un tkid en lugar de"
+									+ lexico.getToken_actual());
 				}
 			} else {
 				// Si no reconozco una declaración, o ya he acabado las
@@ -148,8 +152,8 @@ public class AnalizadorSintactico {
 					finDecs = true;
 				else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(), "Se esperaba un tipo");
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(), "Se esperaba un tipo");
 				}
 			}
 		}
@@ -219,15 +223,15 @@ public class AnalizadorSintactico {
 					ok = true;
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(), "Falta un punto y coma");
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(), "Falta un punto y coma");
 				}
 			} else if (lexico.isFin_programa()) {
 				ok = true;
 			} else {
 				error = true;
-				GestorErrores.agregaError(11, lexico.getFila(), lexico
-						.getColumna(), "Se esperaba una expresion");
+				GestorErrores.agregaError(11, lexico.getFila(),
+						lexico.getColumna(), "Se esperaba una expresion");
 			}
 
 		}
@@ -240,7 +244,6 @@ public class AnalizadorSintactico {
 		if (!error) {
 
 			if (reconoce(PalabrasReservadas.TOKEN_IN)) {
-				// FIXME Esto seguro que está mal
 				String lex = lexico.getLexema();
 				error = error || !GestorTS.getInstancia().existeID(lex);
 				codigo.add(new Entrada());
@@ -265,41 +268,32 @@ public class AnalizadorSintactico {
 
 		if (!error) {
 
-			if (reconoce(PalabrasReservadas.TOKEN_ID)) {
+			if (reconoceAsignacion()) {
 
 				tipo1 = GestorTS.getInstancia().getTipo(lex);
 
-				if (op1()) {
-					// reconoce(PalabrasReservadas.TOKEN_ID);
-					Tipo tipo2 = expresion2();
-					if (!(tipo1.getTipo().equals(TIPO_INT) && tipo2.getTipo()
-							.equals(TIPO_REAL))) {
-						if (tipo1.getTipo().equals(TIPO_REAL)) {
-							codigo.add(new CastReal());
-							codigo.add(new DesapilarDir(new DatoPila(
-									DatoPila.INT, GestorTS.getInstancia()
-											.getDir(lex))));
-						} else {
-							codigo.add(new DesapilarDir(new DatoPila(
-									DatoPila.INT, GestorTS.getInstancia()
-											.getDir(lex))));
-						}
+				// reconoce(PalabrasReservadas.TOKEN_ID);
+				Tipo tipo2 = expresion2();
+				if (!(tipo1.getTipo().equals(TIPO_INT) && tipo2.getTipo()
+						.equals(TIPO_REAL))) {
+					if (tipo1.getTipo().equals(TIPO_REAL)) {
+						codigo.add(new CastReal());
+						codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT,
+								GestorTS.getInstancia().getDir(lex))));
 					} else {
-						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(), lexico
-								.getColumna(),
-								"No se puede asignar un real a un entero");
+						codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT,
+								GestorTS.getInstancia().getDir(lex))));
 					}
+				} else {
+					error = true;
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
+							"No se puede asignar un real a un entero");
 				}
 			}
 			// ¿Es una expresion 2?
 			else {
-				if ((tipo1 = expresion2()) == null) {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
-							"Se esperaba una expresion de tipo 2");
-				}
+				tipo1 = expresion2();
 			}
 		}
 
@@ -332,8 +326,8 @@ public class AnalizadorSintactico {
 			} else {
 				error = true;
 				// FIXME
-				GestorErrores.agregaError(11, lexico.getFila(), lexico
-						.getColumna(), "Error error");
+				GestorErrores.agregaError(11, lexico.getFila(),
+						lexico.getColumna(), "Error error");
 			}
 		}
 		return tipo;
@@ -350,8 +344,8 @@ public class AnalizadorSintactico {
 			if ((op = op3()) != null) {
 				if ((tipo2 = expresion4()) != null) {
 					if ((tipo3 = expresion3RE(tipo2)) != null) {
-						if (!(op instanceof O_Logica && (!tipo2
-								.equals(TIPO_INT) || !tipo1.equals(TIPO_INT)))) {
+						if ((op instanceof O_Logica) && (!tipo2
+								.equals(TIPO_INT) || !tipo1.equals(TIPO_INT))) {
 							codigo.add(op);
 							if (op instanceof O_Logica)
 								tipoRes = new Tipo(TIPO_INT, 1);
@@ -363,20 +357,20 @@ public class AnalizadorSintactico {
 						} else {
 							error = true;
 							GestorErrores
-									.agregaError(11, lexico.getFila(), lexico
-											.getColumna(),
-											"El tipo de uno de los errores es incorrecto");
+									.agregaError(11, lexico.getFila(),
+											lexico.getColumna(),
+											"El tipo de uno de los operadores es incorrecto");
 						}
 					} else {
 						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(), lexico
-								.getColumna(),
+						GestorErrores.agregaError(11, lexico.getFila(),
+								lexico.getColumna(),
 								"Se esperaba una expresión de tipo 4");
 					}
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
 							"Se esperaba una expresión de tipo 4");
 				}
 			} else
@@ -397,8 +391,8 @@ public class AnalizadorSintactico {
 			} else {
 				error = true;
 				// FIXME
-				GestorErrores.agregaError(11, lexico.getFila(), lexico
-						.getColumna(), "Error error");
+				GestorErrores.agregaError(11, lexico.getFila(),
+						lexico.getColumna(), "Error error");
 			}
 		}
 
@@ -415,8 +409,8 @@ public class AnalizadorSintactico {
 			if ((op = op4()) != null) {
 				if ((tipo2 = expresion5()) != null) {
 					if ((tipo3 = expresion4RE(tipo2)) != null) {
-						if (tipo1.getTipo().equals(TIPO_INT)
-								&& tipo2.getTipo().equals(TIPO_INT)) {
+//						if (tipo1.getTipo().equals(TIPO_INT)
+//								&& tipo2.getTipo().equals(TIPO_INT)) {
 							codigo.add(op);
 							if (op instanceof Y_Logica || op instanceof Modulo)
 								tipoRes = new Tipo(TIPO_INT, 1);
@@ -424,13 +418,13 @@ public class AnalizadorSintactico {
 									&& tipo3.equals(TIPO_INT)) {
 								tipoRes = new Tipo(TIPO_INT, 1);
 							} else
-								tipoRes = new Tipo(TIPO_REAL, 1);
-						}
+								tipoRes = tipo3;
+//						}
 					}
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
 							"Se esperaba una expresión de tipo 5");
 				}
 			} else
@@ -454,8 +448,8 @@ public class AnalizadorSintactico {
 						codigo.add(op);
 					} else {
 						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(), lexico
-								.getColumna(),
+						GestorErrores.agregaError(11, lexico.getFila(),
+								lexico.getColumna(),
 								"El tipo de la expresión debe ser un entero");
 					}
 				}
@@ -471,14 +465,13 @@ public class AnalizadorSintactico {
 
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
 							"Se esperaba una expresión de tipo 6");
 				}
-			} 
-			else
+			} else
 				tipo = expresion6();
-			}
+		}
 
 		return tipo;
 	}
@@ -493,22 +486,23 @@ public class AnalizadorSintactico {
 				if ((tipo = expresion()) != null) {
 					if (!reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
 						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(), lexico
-								.getColumna(), "Falta paréntesis de cierre");
+						GestorErrores.agregaError(11, lexico.getFila(),
+								lexico.getColumna(),
+								"Falta paréntesis de cierre");
 					}
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(), "Expresion mal formada");
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(), "Expresion mal formada");
 				}
-			} else if (reconoce(PalabrasReservadas.TOKEN_LIT_INT)) {
+			} else if (reconoce(PalabrasReservadas.TOKEN_INT)) {
 				if (cast(lex, new Tipo(TIPO_INT, 1))) {
 					tipo = new Tipo(TIPO_INT, 1);
 					codigo.add(new Apilar(new DatoPila(DatoPila.INT, lex)));
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
 							"No se puede parsear el valor a entero");
 				}
 			} else if (reconoce(PalabrasReservadas.TOKEN_REAL)) {
@@ -518,8 +512,8 @@ public class AnalizadorSintactico {
 							.getLexema())));
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(),
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
 							"No se puede parsear el valor a real");
 				}
 			} else if (reconoce(PalabrasReservadas.TOKEN_ID)) {
@@ -529,8 +523,8 @@ public class AnalizadorSintactico {
 							GestorTS.getInstancia().getDir(lex))));
 				} else {
 					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(), lexico
-							.getColumna(), "Variable no declarada");
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(), "Variable no declarada");
 				}
 			}
 		}
@@ -630,6 +624,44 @@ public class AnalizadorSintactico {
 			}
 		}
 
+		return reconoce;
+	}
+
+	private boolean reconoceAsignacion() {
+
+		boolean reconoce = false;
+
+		// Saco una foto del estado del léxico por si tengo que retroceder.
+		int fila = lexico.getFila();
+		int columna = lexico.getColumna();
+		int indice = lexico.getIndice();
+		String lexema = lexico.getLexema();
+		int estado = lexico.getEstado();
+		char next_char = lexico.getNext_char();
+		String token_actual = lexico.getToken_actual();
+		int parentesis_indice = lexico.getParentesis_indice();
+		int parentesis_fila = lexico.getParentesis_fila();
+		int parentesis_columna = lexico.getParentesis_columna();
+
+		if (lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ID)) {
+			lexico.scanner();
+			if (lexico.getToken_actual().equals(
+					PalabrasReservadas.TOKEN_ASIGNACION)) {
+				lexico.scanner();
+				reconoce = true;
+			} else {
+				lexico.setFila(fila);
+				lexico.setColumna(columna);
+				lexico.setIndice(indice);
+				lexico.setLexema(lexema);
+				lexico.setEstado(estado);
+				lexico.setNext_char(next_char);
+				lexico.setToken_actual(token_actual);
+				lexico.setParentesis_indice(parentesis_indice);
+				lexico.setParentesis_fila(parentesis_fila);
+				lexico.setParentesis_columna(parentesis_columna);
+			}
+		}
 		return reconoce;
 	}
 
