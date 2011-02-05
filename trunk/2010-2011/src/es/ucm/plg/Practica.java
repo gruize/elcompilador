@@ -1,13 +1,14 @@
-import interprete.EscritorPila;
-import interprete.Interprete;
+package es.ucm.plg;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
-import compilador.analizador_lexico.AnalizadorLexico;
-import compilador.analizador_sintactico.AnalizadorSintactico;
+import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
+import es.ucm.plg.compilador.analizador_sintactico.AnalizadorSintactico;
+import es.ucm.plg.interprete.EscritorPila;
+import es.ucm.plg.interprete.Interprete;
 
 public class Practica {
 
@@ -49,7 +50,7 @@ public class Practica {
 			System.out.println();
 			System.out.println();
 			if (depuracion) {
-				System.out.println("INSTRUCCIONES LEIDAS POR EL ANALIZADOR SINT√ÅCTICO: ");
+				System.out.println("INSTRUCCIONES LEIDAS POR EL ANALIZADOR SINT√?CTICO: ");
 				System.out.print(sintactico.getCodigo().toString());
 			}
 			System.out.println();
