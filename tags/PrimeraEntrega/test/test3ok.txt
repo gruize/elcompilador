@@ -1,0 +1,46 @@
+@GabRiela probando los comentarios\|@#~€¬ª!"·$%&/()=?¿º1234567890'¡
+iNt x;
+inT y;
+Int z;
+rEal a;
+real B;
+reaL c;
+
+
+
+@Alicia probando los comentarios abcdedfdjfs//*-+`+´ç.-,;:_¨Ç^*
+iN x;
+out X;
+In a;
+oUt A;
+
+y = -(int)a;
+out y;
+z = 4;
+out z;
+b = 2.0009;
+out b;
+C = 2.055E-4;
+out c;
+out ((a > x) || (1|| X < a));
+out ((b >= c) && 1 ) && (x == y);
+out !(c <= a);
+out x != c;
+out -(int)C;
+
+
+
+
+@Finalizada la prueba de comentarios
+
+OUT 1;
+
+
+
+
+
+
+
+@Finalizada la prueba de comentarios
+
+OUT 1;
