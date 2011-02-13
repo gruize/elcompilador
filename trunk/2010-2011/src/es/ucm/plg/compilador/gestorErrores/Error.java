@@ -1,4 +1,4 @@
-package compilador.gestorErrores;
+package es.ucm.plg.compilador.gestorErrores;
 
 public class Error {
 	

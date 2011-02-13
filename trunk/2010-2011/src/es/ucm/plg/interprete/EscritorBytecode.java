@@ -1,5 +1,5 @@
 
-package interprete;
+package es.ucm.plg.interprete;
 
 import java.io.File;
 import java.util.ArrayList;

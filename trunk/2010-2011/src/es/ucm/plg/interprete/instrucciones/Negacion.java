@@ -1,12 +1,11 @@
-package interprete.instrucciones;
-
-import interprete.InstruccionInterprete;
-import interprete.Interprete;
-import interprete.datoPila.DatoPila;
+package es.ucm.plg.interprete.instrucciones;
 
 import java.util.ArrayDeque;
 
-import compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.interprete.InstruccionInterprete;
+import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Negacion extends InstruccionInterprete {
 

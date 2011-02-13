@@ -1,9 +1,9 @@
-package interprete;
+package es.ucm.plg.interprete;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public abstract class InstruccionInterprete {
 

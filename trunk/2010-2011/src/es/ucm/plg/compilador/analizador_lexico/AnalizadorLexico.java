@@ -1,8 +1,8 @@
-package compilador.analizador_lexico;
+package es.ucm.plg.compilador.analizador_lexico;
 
 import java.util.Vector;
 
-import compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar

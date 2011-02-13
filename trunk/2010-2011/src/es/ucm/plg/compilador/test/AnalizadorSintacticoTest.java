@@ -1,6 +1,4 @@
-package compilador.test;
-
-import interprete.EscritorPila;
+package es.ucm.plg.compilador.test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-
-import compilador.analizador_lexico.AnalizadorLexico;
-import compilador.analizador_sintactico.AnalizadorSintactico;
+import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
+import es.ucm.plg.compilador.analizador_sintactico.AnalizadorSintactico;
+import es.ucm.plg.interprete.EscritorPila;
 
 public class AnalizadorSintacticoTest extends TestCase {
 

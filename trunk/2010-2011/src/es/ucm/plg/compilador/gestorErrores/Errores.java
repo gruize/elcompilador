@@ -1,4 +1,4 @@
-package compilador.gestorErrores;
+package es.ucm.plg.compilador.gestorErrores;
 
 import java.util.Hashtable;
 
@@ -12,7 +12,7 @@ public class Errores {
 		errores.put(2,"Caracter desconocido");
 		//Errores sintacticos
 		errores.put(3, "Token inesperado (General)");
-		errores.put(4, "Token inesperado. Sección de declaracion");
+		errores.put(4, "Token inesperado. Secciï¿½n de declaracion");
 		//Errores semanticos
 		errores.put(5, "Error semantico (General)");
 		errores.put(6, "Identificador duplicado");

@@ -1,6 +1,4 @@
-package interprete;
-
-import interprete.datoPila.DatoPila;
+package es.ucm.plg.interprete;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +11,8 @@ import java.io.Reader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import es.ucm.plg.interprete.datoPila.DatoPila;
 
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
