@@ -1,4 +1,4 @@
-package interprete.datoPila;
+package es.ucm.plg.interprete.datoPila;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

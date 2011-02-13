@@ -1,4 +1,4 @@
-package compilador.test;
+package es.ucm.plg.compilador.test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-
-import compilador.analizador_lexico.AnalizadorLexico;
-import compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 
 public class AnalizadorLexicoTest extends TestCase {
 

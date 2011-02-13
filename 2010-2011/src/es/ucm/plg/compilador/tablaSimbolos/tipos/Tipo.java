@@ -1,4 +1,4 @@
-package compilador.tablaSimbolos.tipos;
+package es.ucm.plg.compilador.tablaSimbolos.tipos;
 
 public class Tipo {
 

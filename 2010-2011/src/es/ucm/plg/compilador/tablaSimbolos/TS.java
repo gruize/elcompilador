@@ -1,10 +1,10 @@
-package compilador.tablaSimbolos;
+package es.ucm.plg.compilador.tablaSimbolos;
 
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
-import compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 
 public class TS {
 	

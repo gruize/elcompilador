@@ -1,6 +1,6 @@
-package compilador.tablaSimbolos;
+package es.ucm.plg.compilador.tablaSimbolos;
 
-import compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 
 public class Detalles {
 	

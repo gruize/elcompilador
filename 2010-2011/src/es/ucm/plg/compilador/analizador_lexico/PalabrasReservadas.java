@@ -1,4 +1,4 @@
-package compilador.analizador_lexico;
+package es.ucm.plg.compilador.analizador_lexico;
 
 import java.util.Hashtable;
 

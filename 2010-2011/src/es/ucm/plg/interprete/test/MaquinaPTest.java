@@ -1,11 +1,10 @@
-package interprete.test;
-
-import interprete.Interprete;
+package es.ucm.plg.interprete.test;
 
 import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import es.ucm.plg.interprete.Interprete;
 
 public class MaquinaPTest extends TestCase {
 

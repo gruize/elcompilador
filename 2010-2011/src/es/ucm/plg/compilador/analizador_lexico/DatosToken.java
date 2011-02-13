@@ -1,4 +1,4 @@
-package compilador.analizador_lexico;
+package es.ucm.plg.compilador.analizador_lexico;
 
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar

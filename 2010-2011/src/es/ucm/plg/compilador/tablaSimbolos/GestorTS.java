@@ -1,4 +1,4 @@
-package compilador.tablaSimbolos;
+package es.ucm.plg.compilador.tablaSimbolos;
 
 public class GestorTS {
 	/**

@@ -1,6 +1,6 @@
-package interprete;
+package es.ucm.plg.interprete;
 
-import interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class InterpreteException extends Exception {
 

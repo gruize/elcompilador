@@ -1,37 +1,36 @@
-package compilador.analizador_sintactico;
-
-import interprete.InstruccionInterprete;
-import interprete.datoPila.DatoPila;
-import interprete.instrucciones.Apilar;
-import interprete.instrucciones.ApilarDir;
-import interprete.instrucciones.CambioSigno;
-import interprete.instrucciones.CastInt;
-import interprete.instrucciones.CastReal;
-import interprete.instrucciones.DesapilarDir;
-import interprete.instrucciones.Distinto;
-import interprete.instrucciones.Dividir;
-import interprete.instrucciones.Entrada;
-import interprete.instrucciones.Igual;
-import interprete.instrucciones.Mayor;
-import interprete.instrucciones.MayorIg;
-import interprete.instrucciones.Menor;
-import interprete.instrucciones.MenorIg;
-import interprete.instrucciones.Modulo;
-import interprete.instrucciones.Multiplicar;
-import interprete.instrucciones.Negacion;
-import interprete.instrucciones.O_Logica;
-import interprete.instrucciones.Restar;
-import interprete.instrucciones.Salida;
-import interprete.instrucciones.Sumar;
-import interprete.instrucciones.Y_Logica;
+package es.ucm.plg.compilador.analizador_sintactico;
 
 import java.util.ArrayList;
 
-import compilador.analizador_lexico.AnalizadorLexico;
-import compilador.analizador_lexico.PalabrasReservadas;
-import compilador.gestorErrores.GestorErrores;
-import compilador.tablaSimbolos.GestorTS;
-import compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
+import es.ucm.plg.compilador.analizador_lexico.PalabrasReservadas;
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.interprete.InstruccionInterprete;
+import es.ucm.plg.interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.instrucciones.Apilar;
+import es.ucm.plg.interprete.instrucciones.ApilarDir;
+import es.ucm.plg.interprete.instrucciones.CambioSigno;
+import es.ucm.plg.interprete.instrucciones.CastInt;
+import es.ucm.plg.interprete.instrucciones.CastReal;
+import es.ucm.plg.interprete.instrucciones.DesapilarDir;
+import es.ucm.plg.interprete.instrucciones.Distinto;
+import es.ucm.plg.interprete.instrucciones.Dividir;
+import es.ucm.plg.interprete.instrucciones.Entrada;
+import es.ucm.plg.interprete.instrucciones.Igual;
+import es.ucm.plg.interprete.instrucciones.Mayor;
+import es.ucm.plg.interprete.instrucciones.MayorIg;
+import es.ucm.plg.interprete.instrucciones.Menor;
+import es.ucm.plg.interprete.instrucciones.MenorIg;
+import es.ucm.plg.interprete.instrucciones.Modulo;
+import es.ucm.plg.interprete.instrucciones.Multiplicar;
+import es.ucm.plg.interprete.instrucciones.Negacion;
+import es.ucm.plg.interprete.instrucciones.O_Logica;
+import es.ucm.plg.interprete.instrucciones.Restar;
+import es.ucm.plg.interprete.instrucciones.Salida;
+import es.ucm.plg.interprete.instrucciones.Sumar;
+import es.ucm.plg.interprete.instrucciones.Y_Logica;
 
 public class AnalizadorSintactico {
 
@@ -526,10 +525,6 @@ public class AnalizadorSintactico {
 
 		return tipo;
 
-	}
-
-	private boolean op1() {
-		return reconoce(PalabrasReservadas.TOKEN_ASIGNACION);
 	}
 
 	private InstruccionInterprete op2() {
