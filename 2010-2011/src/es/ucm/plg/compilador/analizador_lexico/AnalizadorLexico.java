@@ -1,8 +1,7 @@
 package es.ucm.plg.compilador.analizador_lexico;
 
+import java.io.PrintWriter;
 import java.util.Vector;
-
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 
 /**
  * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
@@ -72,6 +71,8 @@ public class AnalizadorLexico {
 	private int parentesis_indice;
 	private int parentesis_fila;
 	private int parentesis_columna;
+    private PrintWriter writer;
+    private boolean errorLexico;
 
 	/**
 	 * Convierte el programa de entrada (cadena de símbolos alfanuméricos) en
@@ -93,6 +94,7 @@ public class AnalizadorLexico {
 		this.token_actual = null;
 		this.lexema = "";
 		this.estado = VACIO;
+		writer = new PrintWriter(System.out,true);
 	}
 
 	public boolean isFin_programa() {
@@ -214,6 +216,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Procesa el programa de entrada
+	 * @throws Throwable 
 	 */
 	public void scanner() {
 		boolean encontrado = false;
@@ -221,7 +224,7 @@ public class AnalizadorLexico {
 		this.estado = VACIO;
 		this.lexema = "";
 
-		if (!fin_programa) {
+		if (!fin_programa && !errorLexico) {
 			while (!encontrado) {
 
 				if (programa.length() < indice)
@@ -304,9 +307,7 @@ public class AnalizadorLexico {
 								transita(NEGACION);
 								break;
 							default:
-								GestorErrores.agregaError(2, fila, columna,
-										next_char + "");
-								transitaSinLexema(VACIO);
+								error();
 								break;
 							}
 						}
@@ -560,10 +561,7 @@ public class AnalizadorLexico {
 						else
 							transita(LIT_REAL3);
 					else {
-						GestorErrores.agregaError(6, fila, columna, next_char
-								+ "");
-						transitaSinLexema(VACIO);
-						this.lexema = "";
+						error();
 					}
 					break;
 
@@ -595,10 +593,7 @@ public class AnalizadorLexico {
 						if (next_char == '-')
 							transita(LIT_REAL6);
 						else {
-							GestorErrores.agregaError(7, fila, columna,
-									next_char + "");
-							transitaSinLexema(VACIO);
-							this.lexema = "";
+							error();
 						}
 					}
 					break;
@@ -606,10 +601,7 @@ public class AnalizadorLexico {
 				case LIT_REAL5:
 
 					if (sigDigito()) {
-						GestorErrores.agregaError(10, fila, columna, next_char
-								+ "");
-						transitaSinLexema(VACIO);
-						this.lexema = "";
+						error();
 					} else {
 						encontrado = true;
 						encontrado(PalabrasReservadas.TOKEN_REAL);
@@ -624,8 +616,7 @@ public class AnalizadorLexico {
 						else
 							transita(LIT_REALF);
 					else {
-						GestorErrores.agregaError(6, fila, columna, next_char
-								+ "");
+						error();
 						transitaSinLexema(VACIO);
 						this.lexema = "";
 					}
@@ -639,8 +630,7 @@ public class AnalizadorLexico {
 						else
 							transita(LIT_REALF);
 					else {
-						GestorErrores.agregaError(6, fila, columna, next_char
-								+ "");
+						error();
 						transitaSinLexema(VACIO);
 						this.lexema = "";
 					}
@@ -658,7 +648,7 @@ public class AnalizadorLexico {
 						encontrado(PalabrasReservadas.TOKEN_REAL);
 					}
 					break;
-					
+
 				case LIT_CERO:
 
 					if (sigDigito()) {
@@ -838,9 +828,7 @@ public class AnalizadorLexico {
 					if (next_char == '&')
 						transita(Y_LOGICA);
 					else {
-						GestorErrores.agregaError(3, fila, columna, next_char
-								+ "");
-						transitaSinLexema(VACIO);
+						error();
 					}
 					break;
 
@@ -855,8 +843,7 @@ public class AnalizadorLexico {
 					break;
 
 				default:
-					GestorErrores.agregaError(2, fila, columna, next_char + "");
-					transitaSinLexema(VACIO);
+					error();
 					break;
 				}
 			}
@@ -934,6 +921,55 @@ public class AnalizadorLexico {
 		this.tokens.add(new DatosToken(token_actual, fila, columna, indice));
 		this.estado = VACIO;
 		// this.lexema = "";
+	}
+
+	public void error() {
+		String sal = "Error linea " + fila + " --- ";
+		switch (estado) {
+		case VACIO:
+			sal += " No existe el token" ;
+			break;
+		case CAST_I:
+		case CAST_IN:
+		case CAST_INT:
+		case CAST_INT_FIN:
+			sal += " Has escrito mal (int)";
+			break;
+		case CAST_R:
+		case CAST_RE:
+		case CAST_REA:
+		case CAST_REAL:
+		case CAST_REAL_FIN:
+			sal += "Has escrito mal (real)";
+			break;
+		case DISTINTO:
+			sal += "No exite el token";
+			break;
+		case LIT_INT:
+			sal += "Error en la sintaxis del entero";
+			break;
+		case LIT_REAL:
+		case LIT_REAL1:
+		case LIT_REAL2:
+		case LIT_REAL3:
+		case LIT_REAL4:
+		case LIT_REAL5:
+		case LIT_REAL6:
+		case LIT_REAL7:
+		case LIT_REALF:
+			sal = "Error en la sintaxis del real";
+			break;
+		case CADENA:
+			sal = "No puedes definir un token con nombre de palabra reservada";
+			break;
+		default:
+		}
+		transita(VACIO);
+		writer.println(sal);
+		writer
+				.println("La ejecucion se ha parado por error en el analisis lexico");
+		errorLexico = true;
+
 	}
 
 }
