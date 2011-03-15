@@ -27,6 +27,7 @@ out ((b >= c) && 1 ) && (x == y);
 out !(c <= a);
 out x != c;
 out -(int)C;
+out -----(inT)(reAl)(iNt)b;
 
 
 

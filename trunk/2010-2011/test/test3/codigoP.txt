@@ -1,0 +1,9 @@
+in
+desapiladir 0
+apiladir 0
+castint
+desapiladir 1
+apiladir 0
+apiladir 1
+resta
+desapiladir 2
