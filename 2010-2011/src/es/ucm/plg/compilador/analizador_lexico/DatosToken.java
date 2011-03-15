@@ -1,9 +1,5 @@
 package es.ucm.plg.compilador.analizador_lexico;
 
-/**
- * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
- */
-
 public class DatosToken {
 	
 	private String token = "";
@@ -41,7 +37,7 @@ public class DatosToken {
 	/**
 	 * Crea un token
 	 * @param token Identificador del token
-	 * @param indice Posición global en la que se encuentra el token dentro del programa
+	 * @param indice Posicion global en la que se encuentra el token dentro del programa
 	 */
 	public DatosToken(String token, Integer indice) 
 	{
@@ -73,16 +69,12 @@ public class DatosToken {
 
 
 	/**
-	 * @return El índice global en el programa
+	 * @return El indice global en el programa
 	 */
 	public Integer getIndice() {
 		return indice;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() 
 	{

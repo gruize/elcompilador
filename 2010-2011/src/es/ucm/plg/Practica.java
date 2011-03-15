@@ -17,7 +17,7 @@ public class Practica {
 		String path = "";
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader in = new BufferedReader(isr);
-		System.out.print("Introduzca la ruta del cÃ³digo: ");
+		System.out.print("Introduzca la ruta del codigo: ");
 		try {
 			path = in.readLine();
 			File input = new File(path);
@@ -37,7 +37,7 @@ public class Practica {
 			System.out.println();
 			System.out.println(programa);
 			System.out.println();
-			System.out.print("Â¿Desea ejecutar el programa en modo depuraciÃ³n? (s/n)");
+			System.out.print("¿Desea ejecutar el programa en modo depuracion? (s/n)");
 			System.out.println();
 			
 			String sn = in.readLine();
@@ -50,7 +50,7 @@ public class Practica {
 			System.out.println();
 			System.out.println();
 			if (depuracion) {
-				System.out.println("INSTRUCCIONES LEIDAS POR EL ANALIZADOR SINTÃ?CTICO: ");
+				System.out.println("INSTRUCCIONES LEIDAS POR EL ANALIZADOR SINTACTICO: ");
 				System.out.print(sintactico.getCodigo().toString());
 			}
 			System.out.println();

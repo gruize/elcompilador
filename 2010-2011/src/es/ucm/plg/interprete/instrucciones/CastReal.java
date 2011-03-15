@@ -13,7 +13,7 @@ public class CastReal extends InstruccionInterprete {
 
 	public CastReal(DatoPila d){
 		super(InstruccionInterprete.CODIGO_CASTREAL);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Cast de Real no acepta argumentos");
 	}
 
 	@Override

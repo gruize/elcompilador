@@ -2,10 +2,6 @@ package es.ucm.plg.compilador.analizador_lexico;
 
 import java.util.Hashtable;
 
-/**
- * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
- */
-
 public class PalabrasReservadas {
 	
 	public static String TOKEN_INT = "tkint";
@@ -52,7 +48,7 @@ public class PalabrasReservadas {
 	/**
 	 * @param palabra
 	 *            Identificador del token leido
-	 * @return Identificador específico del token si es una palabra reservada y
+	 * @return Identificador especifico del token si es una palabra reservada y
 	 *         "tkid" en caso contrario
 	 */
 	public String obtenerToken(String palabra) {

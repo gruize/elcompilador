@@ -15,7 +15,7 @@ public class Negacion extends InstruccionInterprete {
 
 	public Negacion(DatoPila d){
 		super(InstruccionInterprete.CODIGO_NEGACION);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Negacion no acepta argumentos");
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Negacion extends InstruccionInterprete {
 			res = new DatoPila(DatoPila.INT, (d.getValor().equals(1) ? 0 : 1));
 			break;
 		default:
-			GestorErrores.agregaError("Tipo inválido ("
+			GestorErrores.agregaError("Tipo invalido ("
 					+ d.toString() + ")");
 		}
 		pila.addFirst(res);

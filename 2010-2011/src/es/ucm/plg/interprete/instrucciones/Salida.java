@@ -14,7 +14,7 @@ public class Salida extends InstruccionInterprete{
 
     public Salida(DatoPila d){
         super(InstruccionInterprete.CODIGO_SALIDA, d);
-        GestorErrores.agregaError("La instrucción no acepta argumentos");
+        GestorErrores.agregaError("La instruccion Salida/Escritura no acepta argumentos");
     }
     
     @Override

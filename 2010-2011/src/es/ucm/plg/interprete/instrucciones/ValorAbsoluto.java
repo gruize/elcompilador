@@ -1,5 +1,6 @@
 package es.ucm.plg.interprete.instrucciones;
 
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
 import es.ucm.plg.interprete.datoPila.DatoPila;
@@ -14,6 +15,7 @@ public class ValorAbsoluto extends InstruccionInterprete {
 
 	public ValorAbsoluto(DatoPila d){
 		super(InstruccionInterprete.CODIGO_ABS, d);
+		GestorErrores.agregaError("La instruccion Valor Absoluto no acepta argumentos");
 	}
 
 	@Override
@@ -23,14 +25,11 @@ public class ValorAbsoluto extends InstruccionInterprete {
 
 	@Override
 	public boolean ejecutate(Interprete interprete) {
-
 		DatoPila dato = interprete.getPila().pop();
-
 		if (dato.getTipo() == DatoPila.INT)
 			Math.abs(dato.getEntero());
 		else
-			Math.abs(dato.getReal());
-		
+			Math.abs(dato.getReal());		
 		return true;
 	}
 

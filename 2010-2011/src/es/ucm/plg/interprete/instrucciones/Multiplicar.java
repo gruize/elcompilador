@@ -13,7 +13,7 @@ public class Multiplicar extends InstruccionInterprete {
 
 	public Multiplicar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_MULTIPLICA);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Multiplicar no acepta argumentos");
 	}
 
 	@Override

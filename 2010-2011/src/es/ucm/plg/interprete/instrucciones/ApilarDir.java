@@ -9,13 +9,13 @@ public class ApilarDir extends InstruccionInterprete {
 
 	public ApilarDir(){
 		super(InstruccionInterprete.CODIGO_APILARDIR);
-		GestorErrores.agregaError("La instrucción apiladir necesita un parámetro");
+		GestorErrores.agregaError("La instruccion apiladir necesita un parametro");
 	}
 
 	public ApilarDir(DatoPila d){
 		super(InstruccionInterprete.CODIGO_APILARDIR, d);
 		if (d.getTipo() != DatoPila.INT)
-			GestorErrores.agregaError("El parámetro de esta instrucción debe ser de tipo entero");
+			GestorErrores.agregaError("El parametro de esta instruccion debe ser de tipo entero");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class ApilarDir extends InstruccionInterprete {
 
 		DatoPila dato = interprete.getMemoria()[this.getDato().getEntero()];
 
-		// Si en la posición de memoria especificada no existen ningún valor
+		// Si en la posicion de memoria especificada no existen ningun valor
 		// apilo un valor representativo, como es Integer.MIN_VALUE
 		if (dato == null) {
 			interprete.getPila().addFirst(

@@ -19,6 +19,7 @@ public class Errores {
 		errores.put(7, "Variable no declarada");
 		errores.put(8, "Operador inadecuado para el nivel de la expresion");
 		errores.put(9, "Tipos incompatibles");
+		errores.put(20, "Error en el Interprete.");
 	}
 
 	public Hashtable<Integer, String> getErrores() {

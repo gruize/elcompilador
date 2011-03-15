@@ -13,7 +13,7 @@ public class Igual extends InstruccionInterprete {
 
 	public Igual(DatoPila d){
 		super(InstruccionInterprete.CODIGO_IGUAL);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Igual no acepta argumentos");
 	}
 	
 	@Override

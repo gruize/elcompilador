@@ -67,11 +67,11 @@ public class AnalizadorSintactico {
 		return error;
 	}
 
-	public void iniciaSintactico() throws Exception {
-		programa();
+	public void iniciaSintactico(){
+			programa();
 	}
 
-	public void programa() throws Exception {
+	public void programa(){
 		try {
 			this.lexico.scanner();
 			this.error = false;
@@ -86,7 +86,7 @@ public class AnalizadorSintactico {
 					lexico.getColumna(), "Error!!!");
 		}
 		if (error) {
-			System.out.println("¡¡¡COMPILADO CON ERRORES!!!");
+			System.out.println("���COMPILADO CON ERRORES!!!");
 			System.out.println(GestorErrores.getErrores_propios().toString());
 		}
 	}
@@ -289,7 +289,7 @@ public class AnalizadorSintactico {
 							"No se puede asignar un real a un entero");
 				}
 			}
-			// ¿Es una expresion 2?
+			// �Es una expresion 2?
 			else {
 				tipo1 = expresion2();
 			}
@@ -420,7 +420,7 @@ public class AnalizadorSintactico {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(),
 							lexico.getColumna(),
-							"Se esperaba una expresión de tipo 5");
+							"Se esperaba una expresion de tipo 5");
 				}
 			} else
 				tipoRes = tipo1;
@@ -445,7 +445,7 @@ public class AnalizadorSintactico {
 						error = true;
 						GestorErrores.agregaError(11, lexico.getFila(),
 								lexico.getColumna(),
-								"El tipo de la expresión debe ser un entero");
+								"El tipo de la expresion debe ser un entero");
 					}
 				}
 			} else if ((op = op5noAsoc()) != null) {
@@ -462,7 +462,7 @@ public class AnalizadorSintactico {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(),
 							lexico.getColumna(),
-							"Se esperaba una expresión de tipo 6");
+							"Se esperaba una expresion de tipo 6");
 				}
 			} else
 				tipo = expresion6();
@@ -483,7 +483,7 @@ public class AnalizadorSintactico {
 						error = true;
 						GestorErrores.agregaError(11, lexico.getFila(),
 								lexico.getColumna(),
-								"Falta paréntesis de cierre");
+								"Falta parentesis de cierre");
 					}
 				} else {
 					error = true;
@@ -656,7 +656,6 @@ public class AnalizadorSintactico {
 	}
 
 	private boolean cast(String valor, Tipo tipo) {
-
 		if (!error) {
 			try {
 				if (tipo.getTipo().equals(TIPO_INT)) {
