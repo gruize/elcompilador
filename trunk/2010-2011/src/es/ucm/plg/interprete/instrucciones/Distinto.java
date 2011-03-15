@@ -13,7 +13,7 @@ public class Distinto extends InstruccionInterprete {
 
 	public Distinto(DatoPila d){
 		super(InstruccionInterprete.CODIGO_DISTINTO);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Distinto no acepta argumentos");
 	}
 
 	@Override

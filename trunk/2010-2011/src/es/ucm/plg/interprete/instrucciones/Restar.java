@@ -13,7 +13,7 @@ public class Restar extends InstruccionInterprete {
 
 	public Restar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_RESTA);
-		GestorErrores.agregaError("La instrucción no admite operadores");
+		GestorErrores.agregaError("La instruccion Restar no admite operadores");
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class Desapilar extends InstruccionInterprete {
 
     public Desapilar(DatoPila d){
         super(InstruccionInterprete.CODIGO_DESAPILAR);
-        GestorErrores.agregaError("La instrucción no acepta argumentos");
+        GestorErrores.agregaError("La instruccion Desapilar no acepta argumentos");
     }
 	
 	@Override

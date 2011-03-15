@@ -1,17 +1,15 @@
-/**
- * 
- */
 package es.ucm.plg.interprete.instrucciones;
 
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Apilar extends InstruccionInterprete {
 
-	public Apilar() throws Exception {
+	public Apilar(){
 		super(InstruccionInterprete.CODIGO_APILAR);
-		throw new Exception("La instrucción apilar necesita un parámetro");
+		GestorErrores.agregaError("La instruccion Apilar necesita un parametro");
 	}
 
 	public Apilar(DatoPila d) {

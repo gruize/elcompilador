@@ -3,11 +3,6 @@ package es.ucm.plg.compilador.analizador_lexico;
 import java.io.PrintWriter;
 import java.util.Vector;
 
-/**
- * @author Alicia Pérez Jiménez, Gabriela Ruíz Escobar
- * 
- */
-
 public class AnalizadorLexico {
 
 	private static final int VACIO = 0;
@@ -75,11 +70,11 @@ public class AnalizadorLexico {
     private boolean errorLexico;
 
 	/**
-	 * Convierte el programa de entrada (cadena de símbolos alfanuméricos) en
-	 * una secuencia de componentes léxicos o Tokens
+	 * Convierte el programa de entrada (cadena de simbolos alfanumericos) en
+	 * una secuencia de componentes lexicos o Tokens
 	 * 
 	 * @param programa
-	 *            Cadena con los caracteres alfanuméricos que componen el
+	 *            Cadena con los caracteres alfanumericos que componen el
 	 *            programa
 	 */
 	public AnalizadorLexico(String programa) {
@@ -206,7 +201,7 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Devuelve un vector con los componentes léxicos procesados
+	 * Devuelve un vector con los componentes lexicos procesados
 	 * 
 	 * @return Tokens procesados
 	 */
@@ -216,7 +211,6 @@ public class AnalizadorLexico {
 
 	/**
 	 * Procesa el programa de entrada
-	 * @throws Throwable 
 	 */
 	public void scanner() {
 		boolean encontrado = false;
@@ -852,7 +846,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * @return Indica si el siguiente caracter se encentra dentro de la
-	 *         categoría léxica "digito"
+	 *         categoria lexica "digito"
 	 */
 	public boolean sigDigito() {
 		return (next_char >= '0' && next_char <= '9');
@@ -860,7 +854,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * @return Indica si el siguiente caracter se encentra dentro de la
-	 *         categoría léxica "letra"
+	 *         categoria lexica "letra"
 	 */
 	public boolean sigLetra() {
 		if (next_char >= 'A' && next_char <= 'Z')
@@ -911,7 +905,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Realiza las operaciones pertinentes cuando se ha encontrado un token
-	 * válido
+	 * valido
 	 * 
 	 * @param token
 	 *            Nombre del token de entrada
@@ -966,8 +960,7 @@ public class AnalizadorLexico {
 		}
 		transita(VACIO);
 		writer.println(sal);
-		writer
-				.println("La ejecucion se ha parado por error en el analisis lexico");
+		writer.println("La ejecucion se ha parado por error en el analisis lexico");
 		errorLexico = true;
 
 	}

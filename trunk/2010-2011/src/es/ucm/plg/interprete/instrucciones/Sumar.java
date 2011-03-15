@@ -13,7 +13,7 @@ public class Sumar extends InstruccionInterprete {
 
 	public Sumar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_SUMA);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Sumar no acepta argumentos");
 	}
 	
 	@Override

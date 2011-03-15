@@ -26,8 +26,8 @@ public class InterpreteException extends Exception {
 
 	@Override
 	public String toString() {
-		return "Error en el intérprete "
-				+ (instruccion == null ? " en la instrucción "
+		return "Error en el interprete "
+				+ (instruccion == null ? " en la instruccion "
 						+ Byte.toString(instruccion.getTipoIns()) : "")
 				+ (dato == null ? " en el dato " + dato.toString() : "")
 				+ " : " + super.getMessage();

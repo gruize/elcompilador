@@ -13,7 +13,7 @@ public class Dividir extends InstruccionInterprete {
 
 	public Dividir(DatoPila d){
 		super(InstruccionInterprete.CODIGO_DIVIDE);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Dividir no acepta argumentos");
 	}
 
 	@Override
@@ -24,8 +24,8 @@ public class Dividir extends InstruccionInterprete {
 	@Override
 	public boolean ejecutate(Interprete interprete) {
 
-		DatoPila d1 = interprete.getPila().pop();
 		DatoPila d2 = interprete.getPila().pop();
+		DatoPila d1 = interprete.getPila().pop();
 
 		Byte tipoRes = getTipoResult(d1.getTipo(), d2.getTipo());
 		DatoPila resultado;

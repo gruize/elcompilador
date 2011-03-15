@@ -13,7 +13,7 @@ public class MenorIg extends InstruccionInterprete {
 
 	public MenorIg(DatoPila d){
 		super(InstruccionInterprete.CODIGO_MENORIG);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Menor Igual no acepta argumentos");
 	}
 	
 	@Override
@@ -24,8 +24,8 @@ public class MenorIg extends InstruccionInterprete {
 	@Override
 	public boolean ejecutate(Interprete interprete) {
 
-		DatoPila d1 = interprete.getPila().pop();
 		DatoPila d2 = interprete.getPila().pop();
+		DatoPila d1 = interprete.getPila().pop();
 
 		DatoPila resultado = new DatoPila(
 				DatoPila.INT, (d1.getReal() <= d2.getReal() ? 1: 0));

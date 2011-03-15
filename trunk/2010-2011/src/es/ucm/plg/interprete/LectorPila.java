@@ -3,7 +3,6 @@ package es.ucm.plg.interprete;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,13 +37,9 @@ import es.ucm.plg.interprete.instrucciones.Y_Logica;
 public class LectorPila {
 
 	/**
-	 * Este método lee un dato de un DataInputStream
-	 * 
+	 * Este metodo lee un dato de un DataInputStream
 	 * @param dis
 	 * @return el dato leido
-	 * @throws InterpreteException
-	 * @throws LectorExc
-	 *             en el caso de que ocurra algún error al leer el dato
 	 */
 	private DatoPila leerDato(DataInputStream dis) {
 		try {
@@ -56,11 +51,10 @@ public class LectorPila {
 			case DatoPila.REAL:
 				return new DatoPila(DatoPila.REAL, dis.readFloat());
 			default:
-				GestorErrores.agregaError("Tipo de dato inválido: "
-						+ Byte.toString(tipo));
+				GestorErrores.agregaError(20,0,0,"Tipo de dato invalido: " + Byte.toString(tipo));
 			}
 		} catch (IOException e) {
-			GestorErrores.agregaError(e.getMessage());
+			GestorErrores.agregaError(20,0,0,"Error de lectura.");
 			return null;
 		}
 		return null;
@@ -68,113 +62,109 @@ public class LectorPila {
 	}
 
 	/**
-	 * Este método lee una instrucción de un DataInputStream
-	 * 
+	 * Este metodo lee una instruccion de un DataInputStream
 	 * @param dis
 	 * @return la InstruccionInterprete leida
-	 * @throws IOException
-	 *             En el caso de que ocurra un error del stream
-	 * @throws InterpreteException
-	 * @throws LectorExc
-	 *             En el caso de que ocurra un error de formato del programa
-	 *             fuente (por ejemplo, apilar sin argumento)
 	 */
-	private InstruccionInterprete leerInstruccion(DataInputStream dis)
-			throws IOException {
-		byte tipoIns = dis.readByte();
-		InstruccionInterprete inst;
-		switch (tipoIns) {
-		default:
-			throw new IOException("Instrucción inválida");
-		case InstruccionInterprete.CODIGO_APILAR:
-			inst = new Apilar(leerDato(dis));
-			break;
-		case InstruccionInterprete.CODIGO_APILARDIR:
-			inst = new ApilarDir(leerDato(dis));
-			break;
-		case InstruccionInterprete.CODIGO_DESAPILAR:
-			inst = new Desapilar();
-			break;
-		case InstruccionInterprete.CODIGO_DESAPILARDIR:
-			inst = new DesapilarDir(leerDato(dis));
-			break;
-		case InstruccionInterprete.CODIGO_MENOR:
-			inst = new Menor();
-			break;
-		case InstruccionInterprete.CODIGO_MAYOR:
-			inst = new Mayor();
-			break;
-		case InstruccionInterprete.CODIGO_MENORIG:
-			inst = new MenorIg();
-			break;
-		case InstruccionInterprete.CODIGO_MAYORIG:
-			inst = new MayorIg();
-			break;
-		case InstruccionInterprete.CODIGO_IGUAL:
-			inst = new Igual();
-			break;
-		case InstruccionInterprete.CODIGO_DISTINTO:
-			inst = new Distinto();
-			break;
-		case InstruccionInterprete.CODIGO_SUMA:
-			inst = new Sumar();
-			break;
-		case InstruccionInterprete.CODIGO_RESTA:
-			inst = new Restar();
-			break;
-		case InstruccionInterprete.CODIGO_MULTIPLICA:
-			inst = new Multiplicar();
-			break;
-		case InstruccionInterprete.CODIGO_DIVIDE:
-			inst = new Dividir();
-			break;
-		case InstruccionInterprete.CODIGO_MODULO:
-			inst = new Modulo();
-			break;
-		case InstruccionInterprete.CODIGO_Y:
-			inst = new Y_Logica();
-			break;
-		case InstruccionInterprete.CODIGO_O:
-			inst = new O_Logica();
-			break;
-		case InstruccionInterprete.CODIGO_NEGACION:
-			inst = new Negacion();
-			break;
-		case InstruccionInterprete.CODIGO_CAMBIO_SIGNO:
-			inst = new CambioSigno();
-			break;
-		case InstruccionInterprete.CODIGO_CASTINT:
-			inst = new CastInt();
-			break;
-		case InstruccionInterprete.CODIGO_CASTREAL:
-			inst = new CastReal();
-			break;
-		case InstruccionInterprete.CODIGO_PARAR:
-			inst = new Parar();
-			break;
-		case InstruccionInterprete.CODIGO_ABS:
-			inst = new ValorAbsoluto();
-			break;
-		case InstruccionInterprete.CODIGO_SALIDA:
-			inst = new Salida();
-			break;
-		case InstruccionInterprete.CODIGO_ENTRADA:
-			inst = new Entrada();
-			break;
+	private InstruccionInterprete leerInstruccion(DataInputStream dis){
+		InstruccionInterprete inst = null;
+		try{
+			byte tipoIns = dis.readByte();			
+			switch (tipoIns) {			
+			case InstruccionInterprete.CODIGO_APILAR:
+				inst = new Apilar(leerDato(dis));
+				break;
+			case InstruccionInterprete.CODIGO_APILARDIR:
+				inst = new ApilarDir(leerDato(dis));
+				break;
+			case InstruccionInterprete.CODIGO_DESAPILAR:
+				inst = new Desapilar();
+				break;
+			case InstruccionInterprete.CODIGO_DESAPILARDIR:
+				inst = new DesapilarDir(leerDato(dis));
+				break;
+			case InstruccionInterprete.CODIGO_MENOR:
+				inst = new Menor();
+				break;
+			case InstruccionInterprete.CODIGO_MAYOR:
+				inst = new Mayor();
+				break;
+			case InstruccionInterprete.CODIGO_MENORIG:
+				inst = new MenorIg();
+				break;
+			case InstruccionInterprete.CODIGO_MAYORIG:
+				inst = new MayorIg();
+				break;
+			case InstruccionInterprete.CODIGO_IGUAL:
+				inst = new Igual();
+				break;
+			case InstruccionInterprete.CODIGO_DISTINTO:
+				inst = new Distinto();
+				break;
+			case InstruccionInterprete.CODIGO_SUMA:
+				inst = new Sumar();
+				break;
+			case InstruccionInterprete.CODIGO_RESTA:
+				inst = new Restar();
+				break;
+			case InstruccionInterprete.CODIGO_MULTIPLICA:
+				inst = new Multiplicar();
+				break;
+			case InstruccionInterprete.CODIGO_DIVIDE:
+				inst = new Dividir();
+				break;
+			case InstruccionInterprete.CODIGO_MODULO:
+				inst = new Modulo();
+				break;
+			case InstruccionInterprete.CODIGO_Y:
+				inst = new Y_Logica();
+				break;
+			case InstruccionInterprete.CODIGO_O:
+				inst = new O_Logica();
+				break;
+			case InstruccionInterprete.CODIGO_NEGACION:
+				inst = new Negacion();
+				break;
+			case InstruccionInterprete.CODIGO_CAMBIO_SIGNO:
+				inst = new CambioSigno();
+				break;
+			case InstruccionInterprete.CODIGO_CASTINT:
+				inst = new CastInt();
+				break;
+			case InstruccionInterprete.CODIGO_CASTREAL:
+				inst = new CastReal();
+				break;
+			case InstruccionInterprete.CODIGO_PARAR:
+				inst = new Parar();
+				break;
+			case InstruccionInterprete.CODIGO_ABS:
+				inst = new ValorAbsoluto();
+				break;
+			case InstruccionInterprete.CODIGO_SALIDA:
+				inst = new Salida();
+				break;
+			case InstruccionInterprete.CODIGO_ENTRADA:
+				inst = new Entrada();
+				break;
+			default:
+				throw new IOException();
+			}
+		}catch (IOException e){
+			GestorErrores.agregaError(20,0,0,"Instruccion invalida");
 		}
 		return inst;
 	}
 
-	public ArrayList<InstruccionInterprete> leerPrograma(File f)
-			throws FileNotFoundException, IOException {
-
+	public ArrayList<InstruccionInterprete> leerPrograma(File f){
 		ArrayList<InstruccionInterprete> ad = new ArrayList<InstruccionInterprete>();
-		DataInputStream dis = new DataInputStream(new FileInputStream(f));
-
-		while (dis.available() > 0) {
-			ad.add(leerInstruccion(dis));
+		try{				
+			DataInputStream dis = new DataInputStream(new FileInputStream(f));	
+			while (dis.available() > 0) {
+				ad.add(leerInstruccion(dis));
+			}
+		}catch(IOException e){
+			GestorErrores.agregaError(20,0,0,"Error de lectura.");
 		}
-
 		return ad;
 	}
 

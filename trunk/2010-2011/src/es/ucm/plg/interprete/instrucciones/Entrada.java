@@ -14,7 +14,7 @@ public class Entrada extends InstruccionInterprete {
 
 	public Entrada(DatoPila d){
 		super(InstruccionInterprete.CODIGO_ENTRADA, d);
-		GestorErrores.agregaError("La instruccion no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Entrada/Lectura no acepta argumentos");
 	}
 	
 	@Override
@@ -28,7 +28,7 @@ public class Entrada extends InstruccionInterprete {
 		String leido = "";
 		DatoPila datoLeido = null;
 		
-		interprete.getWriter().print("Introduzca un número >>>");
+		interprete.getWriter().print("Introduzca un numero >>>");
 		interprete.getWriter().flush();
 		
 		try {

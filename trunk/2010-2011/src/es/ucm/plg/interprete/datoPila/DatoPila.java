@@ -3,6 +3,8 @@ package es.ucm.plg.interprete.datoPila;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import es.ucm.plg.compilador.gestorErrores.GestorErrores;
+
 public class DatoPila {
 
 	public static final byte INT = 0;
@@ -45,12 +47,16 @@ public class DatoPila {
 		this.valor = valor;
 	}
 
-    public void escribete(DataOutputStream dos) throws IOException {
-        dos.writeByte(tipo);
-        if (tipo == DatoPila.INT)
-        	dos.writeInt(this.getEntero());
-        else
-        	dos.writeFloat(this.getReal());
+    public void escribete(DataOutputStream dos){
+    	try{
+    		dos.writeByte(tipo);
+	        if (tipo == DatoPila.INT)
+	        	dos.writeInt(this.getEntero());
+	        else
+	        	dos.writeFloat(this.getReal());
+    	}catch(IOException e){
+    		GestorErrores.agregaError(20, 0, 0, "Error en la escritura.");
+    	}
     }
     
 	@Override

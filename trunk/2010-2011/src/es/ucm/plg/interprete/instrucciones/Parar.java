@@ -14,7 +14,7 @@ public class Parar extends InstruccionInterprete {
 	public Parar(DatoPila d){
 		super(InstruccionInterprete.CODIGO_PARAR, d);
 		GestorErrores.agregaError(
-				"La instrucción no necesita parámetros");
+				"La instruccion Parar no necesita parametros");
 	}
 	
 	@Override

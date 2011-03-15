@@ -13,7 +13,7 @@ public class CambioSigno extends InstruccionInterprete {
 
 	public CambioSigno(DatoPila d){
 		super(InstruccionInterprete.CODIGO_CAMBIO_SIGNO);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion Cambio de Signo no acepta argumentos");
 	}
 
 	@Override

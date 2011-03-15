@@ -14,7 +14,7 @@ public class O_Logica extends InstruccionInterprete {
 
 	public O_Logica(DatoPila d){
 		super(InstruccionInterprete.CODIGO_O);
-		GestorErrores.agregaError("La instrucción no acepta argumentos");
+		GestorErrores.agregaError("La instruccion O logica no acepta argumentos");
 	}
 
 	@Override
@@ -32,25 +32,25 @@ public class O_Logica extends InstruccionInterprete {
 	@Override
 	public boolean ejecutate(Interprete interprete){
 
-		DatoPila d1 = interprete.getPila().pop();
-
-		if (d1.getTipo() != DatoPila.INT)
-			GestorErrores.agregaError(
-					"Los operandos de esta instrucción deben ser enteros");
-
-		if (!(d1.getEntero() == 0 || d1.getEntero() == 1))
-			GestorErrores.agregaError(
-					"Los operandos de esta instrucción deben ser 0 o 1");
-
 		DatoPila d2 = interprete.getPila().pop();
 
 		if (d2.getTipo() != DatoPila.INT)
 			GestorErrores.agregaError(
-					"Los operandos de esta instrucción deben ser enteros");
+					"Los operandos de esta instruccion deben ser enteros");
 
 		if (!(d2.getEntero() == 0 || d2.getEntero() == 1))
 			GestorErrores.agregaError(
-					"Los operandos de esta instrucción deben ser 0 o 1");
+					"Los operandos de esta instruccion deben ser 0 o 1");
+
+		DatoPila d1 = interprete.getPila().pop();
+
+		if (d1.getTipo() != DatoPila.INT)
+			GestorErrores.agregaError(
+					"Los operandos de esta instruccion deben ser enteros");
+
+		if (!(d1.getEntero() == 0 || d1.getEntero() == 1))
+			GestorErrores.agregaError(
+					"Los operandos de esta instruccion deben ser 0 o 1");
 
 		DatoPila resultado = new DatoPila(DatoPila.INT,
 				(d1.getEntero() == 1) ? 1 : ((d2.getEntero() == 1) ? 1: 0));
