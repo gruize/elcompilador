@@ -208,6 +208,10 @@ public class AnalizadorLexico {
 	public Vector<DatosToken> getTokens() {
 		return tokens;
 	}
+	
+	public boolean isErrorLexico() {
+		return errorLexico;
+	}
 
 	/**
 	 * Procesa el programa de entrada
