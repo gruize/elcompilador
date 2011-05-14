@@ -32,6 +32,8 @@ public class Salida extends InstruccionInterprete{
         	else
         		interprete.getWriter().println(d1.getReal());
 
+        	interprete.getPila().push(d1);
+        	
             return true;
 
     }

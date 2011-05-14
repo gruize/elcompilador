@@ -1,12 +1,19 @@
 package es.ucm.plg.compilador.analizador_sintactico;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
 import es.ucm.plg.compilador.analizador_lexico.PalabrasReservadas;
 import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoArray;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro.Campo;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
@@ -19,6 +26,7 @@ import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
 import es.ucm.plg.interprete.instrucciones.Igual;
+import es.ucm.plg.interprete.instrucciones.LimpiarPila;
 import es.ucm.plg.interprete.instrucciones.Mayor;
 import es.ucm.plg.interprete.instrucciones.MayorIg;
 import es.ucm.plg.interprete.instrucciones.Menor;
@@ -33,9 +41,6 @@ import es.ucm.plg.interprete.instrucciones.Sumar;
 import es.ucm.plg.interprete.instrucciones.Y_Logica;
 
 public class AnalizadorSintactico {
-
-	private final String TIPO_INT = "<t:int>";
-	private final String TIPO_REAL = "<t:real>";
 
 	private AnalizadorLexico lexico;
 	private ArrayList<InstruccionInterprete> codigo;
@@ -67,11 +72,11 @@ public class AnalizadorSintactico {
 		return error;
 	}
 
-	public void iniciaSintactico(){
-			programa();
+	public void iniciaSintactico() {
+		programa();
 	}
 
-	public void programa(){
+	public void programa() {
 		try {
 			this.lexico.scanner();
 			this.error = false;
@@ -86,7 +91,7 @@ public class AnalizadorSintactico {
 					lexico.getColumna(), "Error!!!");
 		}
 		if (error) {
-			System.out.println("¡¡¡COMPILADO CON ERRORES!!!");
+			System.out.println("Â¡Â¡Â¡COMPILADO CON ERRORES!!!");
 			System.out.println(GestorErrores.getErrores_propios().toString());
 		}
 	}
@@ -109,7 +114,7 @@ public class AnalizadorSintactico {
 		if (!error) {
 
 			// Reconozco el tipo
-			Tipo tipo = desctipo();
+			Tipo tipo = defTipo();
 			if (tipo != null) {
 				String lex = lexico.getLexema();
 
@@ -163,13 +168,91 @@ public class AnalizadorSintactico {
 
 		if (!error) {
 			if (reconoce(PalabrasReservadas.TOKEN_INT))
-				tipo = new Tipo(TIPO_INT, 1);
+				tipo = new TipoEntero();
 			else if (reconoce(PalabrasReservadas.TOKEN_REAL))
-				tipo = new Tipo(TIPO_REAL, 1);
+				tipo = new TipoReal();
 		}
 
 		return tipo;
 
+	}
+
+	private Tipo defTipo() {
+
+		Tipo tipoResult = null;
+
+		if (!error) {
+			Tipo tipoBase = desctipo();
+			if (tipoBase != null) { //ARRAYS
+				if (reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
+					int num = Integer.parseInt(lexico.getLexema());
+					if (reconoce(PalabrasReservadas.TOKEN_INT)) {
+						if (reconoce(PalabrasReservadas.TOKEN_CORCHETE_CE)) {
+							tipoResult = new TipoArray(tipoBase, num);
+						} else {
+							error = true;
+							GestorErrores.agregaError(11, lexico.getFila(),
+									lexico.getColumna(),
+									"Error en la declaraciÃ³n del array");
+						}
+					} else {
+						error = true;
+						GestorErrores.agregaError(11, lexico.getFila(),
+								lexico.getColumna(),
+								"Error en la declaraciÃ³n del array");
+					}
+				}
+				else { //TIPO BASICO
+					tipoResult = tipoBase;
+				}
+			}
+			else if(reconoce(PalabrasReservadas.TOKEN_REC)) { //REGISTROS
+				List<Campo> campos = campos();
+				if (campos.size() > 0) {
+					if (reconoce(PalabrasReservadas.TOKEN_ENDREC)) {
+						tipoResult = new TipoRegistro(campos);
+					}
+					else {
+						error = true;
+						GestorErrores.agregaError(11, lexico.getFila(),
+								lexico.getColumna(),
+								"Falta un endrec");
+					}
+				}
+				else {
+					error = true;
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
+							"Debe declarar al menos un campo en el record");
+				}
+			} 
+			else if (reconoce(PalabrasReservadas.TOKEN_POINTER)) { //PUNTEROS
+				tipoBase = desctipo();
+				if (tipoBase != null) {
+					tipoResult = new TipoPuntero(tipoBase);
+				}
+				else {
+					error = true;
+					GestorErrores.agregaError(11, lexico.getFila(),
+							lexico.getColumna(),
+							"Falta el tipo base del puntero");
+				}
+			}
+			else {
+				error = true;
+				GestorErrores.agregaError(11, lexico.getFila(),
+						lexico.getColumna(),
+						"Error en la declaracion del tipo");
+			}
+				
+		}
+		
+		return tipoResult;
+	}
+
+	private List<Campo> campos() {
+		// TODO IMPLEMENTAR EL RECONOCIMIENTO DE CAMPOS
+		return null;
 	}
 
 	public boolean acciones() throws Exception {
@@ -219,6 +302,7 @@ public class AnalizadorSintactico {
 			if (tipo != null) {
 				if (reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
 					ok = true;
+					codigo.add(new LimpiarPila());
 				} else {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(),
@@ -244,9 +328,11 @@ public class AnalizadorSintactico {
 			if (reconoce(PalabrasReservadas.TOKEN_IN)) {
 				String lex = lexico.getLexema();
 				error = error || !GestorTS.getInstancia().existeID(lex);
-				codigo.add(new Entrada());
-				codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT, GestorTS
+				codigo.add(new Entrada(new DatoPila(DatoPila.INT, GestorTS
 						.getInstancia().getDir(lex))));
+				// codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT,
+				// GestorTS
+				// .getInstancia().getDir(lex))));
 				lexico.scanner();
 				return GestorTS.getInstancia().getTipo(lex);
 			} else if (reconoce(PalabrasReservadas.TOKEN_OUT)) {
@@ -272,16 +358,14 @@ public class AnalizadorSintactico {
 
 				// reconoce(PalabrasReservadas.TOKEN_ID);
 				Tipo tipo2 = expresion2();
-				if (!(tipo1.getTipo().equals(TIPO_INT) && tipo2.getTipo()
-						.equals(TIPO_REAL))) {
-					if (tipo1.getTipo().equals(TIPO_REAL)) {
+				if (!(tipo1 instanceof TipoEntero && tipo2 instanceof TipoReal)) {
+					if (tipo1 instanceof TipoReal) {
 						codigo.add(new CastReal());
-						codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT,
-								GestorTS.getInstancia().getDir(lex))));
-					} else {
-						codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT,
-								GestorTS.getInstancia().getDir(lex))));
 					}
+					codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT,
+							GestorTS.getInstancia().getDir(lex))));
+					codigo.add(new ApilarDir(new DatoPila(DatoPila.INT,
+							GestorTS.getInstancia().getDir(lex))));
 				} else {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(),
@@ -289,7 +373,7 @@ public class AnalizadorSintactico {
 							"No se puede asignar un real a un entero");
 				}
 			}
-			// ¿Es una expresion 2?
+			// ï¿½Es una expresion 2?
 			else {
 				tipo1 = expresion2();
 			}
@@ -307,7 +391,7 @@ public class AnalizadorSintactico {
 			if ((tipo = expresion3()) != null) {
 				if ((op = op2()) != null) {
 					if ((tipo = expresion3()) != null) {
-						tipo = new Tipo(TIPO_INT, 1);
+						tipo = new TipoEntero();
 						codigo.add(op);
 					}
 				}
@@ -345,15 +429,14 @@ public class AnalizadorSintactico {
 				if ((tipo2 = expresion4()) != null) {
 					if ((tipo3 = expresion3RE(tipo2)) != null) {
 						if ((op instanceof O_Logica)
-								&& (!tipo2.equals(TIPO_INT) || !tipo1
-										.equals(TIPO_INT))) {
+								&& (!(tipo2 instanceof TipoEntero) || !(tipo1 instanceof TipoEntero))) {
 							if (op instanceof O_Logica)
-								tipoRes = new Tipo(TIPO_INT, 1);
-							else if (tipo1.equals(TIPO_INT)
-									&& tipo3.equals(TIPO_INT))
-								tipoRes = new Tipo(TIPO_INT, 1);
+								tipoRes = new TipoEntero();
+							else if (tipo1 instanceof TipoEntero
+									&& tipo3 instanceof TipoEntero)
+								tipoRes = new TipoEntero();
 							else
-								tipoRes = new Tipo(TIPO_REAL, 1);
+								tipoRes = new TipoReal();
 						}
 						codigo.add(op);
 					} else {
@@ -408,10 +491,10 @@ public class AnalizadorSintactico {
 						// && tipo2.getTipo().equals(TIPO_INT)) {
 						codigo.add(op);
 						if (op instanceof Y_Logica || op instanceof Modulo)
-							tipoRes = new Tipo(TIPO_INT, 1);
-						else if (tipo1.equals(TIPO_INT)
-								&& tipo3.equals(TIPO_INT)) {
-							tipoRes = new Tipo(TIPO_INT, 1);
+							tipoRes = new TipoEntero();
+						else if (tipo1 instanceof TipoEntero
+								&& tipo3 instanceof TipoEntero) {
+							tipoRes = new TipoEntero();
 						} else
 							tipoRes = tipo3;
 						// }
@@ -439,7 +522,7 @@ public class AnalizadorSintactico {
 
 				if ((tipo = expresion5()) != null) {
 					if (!(op instanceof Negacion)
-							|| !(tipo.getTipo().equals(TIPO_REAL))) {
+							|| !(tipo instanceof TipoReal)) {
 						codigo.add(new CambioSigno());
 					} else {
 						error = true;
@@ -452,10 +535,10 @@ public class AnalizadorSintactico {
 				if ((tipo = expresion6()) != null) {
 					if (op instanceof CastInt) {
 						this.codigo.add(new CastInt());
-						tipo = new Tipo(TIPO_INT, 1);
+						tipo = new TipoEntero();
 					} else {
 						this.codigo.add(new CastInt());
-						tipo = new Tipo(TIPO_REAL, 1);
+						tipo = new TipoReal();
 					}
 
 				} else {
@@ -491,8 +574,8 @@ public class AnalizadorSintactico {
 							lexico.getColumna(), "Expresion mal formada");
 				}
 			} else if (reconoce(PalabrasReservadas.TOKEN_INT)) {
-				if (cast(lex, new Tipo(TIPO_INT, 1))) {
-					tipo = new Tipo(TIPO_INT, 1);
+				if (cast(lex, new TipoEntero())) {
+					tipo = new TipoEntero();
 					codigo.add(new Apilar(new DatoPila(DatoPila.INT, lex)));
 				} else {
 					error = true;
@@ -501,8 +584,8 @@ public class AnalizadorSintactico {
 							"No se puede parsear el valor a entero");
 				}
 			} else if (reconoce(PalabrasReservadas.TOKEN_REAL)) {
-				if (cast(lex, new Tipo(TIPO_REAL, 1))) {
-					tipo = new Tipo(TIPO_REAL, 1);
+				if (cast(lex, new TipoReal())) {
+					tipo = new TipoReal();
 					codigo.add(new Apilar(new DatoPila(DatoPila.REAL, lex)));
 				} else {
 					error = true;
@@ -658,10 +741,10 @@ public class AnalizadorSintactico {
 	private boolean cast(String valor, Tipo tipo) {
 		if (!error) {
 			try {
-				if (tipo.getTipo().equals(TIPO_INT)) {
+				if (tipo instanceof TipoEntero) {
 					Integer.parseInt(valor);
 					return true;
-				} else if (tipo.getTipo().equals(TIPO_REAL)) {
+				} else if (tipo instanceof TipoReal) {
 					Float.parseFloat(valor);
 					return true;
 				} else {

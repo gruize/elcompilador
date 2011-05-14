@@ -34,6 +34,7 @@ public abstract class InstruccionInterprete {
 	public static final byte CODIGO_ABS = (byte) 26;
 	public static final byte CODIGO_SALIDA = (byte) 27;
 	public static final byte CODIGO_ENTRADA = (byte) 30;
+	public static final byte CODIGO_LIMPIAR = (byte) 31;
 
 	private DatoPila dato;
 	private byte tipoIns;

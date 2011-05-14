@@ -23,6 +23,7 @@ public class CambioSigno extends InstruccionInterprete {
 	
 	@Override
 	public boolean ejecutate(Interprete interprete) {
+		
 		DatoPila d1 = interprete.getPila().pop();
 		DatoPila d2 = new DatoPila(DatoPila.INT, 0);
 

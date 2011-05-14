@@ -31,7 +31,13 @@ public class PalabrasReservadas {
 	public static String TOKEN_CAST_REAL = "tkcastreal";
 	public static String TOKEN_Y_LOGICA = "tk&&";
 	public static String TOKEN_O_LOGICA = "tk||";
+	public static String TOKEN_POINTER = "tkpointer";
 	
+	//TODO METER EN EL LEXICO
+	public static String TOKEN_CORCHETE_AB= "tk[";
+	public static String TOKEN_CORCHETE_CE = "tk]";
+	public static String TOKEN_REC = "tkrec";
+	public static String TOKEN_ENDREC = "tkendrec";
 
 	private Hashtable<String, String> palabrasReservadas = new Hashtable<String, String>();
 

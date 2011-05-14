@@ -16,7 +16,7 @@ public class TS {
 	
 	public Integer annadeID(String id, Integer dir, Tipo tipo){
 		tabla.put(id, new Detalles(id,dir,tipo));
-		Integer prim_dir_disponible = dir + tipo.getTamanyo();
+		Integer prim_dir_disponible = dir + tipo.getTamaño();
 		return prim_dir_disponible;
 	}
 	
