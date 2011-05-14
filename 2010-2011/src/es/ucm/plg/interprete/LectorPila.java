@@ -19,6 +19,7 @@ import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
 import es.ucm.plg.interprete.instrucciones.Igual;
+import es.ucm.plg.interprete.instrucciones.LimpiarPila;
 import es.ucm.plg.interprete.instrucciones.Mayor;
 import es.ucm.plg.interprete.instrucciones.MayorIg;
 import es.ucm.plg.interprete.instrucciones.Menor;
@@ -144,7 +145,10 @@ public class LectorPila {
 				inst = new Salida();
 				break;
 			case InstruccionInterprete.CODIGO_ENTRADA:
-				inst = new Entrada();
+				inst = new Entrada(leerDato(dis));
+				break;
+			case InstruccionInterprete.CODIGO_LIMPIAR:
+				inst = new LimpiarPila();
 				break;
 			default:
 				throw new IOException();
