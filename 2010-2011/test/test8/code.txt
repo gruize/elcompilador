@@ -1,0 +1,23 @@
+tipo rec
+  int tope;
+  real[100] valores;
+endrec tsecuencia;
+
+tipo pointer tcelda tarbol;
+
+tipo rec
+  real valor;
+  tarbol izq;
+  tarbol der;
+endrec tcelda;
+
+tarbol arbol;
+
+tsecuencia secuencia;
+
+arbol^.valor = 3.5;
+arbol^.izq = null;
+arbol^.der = null;
+
+secuencia.tope = 2 + 5;
+secuencia.valores[0] = 5 + 6;
