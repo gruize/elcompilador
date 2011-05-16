@@ -238,12 +238,6 @@ public class AnalizadorSintactico {
 							"Falta el tipo base del puntero");
 				}
 			}
-			else {
-				error = true;
-				GestorErrores.agregaError(11, lexico.getFila(),
-						lexico.getColumna(),
-						"Error en la declaracion del tipo");
-			}
 				
 		}
 		

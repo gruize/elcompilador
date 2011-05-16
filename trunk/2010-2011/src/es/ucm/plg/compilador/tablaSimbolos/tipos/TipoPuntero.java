@@ -14,7 +14,7 @@ public class TipoPuntero implements Tipo{
 	
 	@Override
 	public int getTamaño() {
-		return tipoBase.getTamaño();
+		return 1;
 	}
 
 }
