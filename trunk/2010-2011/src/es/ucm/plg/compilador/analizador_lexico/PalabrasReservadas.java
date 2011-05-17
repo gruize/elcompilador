@@ -49,6 +49,23 @@ public class PalabrasReservadas {
 		palabrasReservadas.put("real", "tkreal");
 		palabrasReservadas.put("in", "tkin");
 		palabrasReservadas.put("out", "tkout");
+		palabrasReservadas.put("if", "tkif");
+		palabrasReservadas.put("else", "tkelse");
+		palabrasReservadas.put("endif", "tkendif");
+		palabrasReservadas.put("then", "tkthen");
+		palabrasReservadas.put("while", "tkwhile");
+		palabrasReservadas.put("do", "tkdo");
+		palabrasReservadas.put("endwhile", "tkendwhile");
+		palabrasReservadas.put("tipo", "tktipo");
+		palabrasReservadas.put("rec", "tkrec");
+		palabrasReservadas.put("endrec", "tkendrec");
+		palabrasReservadas.put("pointer", "tkpointer");
+		palabrasReservadas.put("null", "tknull");
+		palabrasReservadas.put("alloc", "tkalloc");
+		palabrasReservadas.put("free", "tkfree");
+		palabrasReservadas.put("end", "tkend");
+		palabrasReservadas.put("return", "tkreturn");
+		palabrasReservadas.put("fun", "tkfun");
 	}
 
 	/**
