@@ -21,7 +21,7 @@ public class AnalizadorLexicoTest extends TestCase {
 
 		String programa = "";
 		BufferedReader br = new BufferedReader(new FileReader(new File(
-				"test/test1ok.txt")));
+				"test/test1/code.txt")));
 		String linea = br.readLine();
 		if (linea != null) {
 			programa += linea;

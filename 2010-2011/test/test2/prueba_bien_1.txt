@@ -1,4 +1,4 @@
-int a;
+int[7] a;
 int b;
 real c;
 int d;

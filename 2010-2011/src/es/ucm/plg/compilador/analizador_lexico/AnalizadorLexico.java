@@ -51,6 +51,8 @@ public class AnalizadorLexico {
 	private static final int CAST_REAL_FIN = 45;
 	private static final int AMPERSAND = 46;
 	private static final int BARRA = 47;
+	private static final int CORCHETE_ABIERTO = 49;
+	private static final int CORCHETE_CERRADO = 50;
 
 	private PalabrasReservadas palabrasReserva = new PalabrasReservadas();
 	private String lexema;
@@ -295,6 +297,12 @@ public class AnalizadorLexico {
 							case ')':
 								transita(PARENTESIS_CERRADO);
 								break;
+							case '[':
+								transita(CORCHETE_ABIERTO);
+								break;
+							case ']':
+								transita(CORCHETE_CERRADO);
+								break;
 							case '@':
 								transita(ARROBA);
 								break;
@@ -485,6 +493,18 @@ public class AnalizadorLexico {
 
 					encontrado = true;
 					encontrado(PalabrasReservadas.TOKEN_PARENTESIS_CE);
+					break;
+
+				case CORCHETE_ABIERTO:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_CORCHETE_AB);
+					break;
+
+				case CORCHETE_CERRADO:
+
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_CORCHETE_CE);
 					break;
 
 				case ARROBA:

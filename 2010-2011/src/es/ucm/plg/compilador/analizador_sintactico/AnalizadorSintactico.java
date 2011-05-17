@@ -7,13 +7,13 @@ import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
 import es.ucm.plg.compilador.analizador_lexico.PalabrasReservadas;
 import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Campo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoArray;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
-import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro.Campo;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
@@ -206,24 +206,16 @@ public class AnalizadorSintactico {
 					tipoResult = tipoBase;
 				}
 			}
-			else if(reconoce(PalabrasReservadas.TOKEN_REC)) { //REGISTROS
+			else if(reconoce(PalabrasReservadas.TOKEN_REC) && reconoce(PalabrasReservadas.TOKEN_ID)) { //REGISTROS
 				List<Campo> campos = campos();
-				if (campos.size() > 0) {
-					if (reconoce(PalabrasReservadas.TOKEN_ENDREC)) {
-						tipoResult = new TipoRegistro(campos);
-					}
-					else {
-						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(),
-								lexico.getColumna(),
-								"Falta un endrec");
-					}
-				}
-				else {
+				if (campos.size() == 0) {
 					error = true;
 					GestorErrores.agregaError(11, lexico.getFila(),
 							lexico.getColumna(),
 							"Debe declarar al menos un campo en el record");
+				}
+				else {
+					tipoResult = new TipoRegistro(campos);
 				}
 			} 
 			else if (reconoce(PalabrasReservadas.TOKEN_POINTER)) { //PUNTEROS
@@ -245,8 +237,27 @@ public class AnalizadorSintactico {
 	}
 
 	private List<Campo> campos() {
-		// TODO IMPLEMENTAR EL RECONOCIMIENTO DE CAMPOS
-		return null;
+		List<Campo> campos = new ArrayList<Campo>();
+		Tipo tipoBase = desctipo();
+		boolean endRec = false;
+		
+		while (!(endRec = reconoce(PalabrasReservadas.TOKEN_ENDREC)) && tipoBase != null) {
+			String id = lexico.getLexema();
+			if (reconoce(PalabrasReservadas.TOKEN_ID) && reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
+				campos.add(new Campo(tipoBase, id));
+			}
+			tipoBase = desctipo();
+		}
+		
+		if (!endRec) {
+			error = true;
+			campos.clear();
+			GestorErrores.agregaError(11, lexico.getFila(),
+					lexico.getColumna(),
+					"Error en los campos del registro");			
+		}
+		
+		return campos;
 	}
 
 	public boolean acciones() throws Exception {
