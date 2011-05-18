@@ -22,6 +22,7 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.HeaderTokeniz
 import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
 import es.ucm.plg.compilador.analizador_lexico.DatosToken;
 import es.ucm.plg.compilador.analizador_sintactico.AnalizadorSintactico;
+import es.ucm.plg.interfaz.EjecucionThread;
 import es.ucm.plg.interprete.EscritorPila;
 import es.ucm.plg.interprete.InstruccionInterprete;
 

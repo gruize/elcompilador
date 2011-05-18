@@ -53,6 +53,7 @@ public class AnalizadorLexico {
 	private static final int BARRA = 47;
 	private static final int CORCHETE_ABIERTO = 49;
 	private static final int CORCHETE_CERRADO = 50;
+	private static final int PUNTERO = 51;
 
 	private PalabrasReservadas palabrasReserva = new PalabrasReservadas();
 	private String lexema;
@@ -225,7 +226,7 @@ public class AnalizadorLexico {
 		this.lexema = "";
 
 		if (!fin_programa && !errorLexico) {
-			while (!encontrado) {
+			while (!encontrado && !fin_programa) {
 
 				if (programa.length() < indice)
 					fin_programa = true;
@@ -312,14 +313,17 @@ public class AnalizadorLexico {
 							case '!':
 								transita(NEGACION);
 								break;
+							case '^':
+								transita(PUNTERO);
+								break;
 							default:
 								error();
 								break;
 							}
 						}
 					}
-					break;
-
+					break;				
+					
 				case PUNTO_Y_COMA:
 
 					encontrado = true;
@@ -858,6 +862,11 @@ public class AnalizadorLexico {
 				case O_LOGICA:
 					encontrado = true;
 					encontrado(PalabrasReservadas.TOKEN_O_LOGICA);
+					break;
+					
+				case PUNTERO:
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_POINTER);
 					break;
 
 				default:
