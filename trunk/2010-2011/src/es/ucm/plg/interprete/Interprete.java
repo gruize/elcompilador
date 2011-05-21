@@ -260,4 +260,9 @@ public class Interprete {
 	public PrintWriter getWriter() {
 		return writer;
 	}
+
+	public ArrayList<InstruccionInterprete> getPrograma() {
+		return programa;
+	}	
+	
 }
