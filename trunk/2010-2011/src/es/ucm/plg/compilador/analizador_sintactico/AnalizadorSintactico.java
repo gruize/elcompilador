@@ -48,6 +48,7 @@ public class AnalizadorSintactico {
 	private int dir;
 	private boolean error;
 	private boolean finDecs;
+	private Tipos tipos;
 
 	public AnalizadorSintactico(AnalizadorLexico lexico) {
 		this.lexico = lexico;
@@ -72,6 +73,10 @@ public class AnalizadorSintactico {
 	public boolean isError() {
 		return error;
 	}
+	
+	public void setError(boolean error) {
+		this.error = error;
+	}
 
 	public void iniciaSintactico() {
 		programa();
@@ -79,6 +84,7 @@ public class AnalizadorSintactico {
 
 	public void programa() {
 		try {
+			this.tipos = new Tipos(this);
 			this.lexico.scanner();
 			this.error = false;
 			this.dir = 0;
@@ -115,7 +121,7 @@ public class AnalizadorSintactico {
 		if (!error) {
 
 			// Reconozco el tipo
-			Tipo tipo = defTipo();
+			Tipo tipo = tipos.defTipo();
 			if (tipo != null) {
 				String lex = lexico.getLexema();
 
@@ -163,103 +169,7 @@ public class AnalizadorSintactico {
 		}
 	}
 
-	private Tipo desctipo() {
-
-		Tipo tipo = null;
-
-		if (!error) {
-			if (reconoce(PalabrasReservadas.TOKEN_INT))
-				tipo = new TipoEntero();
-			else if (reconoce(PalabrasReservadas.TOKEN_REAL))
-				tipo = new TipoReal();
-		}
-
-		return tipo;
-
-	}
-
-	private Tipo defTipo() {
-
-		Tipo tipoResult = null;
-
-		if (!error) {
-			Tipo tipoBase = desctipo();
-			if (tipoBase != null) { //ARRAYS
-				if (reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
-					int num = Integer.parseInt(lexico.getLexema());
-					if (reconoce(PalabrasReservadas.TOKEN_INT)) {
-						if (reconoce(PalabrasReservadas.TOKEN_CORCHETE_CE)) {
-							tipoResult = new TipoArray(tipoBase, num);
-						} else {
-							error = true;
-							GestorErrores.agregaError(11, lexico.getFila(),
-									lexico.getColumna(),
-									"Error en la declaración del array");
-						}
-					} else {
-						error = true;
-						GestorErrores.agregaError(11, lexico.getFila(),
-								lexico.getColumna(),
-								"Error en la declaración del array");
-					}
-				}
-				else { //TIPO BASICO
-					tipoResult = tipoBase;
-				}
-			}
-			else if(reconoce(PalabrasReservadas.TOKEN_REC) && reconoce(PalabrasReservadas.TOKEN_ID)) { //REGISTROS
-				List<Campo> campos = campos();
-				if (campos.size() == 0) {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(),
-							lexico.getColumna(),
-							"Debe declarar al menos un campo en el record");
-				}
-				else {
-					tipoResult = new TipoRegistro(campos);
-				}
-			} 
-			else if (reconoce(PalabrasReservadas.TOKEN_POINTER)) { //PUNTEROS
-				tipoBase = desctipo();
-				if (tipoBase != null) {
-					tipoResult = new TipoPuntero(tipoBase);
-				}
-				else {
-					error = true;
-					GestorErrores.agregaError(11, lexico.getFila(),
-							lexico.getColumna(),
-							"Falta el tipo base del puntero");
-				}
-			}
-				
-		}
-		
-		return tipoResult;
-	}
-
-	private List<Campo> campos() {
-		List<Campo> campos = new ArrayList<Campo>();
-		Tipo tipoBase = desctipo();
-		boolean endRec = false;
-		
-		while (!(endRec = reconoce(PalabrasReservadas.TOKEN_ENDREC)) && tipoBase != null) {
-			String id = lexico.getLexema();
-			if (reconoce(PalabrasReservadas.TOKEN_ID) && reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
-				campos.add(new Campo(tipoBase, id));
-			}
-			tipoBase = desctipo();
-		}
-		
-		if (!endRec) {
-			error = true;
-			campos.clear();
-			GestorErrores.agregaError(11, lexico.getFila(),
-					lexico.getColumna(),
-					"Error en los campos del registro");			
-		}
-		
-		return campos;
-	}
+	
 
 	public boolean acciones() throws Exception {
 
