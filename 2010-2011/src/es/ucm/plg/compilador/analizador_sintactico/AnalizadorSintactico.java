@@ -27,6 +27,7 @@ import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
 import es.ucm.plg.interprete.instrucciones.Igual;
+import es.ucm.plg.interprete.instrucciones.IrA;
 import es.ucm.plg.interprete.instrucciones.IrF;
 import es.ucm.plg.interprete.instrucciones.LimpiarPila;
 import es.ucm.plg.interprete.instrucciones.Mayor;
@@ -240,7 +241,7 @@ public class AnalizadorSintactico {
 				}
 			}
 			
-			/**Anterior/
+			/**PrimeraParte/
 			Tipo tipo = expresion();
 			if (tipo != null) {
 				if (reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
@@ -258,7 +259,7 @@ public class AnalizadorSintactico {
 				GestorErrores.agregaError(11, lexico.getFila(),
 						lexico.getColumna(), "Se esperaba una expresion");
 			}
-			/Anterior**/
+			/PrimeraParte**/
 		}
 
 		return ok;
@@ -282,27 +283,57 @@ public class AnalizadorSintactico {
 				if(tipo instanceof TipoEntero && reconoce(PalabrasReservadas.TOKEN_THEN)){
 					this.codigo.add(new IrF(null));
 					int irfalseAux = this.codigo.size() - 1;
-					ok = bloque();
-					this.codigo.set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, this.etq + 1)));
-					//ME QUEDO AQUI -- GABI
-					ok = accionelse();
+					this.etq++;
+					ok = bloque(PalabrasReservadas.TOKEN_IF);
+					this.etq++;
+					this.codigo.set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, this.etq)));
+					this.codigo.add(new IrA(null));
+					int irAAux = this.codigo.size() - 1;
+					ok = accionelse();					
+					this.codigo.set(irAAux, new IrA(new DatoPila(DatoPila.INT, this.etq)));
+					this.reconoce(PalabrasReservadas.TOKEN_END_IF);
 				}else{
 					error = true;
-					GestorErrores.agregaError(101, lexico.getFila(),lexico.getColumna(), "Se esperaba una expresion de tipo entero (Comparacion)");
+					GestorErrores.agregaError(102, lexico.getFila(),lexico.getColumna(), "Se esperaba la palabra Then");
 				}
+			}else{
+				error = true;
+				GestorErrores.agregaError(101, lexico.getFila(),lexico.getColumna(), "Se esperaba una expresion de tipo entero (Comparacion)");
 			}
 		}
 		return ok;
 	}
 
-	private boolean accionelse() {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean bloque(String tokenFinaliza) throws Exception {
+		boolean ok = false;
+		if(!error){
+			if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_IF)){
+				while(!error && !this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE) &&
+					!this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF) &&
+					!lexico.isFin_programa()){
+					ok = ok && accion();
+				}
+			}else{
+				if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_ELSE)){
+					while(!error && !this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF) &&
+							!lexico.isFin_programa()){
+							ok = ok && accion();
+						}
+				}//else{ Resto de token para los que se requieren bloques
+			}
+		}
+		return ok;
 	}
 
-	private boolean bloque() {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean accionelse() throws Exception {
+		boolean ok = false;
+		if(!error){
+			if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE)){
+				this.reconoce(PalabrasReservadas.TOKEN_ELSE);
+				ok = bloque(PalabrasReservadas.TOKEN_ELSE);
+			}
+		}
+		return ok;
 	}
 
 	private boolean accionIteracion() throws Exception{
