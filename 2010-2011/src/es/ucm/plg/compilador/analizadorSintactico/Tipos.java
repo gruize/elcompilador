@@ -319,9 +319,10 @@ public class Tipos {
 	/*
 	 * mem ≡ id memRE
 	 */
-	public void mem() throws SintacticoException {
+	public Tipo mem() throws SintacticoException {
 
 		String id = sintactico.getLexico().getLexema();
+		Tipo tipo = null;
 
 		try {
 			// id
@@ -340,13 +341,16 @@ public class Tipos {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
+
+				// cod = accesoVar(mem.tsh[id.lex])
+				accesoVar(id);
+
+				// memRE
+				tipo = memRE(GestorTS.getInstancia().getDetalles(id).getTipo());
+				
 			}
-
-			// cod = accesoVar(mem.tsh[id.lex])
-			accesoVar(id);
-
-			// memRE
-			memRE(GestorTS.getInstancia().getDetalles(id).getTipo());
+			
+			return tipo;
 
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
@@ -541,6 +545,11 @@ public class Tipos {
 	private boolean referenciaErronea() {
 		// TODO HACER!!!
 		return false;
+	}
+	
+	public boolean compatibles(Tipo tipo1, Tipo tipo2) {
+		// FIXME HACER!!
+		return true;
 	}
 
 	@SuppressWarnings("serial")
