@@ -48,6 +48,7 @@ public class PalabrasReservadas {
 	public static String TOKEN_END_WHILE = "tkendwhile";
 	public static String TOKEN_RESERVA = "tkalloc";
 	public static String TOKEN_LIBERA = "tkfree";
+	public static String TOKEN_TIPO = "tkTipo";
 
 	private Hashtable<String, String> palabrasReservadas = new Hashtable<String, String>();
 

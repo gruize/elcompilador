@@ -289,10 +289,14 @@ public class CompiladorFrame extends javax.swing.JFrame {
 	}// GEN-LAST:event_EnviarButtonActionPerformed
 
 	private void compilarButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_compilarButtonActionPerformed
+		textAreaEjecucion.removeAll();
+		textAreaDebug.removeAll();
 		compilar();
 	}// GEN-LAST:event_compilarButtonActionPerformed
 
 	private void ejecutarButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ejecutarButtonActionPerformed
+		textAreaEjecucion.removeAll();
+		textAreaDebug.removeAll();
 		if (opcionesEjecucionPanel == null) {
 			opcionesEjecucionPanel = new JPanel();
 			opcionesEjecucionPanel.setLayout(new BoxLayout(
