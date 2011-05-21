@@ -80,7 +80,7 @@ public class AnalizadorSintactico {
 	public void setError(boolean error) {
 		this.error = error;
 	}
-
+	
 	public void iniciaSintactico() {
 		programa();
 	}
@@ -291,10 +291,15 @@ public class AnalizadorSintactico {
 					int irAAux = this.codigo.size() - 1;
 					ok = accionelse();					
 					this.codigo.set(irAAux, new IrA(new DatoPila(DatoPila.INT, this.etq)));
-					this.reconoce(PalabrasReservadas.TOKEN_END_IF);
+					if(!this.reconoce(PalabrasReservadas.TOKEN_END_IF)){
+						error = true;
+						GestorErrores.agregaError(106, lexico.getFila(),lexico.getColumna(), "Alternativa sin finalizar. Se esperaba la palabra EndIf");
+					}
+					if(this.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
+						ok = true;
 				}else{
 					error = true;
-					GestorErrores.agregaError(102, lexico.getFila(),lexico.getColumna(), "Se esperaba la palabra Then");
+					GestorErrores.agregaError(103, lexico.getFila(),lexico.getColumna(), "Se esperaba un entero con valor 1 o 0 y la palabra Then");
 				}
 			}else{
 				error = true;
@@ -307,18 +312,17 @@ public class AnalizadorSintactico {
 	private boolean bloque(String tokenFinaliza) throws Exception {
 		boolean ok = false;
 		if(!error){
-			if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_IF)){
-				while(!error && !this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE) &&
+			if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_IF) || tokenFinaliza.equals(PalabrasReservadas.TOKEN_ELSIF)){
+				while(!error && !this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ELSIF) &&
 					!this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF) &&
 					!lexico.isFin_programa()){
 					ok = ok && accion();
 				}
 			}else{
-				if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_ELSE)){
-					while(!error && !this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF) &&
-							!lexico.isFin_programa()){
-							ok = ok && accion();
-						}
+				if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_WHILE)){
+					while(!error && !lexico.isFin_programa() && 
+						!this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_END_WHILE))
+						ok = ok && accion();
 				}//else{ Resto de token para los que se requieren bloques
 			}
 		}
@@ -328,17 +332,62 @@ public class AnalizadorSintactico {
 	private boolean accionelse() throws Exception {
 		boolean ok = false;
 		if(!error){
-			if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE)){
-				this.reconoce(PalabrasReservadas.TOKEN_ELSE);
-				ok = bloque(PalabrasReservadas.TOKEN_ELSE);
+			if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_ELSIF)){
+				this.reconoce(PalabrasReservadas.TOKEN_ELSIF);
+				Tipo tipo = expresion2();
+				if(tipo instanceof TipoEntero && reconoce(PalabrasReservadas.TOKEN_THEN)){
+					this.codigo.add(new IrF(null));
+					int irfalseAux = this.codigo.size() - 1;
+					this.etq++;
+					ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
+					this.etq++;
+					this.codigo.set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, this.etq)));
+					this.codigo.add(new IrA(null));
+					int irAAux = this.codigo.size() - 1;
+					ok = accionelse();					
+					this.codigo.set(irAAux, new IrA(new DatoPila(DatoPila.INT, this.etq)));
+					if(!this.reconoce(PalabrasReservadas.TOKEN_END_IF)){
+						error = true;
+						GestorErrores.agregaError(106, lexico.getFila(),lexico.getColumna(), "Alternativa sin finalizar. Se esperaba la palabra EndIf");
+					}
+					if(this.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
+						ok = true;
+				}else{
+					error = true;
+					GestorErrores.agregaError(102, lexico.getFila(),lexico.getColumna(), "Se esperaba un entero con valor 1 o 0 y la palabra Then");
+				}
 			}
 		}
 		return ok;
 	}
 
 	private boolean accionIteracion() throws Exception{
-		// TODO Auto-generated method stub
-		return false;
+		boolean ok = false;
+		if(!error){
+			if(reconoce(PalabrasReservadas.TOKEN_WHILE)){
+				int whileAux = this.etq;
+				Tipo tipo = expresion2();
+				if(tipo instanceof TipoEntero && reconoce(PalabrasReservadas.TOKEN_DO)){				
+					this.codigo.add(new IrF(null));
+					int irFalseAux = this.codigo.size() - 1;
+					this.etq++;
+					ok = bloque(PalabrasReservadas.TOKEN_WHILE);
+					this.etq++;
+					this.codigo.set(irFalseAux, new IrF(new DatoPila(DatoPila.INT, this.etq)));
+					this.codigo.add(new IrA(new DatoPila(DatoPila.INT, whileAux)));
+					if(!this.reconoce(PalabrasReservadas.TOKEN_END_WHILE)){
+						error = true;
+						GestorErrores.agregaError(105, lexico.getFila(),lexico.getColumna(), "Bucle infinito. Se esperaba la palabra EndWhile");
+					}					
+					if(this.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
+						ok = true;
+				}else{
+					error = true;
+					GestorErrores.agregaError(104, lexico.getFila(),lexico.getColumna(), "Se esperaba un entero con valor 1 o 0 y la palabra Do");
+				}
+			}
+		}
+		return ok;
 	}
 
 	private Tipo expresion() throws Exception {
