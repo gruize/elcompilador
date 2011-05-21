@@ -3,7 +3,7 @@ package es.ucm.plg.compilador.analizador_lexico;
 import java.util.Hashtable;
 
 public class PalabrasReservadas {
-	
+		
 	public static String TOKEN_INT = "tkint";
 	public static String TOKEN_REAL = "tkreal";
 	public static String TOKEN_IN = "tkin";
@@ -31,16 +31,23 @@ public class PalabrasReservadas {
 	public static String TOKEN_CAST_REAL = "tkcastreal";
 	public static String TOKEN_Y_LOGICA = "tk&&";
 	public static String TOKEN_O_LOGICA = "tk||";
-	public static final String TOKEN_POINTER = "tkpointer";
+	public static String TOKEN_POINTER = "tkpointer";
 	public static String TOKEN_COMA = "tkcoma";
 	public static String TOKEN_AMSPERSAND_VALOR = "tk&";
 	public static String TOKEN_PUNTERO_FLECHA = "tk^";
-	
-	//TODO METER EN EL LEXICO
 	public static String TOKEN_CORCHETE_AB= "tk[";
 	public static String TOKEN_CORCHETE_CE = "tk]";
 	public static String TOKEN_REC = "tkrec";
 	public static String TOKEN_ENDREC = "tkendrec";
+	public static String TOKEN_IF = "tkif";
+	public static String TOKEN_ELSE = "tkelse";
+	public static String TOKEN_THEN = "tkthen";
+	public static String TOKEN_END_IF = "tkendif";
+	public static String TOKEN_WHILE = "tkwhile";
+	public static String TOKEN_DO = "tkdo";
+	public static String TOKEN_END_WHILE = "tkendwhile";
+	public static String TOKEN_RESERVA = "tkalloc";
+	public static String TOKEN_LIBERA = "tkfree";
 
 	private Hashtable<String, String> palabrasReservadas = new Hashtable<String, String>();
 

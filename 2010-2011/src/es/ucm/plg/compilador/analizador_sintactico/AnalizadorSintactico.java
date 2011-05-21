@@ -15,6 +15,7 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
 import es.ucm.plg.interprete.InstruccionInterprete;
+import es.ucm.plg.interprete.Interprete;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
 import es.ucm.plg.interprete.instrucciones.ApilarDir;
@@ -303,6 +304,30 @@ public class AnalizadorSintactico {
 		boolean ok = false;
 
 		if (!error) {
+			Tipo tipo = null;
+			if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_IF)){
+				ok = accionAlternativa();
+			}else{
+				if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_WHILE)){
+					ok = accionIteracion();
+				}else{
+					if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_RESERVA)){
+						ok = accionReserva();
+					}else{
+						if(this.lexico.getToken_actual().equals(PalabrasReservadas.TOKEN_LIBERA)){
+							ok = accionLibera();
+						}else{
+							//Falta invocacion y expresion basica
+							//else{
+								error = true;
+								GestorErrores.agregaError(100, lexico.getFila(),lexico.getColumna(), "Se esperaba una accion");
+							//}
+						}
+					}
+				}
+			}
+			
+			/**Anterior/
 			Tipo tipo = expresion();
 			if (tipo != null) {
 				if (reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
@@ -320,10 +345,42 @@ public class AnalizadorSintactico {
 				GestorErrores.agregaError(11, lexico.getFila(),
 						lexico.getColumna(), "Se esperaba una expresion");
 			}
-
+			/Anterior**/
 		}
 
 		return ok;
+	}
+
+	private boolean accionLibera() throws Exception{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean accionReserva() throws Exception{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean accionAlternativa() throws Exception{
+		boolean ok = false;
+		
+		if(!error){
+			if(reconoce(PalabrasReservadas.TOKEN_IF)){
+				Tipo tipo = expresion2();
+				if(tipo instanceof TipoEntero){
+					//ME QUEDO AQUI -- GABI
+				}else{
+					error = true;
+					GestorErrores.agregaError(101, lexico.getFila(),lexico.getColumna(), "Se esperaba una expresion de tipo entero (Comparacion)");
+				}
+			}
+		}
+		return ok;
+	}
+
+	private boolean accionIteracion() throws Exception{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	private Tipo expresion() throws Exception {
