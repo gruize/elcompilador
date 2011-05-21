@@ -1,4 +1,4 @@
-package es.ucm.plg.compilador.analizador_lexico;
+package es.ucm.plg.compilador.analizadorLexico;
 
 import java.io.PrintWriter;
 import java.util.Vector;

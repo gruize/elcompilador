@@ -1,4 +1,4 @@
-package es.ucm.plg.compilador.analizador_lexico;
+package es.ucm.plg.compilador.analizadorLexico;
 
 import java.util.Hashtable;
 
@@ -40,7 +40,7 @@ public class PalabrasReservadas {
 	public static String TOKEN_REC = "tkrec";
 	public static String TOKEN_ENDREC = "tkendrec";
 	public static String TOKEN_IF = "tkif";
-	public static String TOKEN_ELSIF = "tkelsif";
+	public static String TOKEN_ELSE = "tkelse";
 	public static String TOKEN_THEN = "tkthen";
 	public static String TOKEN_END_IF = "tkendif";
 	public static String TOKEN_WHILE = "tkwhile";
@@ -61,7 +61,7 @@ public class PalabrasReservadas {
 		palabrasReservadas.put("in", "tkin");
 		palabrasReservadas.put("out", "tkout");
 		palabrasReservadas.put("if", "tkif");
-		palabrasReservadas.put("elsif", "tkelsif");
+		palabrasReservadas.put("else", "tkelse");
 		palabrasReservadas.put("endif", "tkendif");
 		palabrasReservadas.put("then", "tkthen");
 		palabrasReservadas.put("while", "tkwhile");
