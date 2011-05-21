@@ -27,6 +27,7 @@ import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
 import es.ucm.plg.interprete.instrucciones.Igual;
+import es.ucm.plg.interprete.instrucciones.IrF;
 import es.ucm.plg.interprete.instrucciones.LimpiarPila;
 import es.ucm.plg.interprete.instrucciones.Mayor;
 import es.ucm.plg.interprete.instrucciones.MayorIg;
@@ -49,6 +50,7 @@ public class AnalizadorSintactico {
 	private boolean error;
 	private boolean finDecs;
 	private Tipos tipos;
+	private int etq;
 
 	public AnalizadorSintactico(AnalizadorLexico lexico) {
 		this.lexico = lexico;
@@ -88,6 +90,7 @@ public class AnalizadorSintactico {
 			this.lexico.scanner();
 			this.error = false;
 			this.dir = 0;
+			this.etq = 0;
 			this.finDecs = false;
 			declaraciones();
 			this.codigo = new ArrayList<InstruccionInterprete>();
@@ -272,13 +275,17 @@ public class AnalizadorSintactico {
 	}
 
 	private boolean accionAlternativa() throws Exception{
-		boolean ok = false;
-		
+		boolean ok = false;		
 		if(!error){
 			if(reconoce(PalabrasReservadas.TOKEN_IF)){
 				Tipo tipo = expresion2();
-				if(tipo instanceof TipoEntero){
+				if(tipo instanceof TipoEntero && reconoce(PalabrasReservadas.TOKEN_THEN)){
+					this.codigo.add(new IrF(null));
+					int irfalseAux = this.codigo.size() - 1;
+					ok = bloque();
+					this.codigo.set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, this.etq + 1)));
 					//ME QUEDO AQUI -- GABI
+					ok = accionelse();
 				}else{
 					error = true;
 					GestorErrores.agregaError(101, lexico.getFila(),lexico.getColumna(), "Se esperaba una expresion de tipo entero (Comparacion)");
@@ -286,6 +293,16 @@ public class AnalizadorSintactico {
 			}
 		}
 		return ok;
+	}
+
+	private boolean accionelse() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean bloque() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	private boolean accionIteracion() throws Exception{
