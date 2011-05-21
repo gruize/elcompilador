@@ -4,6 +4,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
+import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 
 public class TS {
@@ -14,8 +15,8 @@ public class TS {
 		tabla = new Hashtable<String,Detalles>();
 	}
 	
-	public Integer annadeID(String id, Integer dir, Tipo tipo){
-		tabla.put(id, new Detalles(id,dir,tipo));
+	public Integer annadeID(String id, Integer dir, Tipo tipo, Clase clase, int nivel){
+		tabla.put(id, new Detalles(id,dir,tipo, clase, nivel));
 		Integer prim_dir_disponible = dir + tipo.getTamaño();
 		return prim_dir_disponible;
 	}

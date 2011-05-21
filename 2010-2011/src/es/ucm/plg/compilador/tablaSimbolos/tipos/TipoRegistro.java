@@ -1,28 +1,31 @@
 package es.ucm.plg.compilador.tablaSimbolos.tipos;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class TipoRegistro implements Tipo{
 	
-	private List<Campo> campos;
+	private HashMap<String, Campo> campos;
 		
-	public TipoRegistro(List<Campo> campos) {
+	public TipoRegistro(HashMap<String, Campo> campos) {
 		this.setCampos(campos);
 	}
 	
-	public void setCampos(List<Campo> campos) {
+	public void setCampos(HashMap<String, Campo> campos) {
 		this.campos = campos;
 	}
 
-	public List<Campo> getCampos() {
+	public HashMap<String, Campo> getCampos() {
 		return campos;
 	}
 
 	public int getTamaño() {
-		int tamaño = 0;
 		
-		for (Campo c : campos) {
-			tamaño += c.getTipoBase().getTamaño();
+		int tamaño = 0;
+		Iterator<Campo> itCampos = campos.values().iterator();
+		
+		while (itCampos.hasNext()) {
+			tamaño += itCampos.next().getTipoBase().getTamaño();
 		}
 		
 		return tamaño;

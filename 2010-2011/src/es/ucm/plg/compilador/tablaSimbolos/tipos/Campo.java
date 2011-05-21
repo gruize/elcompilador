@@ -4,10 +4,12 @@ public class Campo {
 	
 	private Tipo tipoBase;
 	private String nombre;
+	private int desplazamiento;
 	
-	public Campo(Tipo tipo, String nombre) {
+	public Campo(Tipo tipo, String nombre, int desplazamiento) {
 		this.tipoBase = tipo;
 		this.nombre = nombre;
+		this.setDesplazamiento(desplazamiento);
 	}
 	
 	public void setTipoBase(Tipo tipoBase) {
@@ -24,6 +26,14 @@ public class Campo {
 	
 	public String getNombre() {
 		return nombre;
+	}
+
+	public void setDesplazamiento(int desplazamiento) {
+		this.desplazamiento = desplazamiento;
+	}
+
+	public int getDesplazamiento() {
+		return desplazamiento;
 	}
 	
 }

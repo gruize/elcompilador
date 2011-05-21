@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
-import es.ucm.plg.compilador.analizador_lexico.DatosToken;
+import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
+import es.ucm.plg.compilador.analizadorLexico.DatosToken;
 
 public class AnalizadorLexicoTest extends TestCase {
 
