@@ -11,6 +11,7 @@ public class SintacticoException extends Exception{
 	public static final String FALTA_ID = "Se esperaba un identificador";
 	public static final String FALTA_PUNTO_COMA = "Se esperaba un punto y coma";
 	public static final String VARIABLE_NO_DECLARADA = "Acceso a una variable no declarada";
+	public static final String VARIABLE_DUPLICADA = "Ya existe una variable con ese identificador";
 	
 	private String message;
 	private String lexema;

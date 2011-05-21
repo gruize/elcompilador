@@ -82,10 +82,10 @@ public class Expresiones {
 						new ApilarDir(new DatoPila(DatoPila.INT, GestorTS
 								.getInstancia().getDir(lex))));
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"No se puede asignar un real a un entero");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"No se puede asignar un real a un entero");
 			}
 		}
 		// �Es una expresion 2?
@@ -120,10 +120,10 @@ public class Expresiones {
 		if (tipo != null) {
 			tipo = expresion3RE(tipo);
 		} else {
-			sintactico.setError(true);
-			// FIXME
-			GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-					sintactico.getLexico().getColumna(), "Error error");
+//			sintactico.setError(true);
+//			// FIXME
+//			GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//					sintactico.getLexico().getColumna(), "Error error");
 		}
 		return tipo;
 	}
@@ -149,16 +149,16 @@ public class Expresiones {
 					}
 					sintactico.getCodigo().add(op);
 				} else {
-					sintactico.setError(true);
-					GestorErrores.agregaError(11, sintactico.getLexico()
-							.getFila(), sintactico.getLexico().getColumna(),
-							"Se esperaba una expresión de tipo 4");
+//					sintactico.setError(true);
+//					GestorErrores.agregaError(11, sintactico.getLexico()
+//							.getFila(), sintactico.getLexico().getColumna(),
+//							"Se esperaba una expresión de tipo 4");
 				}
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"Se esperaba una expresión de tipo 4");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"Se esperaba una expresión de tipo 4");
 			}
 		} else
 			tipoRes = tipo1;
@@ -174,10 +174,10 @@ public class Expresiones {
 		if (tipo != null) {
 			tipo = expresion4RE(tipo);
 		} else {
-			sintactico.setError(true);
-			// FIXME
-			GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-					sintactico.getLexico().getColumna(), "Error error");
+//			sintactico.setError(true);
+//			// FIXME
+//			GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//					sintactico.getLexico().getColumna(), "Error error");
 		}
 
 		return tipo;
@@ -205,10 +205,10 @@ public class Expresiones {
 					// }
 				}
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"Se esperaba una expresion de tipo 5");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"Se esperaba una expresion de tipo 5");
 			}
 		} else
 			tipoRes = tipo1;
@@ -227,10 +227,10 @@ public class Expresiones {
 				if (!(op instanceof Negacion) || !(tipo instanceof TipoReal)) {
 					sintactico.getCodigo().add(new CambioSigno());
 				} else {
-					sintactico.setError(true);
-					GestorErrores.agregaError(11, sintactico.getLexico()
-							.getFila(), sintactico.getLexico().getColumna(),
-							"El tipo de la expresion debe ser un entero");
+//					sintactico.setError(true);
+//					GestorErrores.agregaError(11, sintactico.getLexico()
+//							.getFila(), sintactico.getLexico().getColumna(),
+//							"El tipo de la expresion debe ser un entero");
 				}
 			}
 		} else if ((op = op5noAsoc()) != null) {
@@ -244,10 +244,10 @@ public class Expresiones {
 				}
 
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"Se esperaba una expresion de tipo 6");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"Se esperaba una expresion de tipo 6");
 			}
 		} else
 			tipo = expresion6();
@@ -264,16 +264,16 @@ public class Expresiones {
 			if ((tipo = expresion()) != null) {
 				if (!sintactico
 						.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
-					sintactico.setError(true);
-					GestorErrores.agregaError(11, sintactico.getLexico()
-							.getFila(), sintactico.getLexico().getColumna(),
-							"Falta parentesis de cierre");
+//					sintactico.setError(true);
+//					GestorErrores.agregaError(11, sintactico.getLexico()
+//							.getFila(), sintactico.getLexico().getColumna(),
+//							"Falta parentesis de cierre");
 				}
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"Expresion mal formada");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"Expresion mal formada");
 			}
 		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_INT)) {
 			if (cast(lex, new TipoEntero())) {
@@ -281,10 +281,10 @@ public class Expresiones {
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.INT, lex)));
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"No se puede parsear el valor a entero");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"No se puede parsear el valor a entero");
 			}
 		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_REAL)) {
 			if (cast(lex, new TipoReal())) {
@@ -292,10 +292,10 @@ public class Expresiones {
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.REAL, lex)));
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"No se puede parsear el valor a real");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"No se puede parsear el valor a real");
 			}
 		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 			if (GestorTS.getInstancia().existeID(lex)) {
@@ -304,10 +304,10 @@ public class Expresiones {
 						new ApilarDir(new DatoPila(DatoPila.INT, GestorTS
 								.getInstancia().getDir(lex))));
 			} else {
-				sintactico.setError(true);
-				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-						sintactico.getLexico().getColumna(),
-						"Variable no declarada");
+//				sintactico.setError(true);
+//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+//						sintactico.getLexico().getColumna(),
+//						"Variable no declarada");
 			}
 		}
 

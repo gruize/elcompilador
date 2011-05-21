@@ -73,7 +73,7 @@ public class Acciones {
 					} else {
 						// Falta invocacion y expresion basica
 						// else{
-						sintactico.setError(true);
+//						sintactico.setError(true);
 						GestorErrores.agregaError(100, sintactico.getLexico()
 								.getFila(),
 								sintactico.getLexico().getColumna(),
@@ -119,7 +119,7 @@ public class Acciones {
 			if (tipo instanceof TipoEntero) {
 				// ME QUEDO AQUI -- GABI
 			} else {
-				sintactico.setError(true);
+//				sintactico.setError(true);
 				GestorErrores
 						.agregaError(101, sintactico.getLexico().getFila(),
 								sintactico.getLexico().getColumna(),
