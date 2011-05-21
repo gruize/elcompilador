@@ -71,4 +71,4 @@ tsecuencia secuencia;
 arbol := null;
 recolecta(arbol);
 out aplana(arbol,secuencia);
-libera(arbol); 
+libera(arbol);
