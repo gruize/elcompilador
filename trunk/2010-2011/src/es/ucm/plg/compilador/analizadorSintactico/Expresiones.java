@@ -1,7 +1,6 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
@@ -39,96 +38,244 @@ public class Expresiones {
 		this.sintactico = sintactico;
 	}
 
-	private Tipo expresion() throws Exception {
+	/*
+	 * expresion ≡ expresionMem || expresionIn || expresionOut || expresion2
+	 */
+	private Tipo expresion() throws SintacticoException {
 
-		if (sintactico.reconoce(PalabrasReservadas.TOKEN_IN)) {
-			String lex = sintactico.getLexico().getLexema();
-			sintactico.getCodigo().add(
-					new Entrada(new DatoPila(DatoPila.INT, GestorTS
-							.getInstancia().getDir(lex))));
-			// sintactico.getCodigo().add(new DesapilarDir(new
-			// DatoPila(DatoPila.INT,
-			// GestorTS
-			// .getInstancia().getDir(lex))));
-			sintactico.getLexico().scanner();
-			return GestorTS.getInstancia().getTipo(lex);
-		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_OUT)) {
-			Tipo tipo = expresion1();
-			sintactico.getCodigo().add(new Salida());
-			return tipo;
-		} else
-			return expresion1();
+		Tipo tipo = null;
+
+		// expresionMem
+		tipo = expresionMem();
+
+		if (tipo == null) {
+			tipo = expresionIn();
+		}
+
+		if (tipo == null) {
+			tipo = expresionOut();
+		}
+
+		if (tipo == null) {
+			tipo = expresion2();
+		}
+
+		return tipo;
+
 	}
 
-	private Tipo expresion1() throws Exception {
+	/*
+	 * expresionMem ≡ mem = expresion2
+	 */
+	private Tipo expresionMem() throws SintacticoException {
 
-		String lex = sintactico.getLexico().getLexema();
 		Tipo tipo1 = null;
+		Tipo tipo2 = null;
 
-		if (reconoceAsignacion()) {
+		try {
 
-			tipo1 = GestorTS.getInstancia().getTipo(lex);
+			// mem
+			tipo1 = sintactico.getTipos().mem();
 
-			// reconoce(PalabrasReservadas.TOKEN_ID);
-			Tipo tipo2 = expresion2();
-			if (!(tipo1 instanceof TipoEntero && tipo2 instanceof TipoReal)) {
-				if (tipo1 instanceof TipoReal) {
-					sintactico.getCodigo().add(new CastReal());
+			if (tipo1 != null) {
+
+				// =
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_IGUAL)) {
+					throw new MiExcepcion(
+							SintacticoException.EXPRESION_INVALIDA);
 				}
-				sintactico.getCodigo().add(
-						new DesapilarDir(new DatoPila(DatoPila.INT, GestorTS
-								.getInstancia().getDir(lex))));
-				sintactico.getCodigo().add(
-						new ApilarDir(new DatoPila(DatoPila.INT, GestorTS
-								.getInstancia().getDir(lex))));
-			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"No se puede asignar un real a un entero");
+
+				// expresion2
+				tipo2 = expresion2();
+
+				// error = !compatibles(expresion2.ts,mem.id,expresion2.tipo)
+				if (!sintactico.getTipos().compatibles(tipo1, tipo2)) {
+					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
+				}
+
+				// TODO METER LA PARTE DEL CÓDIGO
+
 			}
-		}
-		// �Es una expresion 2?
-		else {
-			tipo1 = expresion2();
+
+			return tipo1;
+
+			// error = !compatibles(expresion2.ts,mem.id,expresion2.tipo) &&
+			// expresion_invalida
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
 		}
 
-		return tipo1;
 	}
 
-	public Tipo expresion2() throws Exception {
+	/*
+	 * expresionIn ≡ in id
+	 */
+	private Tipo expresionIn() throws SintacticoException {
 
+		Tipo tipo = null;
+
+		try {
+
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_IN)) {
+
+				// id
+				String id = sintactico.getLexico().getLexema();
+
+				// error = falta_expresion
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
+					throw new MiExcepcion(SintacticoException.FALTA_ID);
+				}
+
+				// error = ¬existeID(op0in.ts, id.lex)
+				if (!GestorTS.getInstancia().existeID(id)) {
+					throw new MiExcepcion(
+							SintacticoException.VARIABLE_NO_DECLARADA);
+				}
+
+				// cod = entrada ++ desapila_dir(expresion.tsh[id.lex].dir)
+				sintactico.getCodigo().add(
+						new Entrada(new DatoPila(DatoPila.INT, GestorTS
+								.getInstancia().getDir(id))));
+
+				// tipo = dameTipo(op0in.ts,id.lex)
+				tipo = GestorTS.getInstancia().getTipo(id);
+
+			}
+
+			return tipo;
+
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
+
+	}
+
+	/*
+	 * expresionOut ≡ out expresion2
+	 */
+	private Tipo expresionOut() throws SintacticoException {
+
+		Tipo tipo = null;
+
+		try {
+			// out
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_OUT)) {
+
+				// expresion2
+				tipo = expresion2();
+
+				if (tipo == null) {
+					throw new MiExcepcion(
+							SintacticoException.EXPRESION_INVALIDA);
+				}
+
+				// cod = expresion2.cod ++ salida
+				sintactico.getCodigo().add(new Salida());
+			}
+
+			return tipo;
+
+			// error = falta_expresion && ¬existeID(op0in.ts, id.lex)
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
+	}
+
+	/*
+	 * expresion2 ≡ expresion3 op2 expresion3 | expresion3
+	 */
+	public Tipo expresion2() throws SintacticoException {
+
+		Tipo tipo1 = null;
+		Tipo tipo2 = null;
 		Tipo tipo = null;
 		InstruccionInterprete op;
 
-		if ((tipo = expresion3()) != null) {
-			if ((op = op2()) != null) {
-				if ((tipo = expresion3()) != null) {
+		try {
+			// expresion3
+			tipo1 = expresion3();
+
+			if (tipo1 != null) {
+
+				// op2
+				op = op2();
+
+				if (op != null) {
+
+					// expresion3
+					tipo2 = expresion3();
+
+					// error = expresion inválida
+					if (tipo2 == null) {
+						throw new MiExcepcion(
+								SintacticoException.EXPRESION_INVALIDA);
+					}
+
+					// error = validoOperacion(expresion31.ts,
+					// expresion30.tipo,op2.op,expresion31.tipo)
+					if (!validoOperacion(tipo1, tipo2)) {
+						throw new MiExcepcion(
+								SintacticoException.TIPO_INCOMPATIBLE);
+					}
+
+					// tipo = <t:int>
 					tipo = new TipoEntero();
-					sintactico.getCodigo().add(op);
+
 				}
 			}
-		}
 
-		return tipo;
+			return tipo;
+
+			// error = expresion31.error && validoOperacion(expresion31.ts,
+			// expresion30.tipo,op2.op,expresion31.tipo)
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
 	}
 
-	private Tipo expresion3() throws Exception {
+	/*
+	 * expresion3 = expresion4 expresion3RE
+	 */
+	private Tipo expresion3() throws SintacticoException {
+
+		Tipo tipo1 = null;
+		Tipo tipo2 = null;
 		Tipo tipo = null;
+		
+		try {
+			// expresion4
+			tipo = expresion4();
 
-		tipo = expresion4();
-		if (tipo != null) {
-			tipo = expresion3RE(tipo);
-		} else {
-//			sintactico.setError(true);
-//			// FIXME
-//			GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//					sintactico.getLexico().getColumna(), "Error error");
+			if (tipo != null) {
+				tipo = expresion3RE(tipo);
+			}
+			
+			// error = validoOperacion (expresion4.ts, expresion3RE0.tipo, op3.op, expresion4.tipo)
+			if (!validoOperacion(tipo1, tipo2)) {
+				throw new MiExcepcion(
+						SintacticoException.TIPO_INCOMPATIBLE);
+			}
+
+			return tipo;
+
+			// error = falta_expresion && ¬existeID(op0in.ts, id.lex)
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
 		}
-		return tipo;
+
 	}
 
-	private Tipo expresion3RE(Tipo tipo1) throws Exception {
+	private Tipo expresion3RE(Tipo tipo1) throws SintacticoException {
 
 		InstruccionInterprete op;
 		Tipo tipoRes = null;
@@ -149,16 +296,17 @@ public class Expresiones {
 					}
 					sintactico.getCodigo().add(op);
 				} else {
-//					sintactico.setError(true);
-//					GestorErrores.agregaError(11, sintactico.getLexico()
-//							.getFila(), sintactico.getLexico().getColumna(),
-//							"Se esperaba una expresión de tipo 4");
+					// sintactico.setError(true);
+					// GestorErrores.agregaError(11, sintactico.getLexico()
+					// .getFila(), sintactico.getLexico().getColumna(),
+					// "Se esperaba una expresión de tipo 4");
 				}
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"Se esperaba una expresión de tipo 4");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "Se esperaba una expresión de tipo 4");
 			}
 		} else
 			tipoRes = tipo1;
@@ -166,7 +314,7 @@ public class Expresiones {
 		return tipoRes;
 	}
 
-	private Tipo expresion4() throws Exception {
+	private Tipo expresion4() throws SintacticoException {
 
 		Tipo tipo = null;
 
@@ -174,16 +322,16 @@ public class Expresiones {
 		if (tipo != null) {
 			tipo = expresion4RE(tipo);
 		} else {
-//			sintactico.setError(true);
-//			// FIXME
-//			GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//					sintactico.getLexico().getColumna(), "Error error");
+			// sintactico.setError(true);
+			// // FIXME
+			// GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
+			// sintactico.getLexico().getColumna(), "Error error");
 		}
 
 		return tipo;
 	}
 
-	private Tipo expresion4RE(Tipo tipo1) throws Exception {
+	private Tipo expresion4RE(Tipo tipo1) throws SintacticoException {
 
 		InstruccionInterprete op;
 		Tipo tipoRes = null;
@@ -205,10 +353,11 @@ public class Expresiones {
 					// }
 				}
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"Se esperaba una expresion de tipo 5");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "Se esperaba una expresion de tipo 5");
 			}
 		} else
 			tipoRes = tipo1;
@@ -216,7 +365,7 @@ public class Expresiones {
 		return tipoRes;
 	}
 
-	private Tipo expresion5() throws Exception {
+	private Tipo expresion5() throws SintacticoException {
 
 		InstruccionInterprete op;
 		Tipo tipo = null;
@@ -227,10 +376,10 @@ public class Expresiones {
 				if (!(op instanceof Negacion) || !(tipo instanceof TipoReal)) {
 					sintactico.getCodigo().add(new CambioSigno());
 				} else {
-//					sintactico.setError(true);
-//					GestorErrores.agregaError(11, sintactico.getLexico()
-//							.getFila(), sintactico.getLexico().getColumna(),
-//							"El tipo de la expresion debe ser un entero");
+					// sintactico.setError(true);
+					// GestorErrores.agregaError(11, sintactico.getLexico()
+					// .getFila(), sintactico.getLexico().getColumna(),
+					// "El tipo de la expresion debe ser un entero");
 				}
 			}
 		} else if ((op = op5noAsoc()) != null) {
@@ -244,10 +393,11 @@ public class Expresiones {
 				}
 
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"Se esperaba una expresion de tipo 6");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "Se esperaba una expresion de tipo 6");
 			}
 		} else
 			tipo = expresion6();
@@ -255,7 +405,7 @@ public class Expresiones {
 		return tipo;
 	}
 
-	private Tipo expresion6() throws Exception {
+	private Tipo expresion6() throws SintacticoException {
 
 		Tipo tipo = null;
 		String lex = sintactico.getLexico().getLexema();
@@ -264,16 +414,17 @@ public class Expresiones {
 			if ((tipo = expresion()) != null) {
 				if (!sintactico
 						.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
-//					sintactico.setError(true);
-//					GestorErrores.agregaError(11, sintactico.getLexico()
-//							.getFila(), sintactico.getLexico().getColumna(),
-//							"Falta parentesis de cierre");
+					// sintactico.setError(true);
+					// GestorErrores.agregaError(11, sintactico.getLexico()
+					// .getFila(), sintactico.getLexico().getColumna(),
+					// "Falta parentesis de cierre");
 				}
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"Expresion mal formada");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "Expresion mal formada");
 			}
 		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_INT)) {
 			if (cast(lex, new TipoEntero())) {
@@ -281,10 +432,11 @@ public class Expresiones {
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.INT, lex)));
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"No se puede parsear el valor a entero");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "No se puede parsear el valor a entero");
 			}
 		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_REAL)) {
 			if (cast(lex, new TipoReal())) {
@@ -292,10 +444,11 @@ public class Expresiones {
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.REAL, lex)));
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"No se puede parsear el valor a real");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "No se puede parsear el valor a real");
 			}
 		} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 			if (GestorTS.getInstancia().existeID(lex)) {
@@ -304,10 +457,11 @@ public class Expresiones {
 						new ApilarDir(new DatoPila(DatoPila.INT, GestorTS
 								.getInstancia().getDir(lex))));
 			} else {
-//				sintactico.setError(true);
-//				GestorErrores.agregaError(11, sintactico.getLexico().getFila(),
-//						sintactico.getLexico().getColumna(),
-//						"Variable no declarada");
+				// sintactico.setError(true);
+				// GestorErrores.agregaError(11,
+				// sintactico.getLexico().getFila(),
+				// sintactico.getLexico().getColumna(),
+				// "Variable no declarada");
 			}
 		}
 
@@ -431,6 +585,22 @@ public class Expresiones {
 			}
 		}
 		return reconoce;
+	}
+
+	/*************** FUNCIONES SEMANTICAS *********************/
+
+	private boolean validoOperacion(Tipo tipo1, Tipo tipo2) {
+		// FIXME HACER!!!!
+		return true;
+	}
+
+	@SuppressWarnings("serial")
+	private class MiExcepcion extends Exception {
+
+		public MiExcepcion(String mensaje) {
+			super(mensaje);
+		}
+
 	}
 
 }
