@@ -325,6 +325,7 @@ public class CompiladorFrame extends javax.swing.JFrame {
 			while (!analizadorLexico.isFin_programa()) {
 				analizadorLexico.scanner();
 			}
+			
 			imprimirTokens(tokens);
 			
 			analizadorLexico = new AnalizadorLexico(codigo);

@@ -53,7 +53,8 @@ public class AnalizadorLexico {
 	private static final int BARRA = 47;
 	private static final int CORCHETE_ABIERTO = 49;
 	private static final int CORCHETE_CERRADO = 50;
-	private static final int PUNTERO = 51;
+	private static final int PUNTERO = 51; //^
+	private static final int COMA = 52;
 
 	private PalabrasReservadas palabrasReserva = new PalabrasReservadas();
 	private String lexema;
@@ -225,10 +226,10 @@ public class AnalizadorLexico {
 		this.estado = VACIO;
 		this.lexema = "";
 
-		if (!fin_programa && !errorLexico) {
+		if (!fin_programa) {
 			while (!encontrado && !fin_programa) {
 
-				if (programa.length() < indice)
+				if (programa.length() < indice) 
 					fin_programa = true;
 
 				switch (estado) {
@@ -315,6 +316,9 @@ public class AnalizadorLexico {
 								break;
 							case '^':
 								transita(PUNTERO);
+								break;
+							case ',':
+								transita(COMA);
 								break;
 							default:
 								error();
@@ -850,7 +854,8 @@ public class AnalizadorLexico {
 					if (next_char == '&')
 						transita(Y_LOGICA);
 					else {
-						error();
+						encontrado = true;
+						encontrado(PalabrasReservadas.TOKEN_AMSPERSAND_VALOR);					
 					}
 					break;
 
@@ -866,9 +871,14 @@ public class AnalizadorLexico {
 					
 				case PUNTERO:
 					encontrado = true;
-					encontrado(PalabrasReservadas.TOKEN_POINTER);
+					encontrado(PalabrasReservadas.TOKEN_PUNTERO_FLECHA);
 					break;
 
+				case COMA:
+					encontrado = true;
+					encontrado(PalabrasReservadas.TOKEN_COMA);
+					break;
+					
 				default:
 					error();
 					break;
@@ -929,10 +939,11 @@ public class AnalizadorLexico {
 	public char siguienteCaracter() {
 		char next = ' ';
 
-		if (indice <= programa.length() - 1)
+		if (indice < programa.length())
 			next = programa.charAt(indice);
 		else
-			fin_programa = true;
+			if(indice > programa.length())
+				fin_programa = true;
 		return next;
 	}
 
