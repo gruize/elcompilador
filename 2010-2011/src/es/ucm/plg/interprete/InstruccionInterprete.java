@@ -37,6 +37,14 @@ public abstract class InstruccionInterprete {
 	public static final byte CODIGO_LIMPIAR = (byte) 31;
 	public static final byte CODIGO_IR_F = (byte) 32;
 	public static final byte CODIGO_IR_A = (byte) 33;
+	public static final byte CODIGO_IR_V = (byte) 34;
+	public static final byte CODIGO_IR_IND = (byte) 35;
+	public static final byte CODIGO_MUEVE = (byte) 36;
+	public static final byte CODIGO_COPIA = (byte) 37;
+	public static final byte CODIGO_NEW = (byte) 38;
+	public static final byte CODIGO_DELETE = (byte) 39;
+	public static final byte CODIGO_APILARIND = (byte) 40;
+	public static final byte CODIGO_DESAPILARIND = (byte) 41;
 
 	private DatoPila dato;
 	private byte tipoIns;

@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
-import es.ucm.plg.compilador.analizador_lexico.AnalizadorLexico;
-import es.ucm.plg.compilador.analizador_sintactico.AnalizadorSintactico;
+import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
+import es.ucm.plg.compilador.analizadorSintactico.AnalizadorSintactico;
 import es.ucm.plg.interprete.EscritorPila;
 import es.ucm.plg.interprete.Interprete;
 
@@ -37,7 +37,7 @@ public class Practica {
 			System.out.println();
 			System.out.println(programa);
 			System.out.println();
-			System.out.print("¿Desea ejecutar el programa en modo depuracion? (s/n)");
+			System.out.print("ï¿½Desea ejecutar el programa en modo depuracion? (s/n)");
 			System.out.println();
 			
 			String sn = in.readLine();
