@@ -13,7 +13,8 @@ public class Memoria {
 	public Memoria(int longMem){
 		this.memoria = new DatoPila[longMem];
 		this.huecos = new Vector<Hueco>();
-		//Añadir el hueco inicial todo excepto la memoria estatica
+		int primerHueco = (int) (longMem * 70 * 0.01);
+		huecos.add(new Hueco(primerHueco, longMem - primerHueco));
 	}
 
 	public DatoPila[] getMemoria() {
