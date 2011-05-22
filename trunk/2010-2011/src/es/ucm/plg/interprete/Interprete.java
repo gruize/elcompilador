@@ -263,6 +263,16 @@ public class Interprete {
 
 	public ArrayList<InstruccionInterprete> getPrograma() {
 		return programa;
+	}
+
+	public Integer reservar(Integer tam) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void liberar(Integer dir, Integer tam) {
+		// TODO Auto-generated method stub
+		
 	}	
 	
 }
