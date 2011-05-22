@@ -42,8 +42,8 @@ public class Entrada extends InstruccionInterprete {
 
 		Integer dir = this.getDato().getEntero();
 
-		if (dir < interprete.getMemoria().length && dir >= 0)
-			interprete.getMemoria()[this.getDato().getEntero()] = datoLeido;
+		if (dir < interprete.getMemoria().getMemoria().length && dir >= 0)
+			interprete.getMemoria().getMemoria()[this.getDato().getEntero()] = datoLeido;
 		else
 			GestorErrores.agregaError(
 					"La direccion no se corresponde con una direccion valida de memoria");

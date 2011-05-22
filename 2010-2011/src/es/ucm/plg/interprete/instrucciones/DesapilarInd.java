@@ -26,7 +26,7 @@ public class DesapilarInd extends InstruccionInterprete{
 		DatoPila dato = interprete.getPila().pop();
 		if(interprete.getPila().peek().getTipo() == DatoPila.INT){
 			Integer dir = interprete.getPila().pop().getEntero();
-			interprete.getMemoria()[dir] = dato;
+			interprete.getMemoria().getMemoria()[dir] = dato;
 		}else
 			GestorErrores.agregaError("La direccion de memoria debe ser un entero.");
 		return true;

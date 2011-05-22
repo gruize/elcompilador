@@ -24,10 +24,10 @@ public class ApilarInd extends InstruccionInterprete{
 	@Override
 	public boolean ejecutate(Interprete interprete) {
 		if(interprete.getPila().peek().getTipo() == DatoPila.INT){
-			if(interprete.getPila().peek().getEntero() < interprete.getMemoria().length 
+			if(interprete.getPila().peek().getEntero() < interprete.getMemoria().getMemoria().length 
 					|| interprete.getPila().peek().getEntero() >= 0){
 				Integer dir = interprete.getPila().pop().getEntero();
-				interprete.getPila().push(interprete.getMemoria()[dir]);
+				interprete.getPila().push(interprete.getMemoria().getMemoria()[dir]);
 			}else
 				GestorErrores.agregaError("Direccion de memoria invalida.");
 		}else
