@@ -30,8 +30,8 @@ public class DesapilarDir extends InstruccionInterprete {
 		DatoPila dato = interprete.getPila().pop();
 		Integer dir = this.getDato().getEntero();
 
-		if (dir < interprete.getMemoria().length && dir >= 0)
-			interprete.getMemoria()[this.getDato().getEntero()] = dato;
+		if (dir < interprete.getMemoria().getMemoria().length && dir >= 0)
+			interprete.getMemoria().getMemoria()[this.getDato().getEntero()] = dato;
 		else
 			GestorErrores.agregaError(
 					"La direccion no se corresponde con una direccion valida de memoria");

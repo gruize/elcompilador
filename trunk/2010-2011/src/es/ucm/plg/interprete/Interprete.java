@@ -13,13 +13,14 @@ import java.util.Iterator;
 
 import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.memoria.Memoria;
 
 
 public class Interprete {
 
 	private ArrayDeque<DatoPila> pila;
 	private ArrayList<InstruccionInterprete> programa;
-	private DatoPila[] memoria;
+	private Memoria memoria;
 	private boolean parar;
 	private int cp;
 	private boolean modoDepuracion;
@@ -39,7 +40,7 @@ public class Interprete {
 			PrintWriter salida) {
 		programa = null;
 		pila = null;
-		memoria = new DatoPila[longMem];
+		memoria = new Memoria(longMem);
 		modoDepuracion = depuracion;
 		if (depuracion)
 			sb = new StringBuilder(100);
@@ -140,9 +141,9 @@ public class Interprete {
 
 		boolean tiene_algo = false;
 		sb.append("Contenido de la memoria:\n");
-		for (int i = 0; i < memoria.length; i++) {
-			if (memoria[i] != null) {
-				sb.append("\t" + i + ") " + memoria[i] + "\n");
+		for (int i = 0; i < memoria.getMemoria().length; i++) {
+			if (memoria.getMemoria()[i] != null) {
+				sb.append("\t" + i + ") " + memoria.getMemoria()[i] + "\n");
 				tiene_algo = true;
 			}
 		}
@@ -243,7 +244,7 @@ public class Interprete {
 	/**
 	 * @return la memoria de la maquina
 	 */
-	public DatoPila[] getMemoria() {
+	public Memoria getMemoria() {
 		return memoria;
 	}
 

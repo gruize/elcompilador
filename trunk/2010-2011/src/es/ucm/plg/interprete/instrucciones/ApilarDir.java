@@ -26,7 +26,7 @@ public class ApilarDir extends InstruccionInterprete {
 	@Override
 	public boolean ejecutate(Interprete interprete) {
 
-		DatoPila dato = interprete.getMemoria()[this.getDato().getEntero()];
+		DatoPila dato = interprete.getMemoria().getMemoria()[this.getDato().getEntero()];
 
 		// Si en la posicion de memoria especificada no existen ningun valor
 		// apilo un valor representativo, como es Integer.MIN_VALUE
@@ -35,7 +35,7 @@ public class ApilarDir extends InstruccionInterprete {
 					new DatoPila(DatoPila.INT, Integer.MIN_VALUE));
 		} else {
 			interprete.getPila().push(
-					interprete.getMemoria()[this.getDato().getEntero()]);
+					interprete.getMemoria().getMemoria()[this.getDato().getEntero()]);
 		}
 		return true;
 	}

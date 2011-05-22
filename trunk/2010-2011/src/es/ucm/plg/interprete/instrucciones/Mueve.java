@@ -30,13 +30,13 @@ public class Mueve extends InstruccionInterprete{
 		DatoPila origen = interprete.getPila().pop();
 		DatoPila destino = interprete.getPila().pop();
 		if(origen.getTipo() == DatoPila.INT && destino.getTipo() == DatoPila.INT){
-			if(origen.getEntero() >= 0 && origen.getEntero() < interprete.getMemoria().length){
-				if(destino.getEntero() >= 0 && destino.getEntero() < interprete.getMemoria().length){
+			if(origen.getEntero() >= 0 && origen.getEntero() < interprete.getMemoria().getMemoria().length){
+				if(destino.getEntero() >= 0 && destino.getEntero() < interprete.getMemoria().getMemoria().length){
 					if(this.getDato().getTipo() == DatoPila.INT && this.getDato().getEntero() > 0){
-						if((origen.getEntero() + this.getDato().getEntero()) < interprete.getMemoria().length ||
-								(destino.getEntero() + this.getDato().getEntero()) < interprete.getMemoria().length){
+						if((origen.getEntero() + this.getDato().getEntero()) < interprete.getMemoria().getMemoria().length ||
+								(destino.getEntero() + this.getDato().getEntero()) < interprete.getMemoria().getMemoria().length){
 							for(int i = 0; i < this.getDato().getEntero(); i++)
-								interprete.getMemoria()[destino.getEntero() + i] = interprete.getMemoria()[origen.getEntero() + i];
+								interprete.getMemoria().getMemoria()[destino.getEntero() + i] = interprete.getMemoria().getMemoria()[origen.getEntero() + i];
 							ok = true;
 						}else
 							GestorErrores.agregaError("Movimiento imposible. Valor de memoria inexistente.");
