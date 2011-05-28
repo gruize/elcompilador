@@ -14,8 +14,14 @@ public class TipoArray implements Tipo {
 		return tipoBase;
 	}
 
+	@Override
 	public int getTamaño() {
 		return tipoBase.getTamaño() * num;
+	}
+	
+	@Override
+	public boolean equals(Tipo tipo) {
+		return tipoBase.equals(tipo) && (tipoBase.getTamaño() == this.getTamaño());
 	}
 	
 }

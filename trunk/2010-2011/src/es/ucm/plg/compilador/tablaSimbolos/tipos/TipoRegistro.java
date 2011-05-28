@@ -1,5 +1,6 @@
 package es.ucm.plg.compilador.tablaSimbolos.tipos;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -29,6 +30,29 @@ public class TipoRegistro implements Tipo{
 		}
 		
 		return tamaño;
+	}
+
+	@Override
+	public boolean equals(Tipo tipo) {
+		
+		if (!(tipo instanceof TipoRegistro))
+			return false;
+
+		TipoRegistro tipoReg = (TipoRegistro) tipo;
+		
+		if (!(tipoReg.campos.size() == this.campos.size()))
+				return false;
+		
+		Collection<Campo> campos = tipoReg.campos.values();
+		Iterator<Campo> it = this.campos.values().iterator();
+		
+		while (it.hasNext()) {
+			Campo campo = it.next();
+			if (campos.contains(campo.getTipoBase()))
+				campos.remove(campo.getTipoBase());		
+		}
+		
+		return (campos.size() == 0);
 	}
 	
 }

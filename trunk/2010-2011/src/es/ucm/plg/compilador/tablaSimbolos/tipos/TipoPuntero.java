@@ -17,4 +17,9 @@ public class TipoPuntero implements Tipo{
 		return 1;
 	}
 
+	@Override
+	public boolean equals(Tipo tipo) {
+		return (tipo instanceof TipoPuntero) && (((TipoPuntero) tipo).getTipoBase() == this.tipoBase);
+	}
+
 }

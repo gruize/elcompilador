@@ -547,11 +547,6 @@ public class Tipos {
 		return false;
 	}
 	
-	public boolean compatibles(Tipo tipo1, Tipo tipo2) {
-		// FIXME HACER!!
-		return true;
-	}
-
 	@SuppressWarnings("serial")
 	private class MiExcepcion extends Exception {
 

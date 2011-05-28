@@ -1,7 +1,6 @@
 package es.ucm.plg.interprete.instrucciones;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
 
 import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
