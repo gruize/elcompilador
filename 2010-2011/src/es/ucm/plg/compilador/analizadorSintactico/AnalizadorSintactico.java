@@ -14,6 +14,7 @@ public class AnalizadorSintactico {
 	private ArrayList<InstruccionInterprete> codigo;
 	private int dir;
 	private int nivel;
+	private int etiqueta;
 	private boolean error;
 	private List<String> pend;
 	
@@ -35,6 +36,7 @@ public class AnalizadorSintactico {
 			this.lexico.scanner();
 			this.error = false;
 			this.dir = 0;
+			this.etiqueta = 0;
 			declaraciones.declaraciones();
 			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.acciones.acciones();
@@ -113,6 +115,14 @@ public class AnalizadorSintactico {
 
 	public List<String> getPend() {
 		return pend;
+	}
+
+	public void setEtiqueta(int etiqueta) {
+		this.etiqueta = etiqueta;
+	}
+
+	public int getEtiqueta() {
+		return etiqueta;
 	}
 
 }

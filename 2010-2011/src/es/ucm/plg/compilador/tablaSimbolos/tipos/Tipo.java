@@ -4,4 +4,6 @@ public interface Tipo {
 		
 	public int getTamaño();
 	
+	public boolean equals(Tipo tipo);
+	
 }
