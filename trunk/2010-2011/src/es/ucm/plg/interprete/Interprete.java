@@ -216,7 +216,7 @@ public class Interprete {
 	}
 
 	/**
-	 * @param true si la maquina debe pararse
+	 * @param parar si la maquina debe pararse
 	 */
 	public void setParar(boolean parar) {
 		this.parar = parar;

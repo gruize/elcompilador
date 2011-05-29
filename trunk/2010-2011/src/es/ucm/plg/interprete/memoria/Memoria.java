@@ -33,6 +33,7 @@ public class Memoria {
 		this.huecos = huecos;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Integer reservar(Integer tam) {
 		boolean reservado = false;
 		Integer direccion = -1;		
@@ -73,6 +74,7 @@ public class Memoria {
 		unifica();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void unifica() {
 		Collections.sort(this.huecos, new HuecosDireccionComparator());
 		int i = 1;

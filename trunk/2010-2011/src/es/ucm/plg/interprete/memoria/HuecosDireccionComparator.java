@@ -2,6 +2,7 @@ package es.ucm.plg.interprete.memoria;
 
 import java.util.Comparator;
 
+@SuppressWarnings("rawtypes")
 public class HuecosDireccionComparator implements Comparator {
 
 	public int compare(Object o1, Object o2) { 

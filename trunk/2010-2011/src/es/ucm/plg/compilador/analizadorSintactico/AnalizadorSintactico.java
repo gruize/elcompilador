@@ -50,7 +50,11 @@ public class AnalizadorSintactico {
 			this.error = false;
 			this.dir = 0;
 			this.etiqueta = 0;
+			this.pend = new ArrayList<String>();
 			this.declaraciones.declaraciones();
+			GestorTS.getInstancia().salidaTS();
+			if (pend.size() > 0) 
+				throw new Exception("Existen tipos pendientes sin declarar");
 			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.acciones.acciones();
 		} catch (Exception ex) {
@@ -191,11 +195,11 @@ public class AnalizadorSintactico {
 	public void accesoVar(String id) throws InterpreteExcepcion {
 
 		Detalles info = GestorTS.getInstancia().getDetalles(id);
-		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, info
-				.getNivel() + 1)));
+//		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, info
+//				.getNivel() + 1)));
 		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, info.getDir())));
-		this.codigo.add(new Sumar());
-		this.etiqueta += 3;
+//		this.codigo.add(new Sumar());
+		this.etiqueta += 1;
 
 		if (info.getClase().equals(Clase.var)) {
 			this.codigo.add(new ApilarInd());

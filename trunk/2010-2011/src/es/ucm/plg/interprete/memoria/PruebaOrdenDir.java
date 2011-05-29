@@ -8,6 +8,7 @@ public class PruebaOrdenDir {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		Memoria memoria = new Memoria(10);		
 		Vector<Hueco> huecos = new Vector<Hueco>();

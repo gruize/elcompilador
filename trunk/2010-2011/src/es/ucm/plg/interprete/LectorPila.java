@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
 import es.ucm.plg.interprete.instrucciones.ApilarDir;
+import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.CambioSigno;
 import es.ucm.plg.interprete.instrucciones.CastInt;
 import es.ucm.plg.interprete.instrucciones.CastReal;
 import es.ucm.plg.interprete.instrucciones.Desapilar;
 import es.ucm.plg.interprete.instrucciones.DesapilarDir;
+import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
@@ -85,7 +87,7 @@ public class LectorPila {
 				inst = new Desapilar();
 				break;
 			case InstruccionInterprete.CODIGO_DESAPILARDIR:
-				inst = new DesapilarDir();
+				inst = new DesapilarDir(leerDato(dis));
 				break;
 			case InstruccionInterprete.CODIGO_MENOR:
 				inst = new Menor();
@@ -152,6 +154,12 @@ public class LectorPila {
 				break;
 			case InstruccionInterprete.CODIGO_LIMPIAR:
 				inst = new LimpiarPila();
+				break;
+			case InstruccionInterprete.CODIGO_APILARIND:
+				inst = new ApilarInd();
+				break;
+			case InstruccionInterprete.CODIGO_DESAPILARIND:
+				inst = new DesapilarInd();
 				break;
 			default:
 				throw new IOException();

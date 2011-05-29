@@ -1,15 +1,14 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
+import es.ucm.plg.interprete.instrucciones.LimpiarPila;
 
 public class Acciones {
 
 	private AnalizadorSintactico sintactico;
-	private Expresiones expresiones;
 
 	public Acciones(AnalizadorSintactico sintactico) {
 		this.sintactico = sintactico;
-		this.expresiones = new Expresiones(sintactico);
 	}
 
 	public void acciones() throws Exception {
@@ -28,6 +27,7 @@ public class Acciones {
 	private void accionesRE() throws Exception {
 		
 		try {
+			sintactico.getCodigo().add(new LimpiarPila());
 			if (!sintactico.getLexico().isFin_programa()) {
 				accion();
 				accionesRE();

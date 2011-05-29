@@ -28,6 +28,7 @@ public class DesapilarInd extends InstruccionInterprete {
 		if (interprete.getPila().peek().getTipo() == DatoPila.INT) {
 			Integer dir = interprete.getPila().pop().getEntero();
 			interprete.getMemoria().getMemoria()[dir] = dato;
+			interprete.getPila().push(dato);
 		} else
 			throw new InterpreteExcepcion(this.toString(),
 					InterpreteExcepcion.TIPO_INCORRECTO);

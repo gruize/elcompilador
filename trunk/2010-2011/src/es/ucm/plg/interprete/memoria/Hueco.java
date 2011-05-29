@@ -1,5 +1,6 @@
 package es.ucm.plg.interprete.memoria;
 
+@SuppressWarnings("rawtypes")
 public class Hueco implements Comparable{
 
 	private int dir;

@@ -1,0 +1,8 @@
+tipo real[2] array1;
+tipo int[4] array2;
+array1  centimos;
+real cantidad;
+array2 euros;
+
+out euros[1] = (int)(in cantidad);
+out centimos[1] = cantidad - euros[1];
