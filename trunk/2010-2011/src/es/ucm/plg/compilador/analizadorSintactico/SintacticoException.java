@@ -28,7 +28,7 @@ public class SintacticoException extends Exception{
 	
 	@Override
 	public String getMessage() {
-		return "(" + linea + "," + columna + ") - " + lexema + "/n   " + message ;
+		return "(" + linea + "," + columna + ") - " + lexema + " - " + message ;
 	}
 
 }

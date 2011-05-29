@@ -1,8 +1,8 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Salida extends InstruccionInterprete{
@@ -12,9 +12,9 @@ public class Salida extends InstruccionInterprete{
         super(InstruccionInterprete.CODIGO_SALIDA);
     }
 
-    public Salida(DatoPila d){
+    public Salida(DatoPila d) throws InterpreteExcepcion{
         super(InstruccionInterprete.CODIGO_SALIDA, d);
-        GestorErrores.agregaError("La instruccion Salida/Escritura no acepta argumentos");
+		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
     }
     
     @Override

@@ -1,21 +1,23 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
-public class Delete extends InstruccionInterprete{
+public class Delete extends InstruccionInterprete {
 
-	public Delete(){
+	public Delete() throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_DELETE);
-		GestorErrores.agregaError("La instruccion Delete necesita un parametro");
+		throw new InterpreteExcepcion(this.toString(),
+				"La instruccion Delete necesita un parametro");
 	}
 
-	public Delete(DatoPila d){
+	public Delete(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_DELETE, d);
 		if (d.getTipo() != DatoPila.INT)
-			GestorErrores.agregaError("El parametro de esta instruccion debe ser de tipo entero");
+			throw new InterpreteExcepcion(this.toString(),
+					InterpreteExcepcion.TIPO_INCORRECTO);
 	}
 
 	@Override
@@ -24,14 +26,15 @@ public class Delete extends InstruccionInterprete{
 	}
 
 	@Override
-	public boolean ejecutate(Interprete interprete){		
+	public boolean ejecutate(Interprete interprete) throws InterpreteExcepcion {
 		Integer dir = this.getDato().getEntero();
-		if(interprete.getPila().peek().getTipo() == DatoPila.INT){				
+		if (interprete.getPila().peek().getTipo() == DatoPila.INT) {
 			Integer tam = interprete.getPila().pop().getEntero();
-			interprete.liberar(dir,tam);
-		}else
-			GestorErrores.agregaError("El tamaño no se ha identificado de la forma adecuada. Debe ser un entero.");
+			interprete.liberar(dir, tam);
+		} else
+			throw new InterpreteExcepcion(this.toString(),
+					"El tamaño no se ha identificado de la forma adecuada. Debe ser un entero.");
 		return true;
 	}
-	
+
 }

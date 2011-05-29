@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 
 public class MaquinaPTest extends TestCase {
 
@@ -13,7 +14,7 @@ public class MaquinaPTest extends TestCase {
 
 	}
 
-	public void test1() throws IOException {
+	public void test1() throws IOException, InterpreteExcepcion {
 		File f = new File("test/test1/codigoP.bc");
 
 		Interprete interprete = new Interprete(false);

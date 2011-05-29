@@ -1,8 +1,8 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Restar extends InstruccionInterprete {
@@ -11,9 +11,9 @@ public class Restar extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_RESTA);
 	}
 
-	public Restar(DatoPila d){
+	public Restar(DatoPila d) throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_RESTA);
-		GestorErrores.agregaError("La instruccion Restar no admite operadores");
+		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override

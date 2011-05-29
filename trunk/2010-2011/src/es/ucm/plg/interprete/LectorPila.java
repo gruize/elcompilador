@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
 import es.ucm.plg.interprete.instrucciones.ApilarDir;
@@ -39,10 +38,12 @@ public class LectorPila {
 
 	/**
 	 * Este metodo lee un dato de un DataInputStream
+	 * 
 	 * @param dis
 	 * @return el dato leido
+	 * @throws InterpreteExcepcion 
 	 */
-	private DatoPila leerDato(DataInputStream dis) {
+	private DatoPila leerDato(DataInputStream dis) throws InterpreteExcepcion {
 		try {
 			byte tipo = dis.readByte();
 
@@ -52,26 +53,28 @@ public class LectorPila {
 			case DatoPila.REAL:
 				return new DatoPila(DatoPila.REAL, dis.readFloat());
 			default:
-				GestorErrores.agregaError(20,0,0,"Tipo de dato invalido: " + Byte.toString(tipo));
+				throw new InterpreteExcepcion("Leer dato",
+						InterpreteExcepcion.TIPO_INCORRECTO);
 			}
 		} catch (IOException e) {
-			GestorErrores.agregaError(20,0,0,"Error de lectura.");
-			return null;
+			throw new InterpreteExcepcion("Leer dato",
+					InterpreteExcepcion.LECTURA_ESCRITURA);
 		}
-		return null;
 
 	}
 
 	/**
 	 * Este metodo lee una instruccion de un DataInputStream
+	 * 
 	 * @param dis
 	 * @return la InstruccionInterprete leida
+	 * @throws InterpreteExcepcion 
 	 */
-	private InstruccionInterprete leerInstruccion(DataInputStream dis){
+	private InstruccionInterprete leerInstruccion(DataInputStream dis) throws InterpreteExcepcion {
 		InstruccionInterprete inst = null;
-		try{
-			byte tipoIns = dis.readByte();			
-			switch (tipoIns) {			
+		try {
+			byte tipoIns = dis.readByte();
+			switch (tipoIns) {
 			case InstruccionInterprete.CODIGO_APILAR:
 				inst = new Apilar(leerDato(dis));
 				break;
@@ -82,7 +85,7 @@ public class LectorPila {
 				inst = new Desapilar();
 				break;
 			case InstruccionInterprete.CODIGO_DESAPILARDIR:
-				inst = new DesapilarDir(leerDato(dis));
+				inst = new DesapilarDir();
 				break;
 			case InstruccionInterprete.CODIGO_MENOR:
 				inst = new Menor();
@@ -153,21 +156,23 @@ public class LectorPila {
 			default:
 				throw new IOException();
 			}
-		}catch (IOException e){
-			GestorErrores.agregaError(20,0,0,"Instruccion invalida");
+		} catch (IOException e) {
+			throw new InterpreteExcepcion("Leer instruccion",
+					InterpreteExcepcion.LECTURA_ESCRITURA);
 		}
 		return inst;
 	}
 
-	public ArrayList<InstruccionInterprete> leerPrograma(File f){
+	public ArrayList<InstruccionInterprete> leerPrograma(File f) throws InterpreteExcepcion {
 		ArrayList<InstruccionInterprete> ad = new ArrayList<InstruccionInterprete>();
-		try{				
-			DataInputStream dis = new DataInputStream(new FileInputStream(f));	
+		try {
+			DataInputStream dis = new DataInputStream(new FileInputStream(f));
 			while (dis.available() > 0) {
 				ad.add(leerInstruccion(dis));
 			}
-		}catch(IOException e){
-			GestorErrores.agregaError(20,0,0,"Error de lectura.");
+		} catch (IOException e) {
+			throw new InterpreteExcepcion("Leer programa",
+					InterpreteExcepcion.LECTURA_ESCRITURA);
 		}
 		return ad;
 	}

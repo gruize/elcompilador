@@ -17,7 +17,7 @@ public class TS {
 	
 	public Integer annadeID(String id, Integer dir, Tipo tipo, Clase clase, int nivel){
 		tabla.put(id, new Detalles(id,dir,tipo, clase, nivel));
-		Integer prim_dir_disponible = dir + tipo.getTamaño();
+		Integer prim_dir_disponible = dir + tipo.getTamanyo();
 		return prim_dir_disponible;
 	}
 	
@@ -47,6 +47,10 @@ public class TS {
 			details = tabla.get(clave_actual);
 			System.out.println(details.toString());				
 		}
+	}
+	
+	public void limpiar() {
+		this.tabla.clear();
 	}
 	
 }

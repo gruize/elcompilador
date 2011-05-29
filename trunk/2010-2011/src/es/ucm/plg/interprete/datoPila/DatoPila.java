@@ -3,7 +3,7 @@ package es.ucm.plg.interprete.datoPila;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 
 public class DatoPila {
 
@@ -32,9 +32,8 @@ public class DatoPila {
 
 	public Integer getEntero() {
 		try {
- 			return Integer.valueOf(valor.toString());
-		}
-		catch (Exception ex) {
+			return Integer.valueOf(valor.toString());
+		} catch (Exception ex) {
 			return Float.valueOf(valor.toString()).intValue();
 		}
 	}
@@ -47,18 +46,18 @@ public class DatoPila {
 		this.valor = valor;
 	}
 
-    public void escribete(DataOutputStream dos){
-    	try{
-    		dos.writeByte(tipo);
-	        if (tipo == DatoPila.INT)
-	        	dos.writeInt(this.getEntero());
-	        else
-	        	dos.writeFloat(this.getReal());
-    	}catch(IOException e){
-    		GestorErrores.agregaError(20, 0, 0, "Error en la escritura.");
-    	}
-    }
-    
+	public void escribete(DataOutputStream dos) throws InterpreteExcepcion {
+		try {
+			dos.writeByte(tipo);
+			if (tipo == DatoPila.INT)
+				dos.writeInt(this.getEntero());
+			else
+				dos.writeFloat(this.getReal());
+		} catch (IOException e) {
+			throw new InterpreteExcepcion("DatoPila.escribete", InterpreteExcepcion.LECTURA_ESCRITURA);
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Dato [tipo = " + tipo + ", valor = " + valor + "]";

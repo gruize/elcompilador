@@ -1,8 +1,8 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Igual extends InstruccionInterprete {
@@ -11,9 +11,9 @@ public class Igual extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_IGUAL);
 	}
 
-	public Igual(DatoPila d){
+	public Igual(DatoPila d) throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_IGUAL);
-		GestorErrores.agregaError("La instruccion Igual no acepta argumentos");
+		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 	
 	@Override

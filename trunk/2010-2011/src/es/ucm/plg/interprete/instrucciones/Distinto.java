@@ -1,19 +1,20 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Distinto extends InstruccionInterprete {
 
-	public Distinto(){
+	public Distinto() {
 		super(InstruccionInterprete.CODIGO_DISTINTO);
 	}
 
-	public Distinto(DatoPila d){
+	public Distinto(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_DISTINTO);
-		GestorErrores.agregaError("La instruccion Distinto no acepta argumentos");
+		throw new InterpreteExcepcion(this.toString(),
+				InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override
@@ -27,8 +28,8 @@ public class Distinto extends InstruccionInterprete {
 		DatoPila d1 = interprete.getPila().pop();
 		DatoPila d2 = interprete.getPila().pop();
 
-		DatoPila resultado = new DatoPila(
-				DatoPila.INT, (!d1.getValor().equals(d2.getValor()) ? 1: 0));
+		DatoPila resultado = new DatoPila(DatoPila.INT, (!d1.getValor().equals(
+				d2.getValor()) ? 1 : 0));
 
 		interprete.getPila().push(resultado);
 
