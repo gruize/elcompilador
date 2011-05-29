@@ -13,9 +13,12 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
 import es.ucm.plg.interprete.instrucciones.ApilarDir;
+import es.ucm.plg.interprete.instrucciones.ApilarInd;
+import es.ucm.plg.interprete.instrucciones.DesapilarDir;
 import es.ucm.plg.interprete.instrucciones.Multiplicar;
 import es.ucm.plg.interprete.instrucciones.Sumar;
 
@@ -29,22 +32,22 @@ public class Tipos {
 		this.expresiones = new Expresiones(sintactico);
 	}
 
-	/*
-	 * desctipo ≡ id|int|real
+	/**
+	 * desctipo := id | int | real
+	 * 
+	 * @return
+	 * @throws errorh
 	 */
 	public Tipo desctipo() throws SintacticoException {
 
 		String id = sintactico.getLexico().getLexema();
 
-		// id
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID))
 			return new TipoPuntero(GestorTS.getInstancia().getTipo(id));
 
-		// int
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_INT))
 			return new TipoEntero();
 
-		// real
 		else if (sintactico.reconoce(PalabrasReservadas.TOKEN_REAL))
 			return new TipoReal();
 
@@ -53,39 +56,41 @@ public class Tipos {
 
 	}
 
-	/*
-	 * deftipo ≡ array | registro | puntero
+	/**
+	 * deftipo := array | registro | puntero
+	 * 
+	 * @return
+	 * @throws errorh
 	 */
 	public Tipo defTipo() throws SintacticoException {
 
 		Tipo tipoResult = null;
 
-		// array
 		tipoResult = array();
 
-		// registro
 		if (tipoResult == null)
 			tipoResult = puntero();
 
-		// puntero
 		if (tipoResult == null)
 			tipoResult = registro();
 
 		return tipoResult;
 	}
 
-	/*
-	 * registro ≡ rec campos endrec
+	/**
+	 * registro := rec campos endrec
+	 * 
+	 * @return
+	 * @throws errorh
+	 *             | (campos.size = 0) | falta_expresion
 	 */
 	public Tipo registro() throws SintacticoException {
 
 		Tipo tipoResult = null;
 
 		try {
-			// rec
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_REC)) {
 
-				// campos
 				HashMap<String, Campo> campos = campos();
 
 				if (campos.size() == 0) {
@@ -93,7 +98,6 @@ public class Tipos {
 							"Debe definir al menos un campo en el registro");
 				}
 
-				// endrec
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_ENDREC)) {
 					throw new MiExcepcion(
 							"Falta ENDREC al final de la declaración del registro");
@@ -103,7 +107,6 @@ public class Tipos {
 
 			}
 
-			// error = (campos.size = 0) && falta_expresion
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -113,41 +116,40 @@ public class Tipos {
 		return tipoResult;
 	}
 
-	/*
-	 * array ≡ desctipo [ litInt ]
+	/**
+	 * array := desctipo [ litInt ]
+	 * 
+	 * @return
+	 * @throws errorh
+	 *             | cast(desctipo.ts, litInt,<t:int,tam:1>) | sintactico.referenciaErronea
+	 *             && falta_expresion
 	 */
 	public Tipo array() throws SintacticoException {
 
 		Tipo tipoResult = null;
 		Tipo tipoBase = null;
 
-		// desctipo
 		tipoBase = desctipo();
 
 		try {
 
 			if (tipoBase != null) {
 
-				// [
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
 					throw new MiExcepcion(SintacticoException.FALTA_CORCHETE);
 				}
 
-				// litInt
 				int num = Integer.parseInt(sintactico.getLexico().getLexema());
 
-				// error = cast(desctipo.ts, litInt,<t:int,tam:1>)
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_INT)) {
 					throw new MiExcepcion("Se esperaba un entero");
 				}
 
-				// ]
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_CE)) {
 					throw new MiExcepcion(SintacticoException.FALTA_CORCHETE);
 				}
 
-				// error = referenciaErronea
-				if (referenciaErronea()) {
+				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
@@ -156,8 +158,6 @@ public class Tipos {
 
 			}
 
-			// error = cast(desctipo.ts, litInt,<t:int,tam:1>) &&
-			// referenciaErronea && falta_expresion
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -168,8 +168,12 @@ public class Tipos {
 
 	}
 
-	/*
-	 * puntero ≡ pointer desctipo
+	/**
+	 * puntero := pointer desctipo
+	 * 
+	 * @return
+	 * @throws errorh
+	 *             | sintactico.referenciaErronea | falta_expresion
 	 */
 	public Tipo puntero() throws SintacticoException {
 
@@ -177,18 +181,14 @@ public class Tipos {
 		Tipo tipoBase = null;
 
 		try {
-			// pointer
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_POINTER)) {
 
-				// desctipo
 				tipoBase = desctipo();
 
-				// error = falta_expresion
 				if (tipoBase == null)
 					throw new MiExcepcion(SintacticoException.FALTA_DESCTIPO);
 
-				// error = referenciaErronea
-				if (referenciaErronea()) {
+				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
@@ -197,7 +197,6 @@ public class Tipos {
 
 			}
 
-			// error = referenciaErronea && falta_expresion
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -207,8 +206,12 @@ public class Tipos {
 		return tipoResult;
 	}
 
-	/*
-	 * campos ≡ campo camposRE
+	/**
+	 * campos := campo camposRE
+	 * 
+	 * @return
+	 * @throws errorh
+	 *             | (campos.size = 0)
 	 */
 	public HashMap<String, Campo> campos() throws SintacticoException {
 
@@ -216,21 +219,16 @@ public class Tipos {
 		Campo campo = null;
 
 		try {
-			// campo
 			campo = campo();
 
-			// error = (campos.size = 0)
 			if (campo == null) {
 				throw new MiExcepcion(
 						"No se puede declarar un registro sin campos");
 			}
 
 			campos.put(campo.getNombre(), campo);
-
-			// camposRE
 			camposRE(campos);
 
-			// error = (campos.size = 0)
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -240,8 +238,12 @@ public class Tipos {
 		return campos;
 	}
 
-	/*
-	 * campo ≡ desctipo id
+	/**
+	 * campo := desctipo id
+	 * 
+	 * @return
+	 * @throws errorh
+	 *             | falta_expresion
 	 */
 	private Campo campo() throws SintacticoException {
 
@@ -251,25 +253,20 @@ public class Tipos {
 
 		try {
 
-			// desctipo
 			tipoBase = desctipo();
 
-			// error = falta_expresion
 			if (tipoBase == null) {
 				throw new MiExcepcion(SintacticoException.FALTA_DESCTIPO);
 			}
 
-			// id
 			id = sintactico.getLexico().getLexema();
 
-			// error = falta_expresion
 			if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 				throw new MiExcepcion(SintacticoException.FALTA_ID);
 			}
 
 			campo = new Campo(tipoBase, id, 0);
 
-			// error = falta_expresion;
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -279,8 +276,12 @@ public class Tipos {
 		return campo;
 	}
 
-	/*
-	 * camposRE ≡ , campo camposRE | vacio
+	/**
+	 * camposRE := , campo camposRE | vacio
+	 * 
+	 * @param campos
+	 * @throws errorh
+	 *             | falta_expresion
 	 */
 	private void camposRE(HashMap<String, Campo> campos)
 			throws SintacticoException {
@@ -288,13 +289,10 @@ public class Tipos {
 		Campo campo = null;
 
 		try {
-			// ,
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_COMA)) {
 
-				// campo
 				campo = campo();
 
-				// error = falta_expresion
 				if (campo == null) {
 					throw new MiExcepcion(
 							"Se esperaba un campo después de la coma");
@@ -303,11 +301,9 @@ public class Tipos {
 				campo.setDesplazamiento(campos.size());
 				campos.put(campo.getNombre(), campo);
 
-				// camposRE
 				camposRE(campos);
 			}
 
-			// error = falta_expresion
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -316,40 +312,42 @@ public class Tipos {
 
 	}
 
-	/*
-	 * mem ≡ id memRE
+	/**
+	 * mem := id memRE
+	 * 
+	 * @return
+	 * @throws InterpreteExcepcion 
+	 * @throws !existeID(mem.tsh, id.lex) | mem.tsh[id.lex].clase == var |
+	 *         sintactico.referenciaErronea
 	 */
-	public Tipo mem() throws SintacticoException {
+	public Tipo mem() throws SintacticoException, InterpreteExcepcion {
 
 		String id = sintactico.getLexico().getLexema();
 		Tipo tipo = null;
 
 		try {
-			// id
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 
-				// error = existeID(mem.tsh, id.lex) && mem.tsh[id.lex].clase ==
-				// var
-				if (GestorTS.getInstancia().existeID(id)
-						&& GestorTS.getInstancia().getDetalles(id).getClase() == Clase.var) {
+				if (!(GestorTS.getInstancia().existeID(id) && GestorTS
+						.getInstancia().getDetalles(id).getClase() == Clase.var)) {
 					throw new MiExcepcion(
 							SintacticoException.VARIABLE_NO_DECLARADA);
 				}
 
-				// error = referenciaErronea
-				if (referenciaErronea()) {
+				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
 
-				// cod = accesoVar(mem.tsh[id.lex])
-				accesoVar(id);
+				sintactico.accesoVar(id);
 
-				// memRE
-				tipo = memRE(GestorTS.getInstancia().getDetalles(id).getTipo());
-				
+				tipo = memRE(GestorTS.getInstancia().getTipo(id));
+
+				sintactico.getCodigo().add(new DesapilarDir());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+
 			}
-			
+
 			return tipo;
 
 		} catch (MiExcepcion ex) {
@@ -360,10 +358,15 @@ public class Tipos {
 
 	}
 
-	/*
-	 * memRE ≡ [ expresion2 ] memRE | .id memRE | ^ memRE | vacio
+	/**
+	 * memRE := [ expresion2 ] memRE | .id memRE | ^ memRE | vacio
+	 * 
+	 * @param tipoh
+	 * @return
+	 * @throws InterpreteExcepcion 
+	 * @throws errorh
 	 */
-	private Tipo memRE(Tipo tipoh) throws SintacticoException {
+	private Tipo memRE(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
 
 		// [ expresion2 ] memRE
 		if (tipoh instanceof TipoArray) {
@@ -377,54 +380,46 @@ public class Tipos {
 		else if (tipoh instanceof TipoPuntero) {
 			return memREPuntero(tipoh);
 		} else {
-			return null;
+			return tipoh;
 		}
 	}
 
-	/*
-	 * memREArray ≡ [ expresion2 ] memRE
+	/**
+	 * memREArray := [ expresion2 ] memRE
+	 * 
+	 * @param tipoh
+	 * @return
+	 * @throws InterpreteExcepcion 
+	 * @throws errorH
+	 *             | (expresion2.tipo = <t:int,tam:1>)
 	 */
-	private Tipo memREArray(Tipo tipoh) throws SintacticoException {
-
+	private Tipo memREArray(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
 		Tipo tipo = null;
 
 		try {
-			// [
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
 
-				// expresion2
-				try {
-					Tipo tipoNum = expresiones.expresion2();
+				Tipo tipoNum = expresiones.expresion2();
 
-					// error = expresion2.tipo = <t:int,tam:1>
-					if ((tipoNum == null) || !(tipoNum instanceof TipoEntero))
-						throw new MiExcepcion(
-								SintacticoException.EXPRESION_INVALIDA);
+				if ((tipoNum == null) | !(tipoNum instanceof TipoEntero))
+					throw new MiExcepcion(
+							SintacticoException.EXPRESION_INVALIDA);
 
-				} catch (Exception e) {
-					// FIXME Cuando estén todas las excepciones asi esto no hará
-					// falta
-					throw new MiExcepcion(e.getMessage());
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_CE)) {
+					throw new MiExcepcion(SintacticoException.FALTA_CORCHETE);
 				}
 
-				// ]
-				if (sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_CE)) {
+				tipo = ((TipoArray) tipoh).getTipoBase();
 
-					tipo = ((TipoArray) tipoh).getTipoBase();
-
-					// memRE0.cod = apila(memRE0.tipo.tbase.tam) ++ mult ++ suma
-					sintactico.getCodigo().add(
-							new Apilar(new DatoPila(DatoPila.INT, tipo
-									.getTamaño())));
-					sintactico.getCodigo().add(new Multiplicar());
-					sintactico.getCodigo().add(new Sumar());
-
-				} else
-					throw new MiExcepcion(SintacticoException.FALTA_CORCHETE);
+				sintactico.getCodigo().add(
+						new Apilar(
+								new DatoPila(DatoPila.INT, tipo.getTamanyo())));
+				sintactico.getCodigo().add(new Multiplicar());
+				sintactico.getCodigo().add(new Sumar());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 3);
 
 			}
 
-			// error = expresion2.tipo = <t:int,tam:1> && referenciaerronea
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -434,54 +429,53 @@ public class Tipos {
 		return tipo;
 	}
 
-	/*
-	 * memRERecord ≡ .id memRE
+	/**
+	 * memRERecord := .id memRE
+	 * 
+	 * @param tipoh
+	 * @return
+	 * @throws InterpreteExcepcion 
+	 * @throws errorh
+	 *             | !existeCampo(memRE1.camposh,id.lex) | sintactico.referenciaErronea |
+	 *             falta_expresion
 	 */
-	private Tipo memRERecord(Tipo tipoh) throws SintacticoException {
+	private Tipo memRERecord(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
 
 		String id = null;
 		Tipo tipo = null;
 
 		try {
-			// .
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO)) {
 
-				// id
 				id = sintactico.getLexico().getLexema();
 
-				// error = falta_expresion
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 					throw new MiExcepcion(SintacticoException.FALTA_ID);
 				}
 
-				// error = existeCampo(memRE1.camposh,id.lex)
 				if (!((TipoRegistro) tipoh).getCampos().keySet().contains(id)) {
 					throw new MiExcepcion(
 							"No existe ningún campo con ese identificador");
 				}
 
-				// error = referenciaErronea
-				if (referenciaErronea()) {
+				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
 
 				tipo = ((TipoRegistro) tipoh).getCampos().get(id).getTipoBase();
 
-				// cod = apila(memRE0.tipo.campos[id.lex].desp) ++ suma
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.INT,
 								((TipoRegistro) tipoh).getCampos().get(id)
 										.getDesplazamiento())));
 				sintactico.getCodigo().add(new Sumar());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 2);
 
-				// memRE
 				tipo = memRE(tipo);
 
 			}
 
-			// error = existeCampo(memRE1.camposh,id.lex) && referenciaErronea
-			// && falta_expresion
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -491,32 +485,33 @@ public class Tipos {
 		return tipo;
 	}
 
-	/*
-	 * memREPuntero ≡ ^ memRE
+	/**
+	 * memREPuntero := ^ memRE
+	 * 
+	 * @param tipoh
+	 * @return
+	 * @throws InterpreteExcepcion 
+	 * @throws sintactico.referenciaErronea
 	 */
-	private Tipo memREPuntero(Tipo tipoh) throws SintacticoException {
+	private Tipo memREPuntero(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
+
 		Tipo tipo = null;
 
 		try {
-			// ^
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTERO_FLECHA)) {
 
-				// error = referenciaErronea
-				if (referenciaErronea()) {
+				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
 
-				// cod = memRE1.cod ++ apila-ind
-				// FIXME HACER EL APILAIND!!
-				// sintactico.getCodigo().add(new ApilaInd());
+				sintactico.getCodigo().add(new ApilarInd());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 
-				// memRE
 				memRE(tipo);
 
 			}
 
-			// error = referenciaErronea
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
@@ -526,27 +521,7 @@ public class Tipos {
 		return tipo;
 	}
 
-	/* FUNCIONES SEMÁNTICAS */
 
-	private void accesoVar(String id) {
-
-		Detalles info = GestorTS.getInstancia().getDetalles(id);
-		sintactico.getCodigo().add(
-				new ApilarDir(new DatoPila(DatoPila.INT, info.getNivel() + 1)));
-		sintactico.getCodigo().add(
-				new Apilar(new DatoPila(DatoPila.INT, info.getDir())));
-		sintactico.getCodigo().add(new Sumar());
-		if (info.getClase().equals(Clase.var)) {
-			// FIXME Hacer el APILAIND!!!
-			// sintactico.getCodigo().add(new ApilarInd());
-		}
-	}
-
-	private boolean referenciaErronea() {
-		// TODO HACER!!!
-		return false;
-	}
-	
 	@SuppressWarnings("serial")
 	private class MiExcepcion extends Exception {
 

@@ -37,7 +37,7 @@ public class Declaraciones {
 	 */
 	public void declaracion() throws SintacticoException {
 
-		if (!declaracionVar() || !declaracionFun() || !declaracionTipo())
+		if (!declaracionVar() && !declaracionFun() && !declaracionTipo())
 			finDecs = true;
 
 	}
@@ -63,7 +63,7 @@ public class Declaraciones {
 				}
 				
 				//error = existeID(desctipo.ts, id.lex) && desctipo.ts[id.lex].n == desctipo.n
-				if (!GestorTS.getInstancia().existeID(id)) { //FIXME Añadir la comprobación de niveles
+				if (GestorTS.getInstancia().existeID(id)) { //FIXME Añadir la comprobación de niveles
 					throw new MiExcepcion(SintacticoException.VARIABLE_DUPLICADA);
 				}
 				
@@ -77,7 +77,7 @@ public class Declaraciones {
 				GestorTS.getInstancia().annadeID(id, sintactico.getDir(), tipo, Clase.var, sintactico.getNivel());
 				
 				// dir = dir + desctipo.tipo.tam 
-				sintactico.setDir(sintactico.getDir() + tipo.getTamaño());
+				sintactico.setDir(sintactico.getDir() + tipo.getTamanyo());
 
 				return true;
 			}

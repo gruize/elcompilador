@@ -1,8 +1,8 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Mayor extends InstruccionInterprete {
@@ -11,9 +11,9 @@ public class Mayor extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_MAYOR);
 	}
 
-	public Mayor(DatoPila d){
+	public Mayor(DatoPila d) throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_MAYOR);
-		GestorErrores.agregaError("La instruccion Mayor no acepta argumentos");
+		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}	
 	
 	@Override

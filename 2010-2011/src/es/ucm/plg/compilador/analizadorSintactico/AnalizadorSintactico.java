@@ -4,20 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles;
+import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 import es.ucm.plg.interprete.InstruccionInterprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
+import es.ucm.plg.interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.instrucciones.Apilar;
+import es.ucm.plg.interprete.instrucciones.ApilarDir;
+import es.ucm.plg.interprete.instrucciones.ApilarInd;
+import es.ucm.plg.interprete.instrucciones.Copia;
+import es.ucm.plg.interprete.instrucciones.DesapilarDir;
+import es.ucm.plg.interprete.instrucciones.DesapilarInd;
+import es.ucm.plg.interprete.instrucciones.Mueve;
+import es.ucm.plg.interprete.instrucciones.Restar;
+import es.ucm.plg.interprete.instrucciones.Sumar;
 
 public class AnalizadorSintactico {
 
 	private AnalizadorLexico lexico;
-	
+
 	private ArrayList<InstruccionInterprete> codigo;
 	private int dir;
 	private int nivel;
 	private int etiqueta;
 	private boolean error;
 	private List<String> pend;
-	
+
 	private Tipos tipos;
 	private Acciones acciones;
 	private Expresiones expresiones;
@@ -37,17 +50,13 @@ public class AnalizadorSintactico {
 			this.error = false;
 			this.dir = 0;
 			this.etiqueta = 0;
-			declaraciones.declaraciones();
+			this.declaraciones.declaraciones();
 			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.acciones.acciones();
 		} catch (Exception ex) {
 			error = true;
-			GestorErrores.agregaError(11, lexico.getFila(),
-					lexico.getColumna(), "Error!!!" + ex.getMessage());
-		}
-		if (error) {
-			System.out.println("¡¡¡COMPILADO CON ERRORES!!!");
-			System.out.println(GestorErrores.getErrores_propios().toString());
+			System.out.println("Compilado con errores: ");
+			System.out.println(ex.getMessage());
 		}
 	}
 
@@ -76,8 +85,8 @@ public class AnalizadorSintactico {
 	public int getDir() {
 		return dir;
 	}
-	
-	public void setDir(int dir){
+
+	public void setDir(int dir) {
 		this.dir = dir;
 	}
 
@@ -123,6 +132,106 @@ public class AnalizadorSintactico {
 
 	public int getEtiqueta() {
 		return etiqueta;
+	}
+
+	public void inicio(int numNiveles, int tamDatos) throws InterpreteExcepcion {
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, numNiveles + 2)));
+		this.codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT, 1)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 1 + numNiveles
+				+ tamDatos)));
+		this.codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.etiqueta += 4;
+	}
+
+	public void apilarRet(int ret) throws InterpreteExcepcion {
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 1)));
+		this.codigo.add(new Sumar());
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, ret)));
+		this.codigo.add(new DesapilarInd());
+		this.etiqueta += 4;
+	}
+
+	public void prologo(int nivel, int tamLocales) throws InterpreteExcepcion {
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 2)));
+		this.codigo.add(new Sumar());
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 1 + nivel)));
+		this.codigo.add(new DesapilarInd());
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 3)));
+		this.codigo.add(new Sumar());
+		this.codigo
+				.add(new DesapilarDir(new DatoPila(DatoPila.INT, 1 + nivel)));
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, tamLocales + 2)));
+		this.codigo.add(new Sumar());
+		this.codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.etiqueta += 13;
+	}
+
+	public void epilogo(int nivel) throws InterpreteExcepcion {
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 1 + nivel)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 2)));
+		this.codigo.add(new Restar());
+		this.codigo.add(new ApilarInd());
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 1 + nivel)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 3)));
+		this.codigo.add(new Restar());
+		this.codigo.add(new Sumar());
+		this.codigo.add(new Copia());
+		this.codigo.add(new DesapilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 2)));
+		this.codigo.add(new Sumar());
+		this.codigo
+				.add(new DesapilarDir(new DatoPila(DatoPila.INT, 1 + nivel)));
+		this.etiqueta += 13;
+	}
+
+	public void accesoVar(String id) throws InterpreteExcepcion {
+
+		Detalles info = GestorTS.getInstancia().getDetalles(id);
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, info
+				.getNivel() + 1)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, info.getDir())));
+		this.codigo.add(new Sumar());
+		this.etiqueta += 3;
+
+		if (info.getClase().equals(Clase.var)) {
+			this.codigo.add(new ApilarInd());
+			this.etiqueta += 1;
+		}
+
+	}
+
+	public boolean referenciaErronea() {
+		// TODO HACER!!!
+		return false;
+	}
+	
+	public void inicioPaso() throws InterpreteExcepcion {
+		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 0)));
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, 3)));
+		this.codigo.add(new Sumar());
+		this.etiqueta += 3;
+	}
+	
+	public void direccionParFormal(int dir) {
+		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, dir)));
+		this.codigo.add(new Sumar());
+		this.etiqueta += 2;		
+	}
+	
+	public void pasoParametro(Detalles modoReal, Detalles pFormal) throws InterpreteExcepcion {
+		
+		if (modoReal.getClase() == Clase.var && pFormal.getClase() == Clase.var) {
+			this.codigo.add(new Mueve(new DatoPila(DatoPila.INT, pFormal.getTipo().getTamanyo())));
+		}
+		else {
+			this.codigo.add(new DesapilarInd());
+		}
+		this.etiqueta += 1;		
+		
 	}
 
 }

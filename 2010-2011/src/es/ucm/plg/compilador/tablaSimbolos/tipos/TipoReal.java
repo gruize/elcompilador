@@ -3,7 +3,7 @@ package es.ucm.plg.compilador.tablaSimbolos.tipos;
 public class TipoReal implements Tipo {
 
 	@Override
-	public int getTamaño() {
+	public int getTamanyo() {
 		return 1;
 	}
 	

@@ -22,6 +22,7 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.HeaderTokeniz
 import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
 import es.ucm.plg.compilador.analizadorLexico.DatosToken;
 import es.ucm.plg.compilador.analizadorSintactico.AnalizadorSintactico;
+import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.interfaz.EjecucionThread;
 import es.ucm.plg.interprete.EscritorPila;
 import es.ucm.plg.interprete.InstruccionInterprete;
@@ -39,8 +40,6 @@ public class CompiladorFrame extends javax.swing.JFrame {
 	private AnalizadorLexico analizadorLexico;
 	private AnalizadorSintactico analizadorSintactico;
 	private boolean isCompilado;
-	
-	
 
 	/** Creates new form CompiladorFrame */
 	public CompiladorFrame() {
@@ -100,7 +99,12 @@ public class CompiladorFrame extends javax.swing.JFrame {
 		ejecutarButton.setName("EjecutarButton"); // NOI18N
 		ejecutarButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ejecutarButtonActionPerformed(evt);
+				try {
+					ejecutarButtonActionPerformed(evt);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -277,7 +281,7 @@ public class CompiladorFrame extends javax.swing.JFrame {
 	}// GEN-LAST:event_abrirButtonActionPerformed
 
 	private void EnviarButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_EnviarButtonActionPerformed
- 		try {
+		try {
 			pWriter.write(inputTextField.getText() + "\n");
 			// inputTextField.write(pWriter);
 			pWriter.flush();
@@ -294,7 +298,8 @@ public class CompiladorFrame extends javax.swing.JFrame {
 		compilar();
 	}// GEN-LAST:event_compilarButtonActionPerformed
 
-	private void ejecutarButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ejecutarButtonActionPerformed
+	private void ejecutarButtonActionPerformed(java.awt.event.ActionEvent evt)
+			throws IOException {// GEN-FIRST:event_ejecutarButtonActionPerformed
 		textAreaEjecucion.removeAll();
 		textAreaDebug.removeAll();
 		if (opcionesEjecucionPanel == null) {
@@ -313,7 +318,7 @@ public class CompiladorFrame extends javax.swing.JFrame {
 
 	public boolean compilar() {
 		try {
-			
+
 			this.textAreaEjecucion.setText("");
 			textAreaEjecucion.setAutoscrolls(true);
 
@@ -329,12 +334,12 @@ public class CompiladorFrame extends javax.swing.JFrame {
 			while (!analizadorLexico.isFin_programa()) {
 				analizadorLexico.scanner();
 			}
-			
+
 			imprimirTokens(tokens);
-			
+
 			analizadorLexico = new AnalizadorLexico(codigo);
-			analizadorSintactico = new AnalizadorSintactico(
-					analizadorLexico);
+			analizadorSintactico = new AnalizadorSintactico(analizadorLexico);
+			GestorTS.getInstancia().limpiar();
 
 			analizadorSintactico.iniciaSintactico();
 			ArrayList<InstruccionInterprete> ai = analizadorSintactico
@@ -349,7 +354,7 @@ public class CompiladorFrame extends javax.swing.JFrame {
 			ep.escribirPrograma(analizadorSintactico.getCodigo(), f);
 
 			isCompilado = true;
-			
+
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -358,15 +363,20 @@ public class CompiladorFrame extends javax.swing.JFrame {
 
 	}
 
-	private void ejecutar(boolean debug) {
-		textAreaEjecucion.setAutoscrolls(true);
-		if (!isCompilado) {
-			compilar();
+	private void ejecutar(boolean debug) throws IOException {
+		try {
+//			textAreaEjecucion.setAutoscrolls(true);
+			if (!isCompilado) {
+				compilar();
+			}
+			if (thread != null)
+				thread.interrupt();
+			thread = new EjecucionThread(pReader, pWriter, debug);
+			thread.start();
+
+		} catch (Exception ex) {
+			pWriter.write(ex.getMessage());
 		}
-		if (thread != null)
-			thread.interrupt();
-		thread = new EjecucionThread(pReader, pWriter, debug);
-		thread.start();
 	}
 
 	private void imprimirTokens(Vector<DatosToken> tokens) {

@@ -1,9 +1,6 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
-import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
-import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
 
 public class Acciones {
 
@@ -15,90 +12,53 @@ public class Acciones {
 		this.expresiones = new Expresiones(sintactico);
 	}
 
-	public boolean acciones() throws Exception {
+	public void acciones() throws Exception {
 
-		boolean ok = false;
+		try {
+			accion();
+			accionesRE();
 
-		if (accion()) {
-			if (accionesRE()) {
-				ok = true;
-			} else {
-				ok = sintactico.isError();
-			}
-		} else {
-			ok = sintactico.isError();
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
 		}
-
-		return ok;
 	}
 
-	private boolean accionesRE() throws Exception {
-
-		boolean ok = false;
-
-		if (!sintactico.getLexico().isFin_programa()) {
-			if (accion()) {
-				if (accionesRE()) {
-					ok = true;
-				} else {
-					ok = false;
-				}
-			} else {
-				ok = false;
+	private void accionesRE() throws Exception {
+		
+		try {
+			if (!sintactico.getLexico().isFin_programa()) {
+				accion();
+				accionesRE();
 			}
+			
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
 		}
-
-		return ok;
 	}
 
 	private boolean accion() throws Exception {
 
-		boolean ok = false;
-
-		if (this.sintactico.getLexico().getToken_actual()
-				.equals(PalabrasReservadas.TOKEN_IF)) {
-			ok = accionAlternativa();
-		} else {
-			if (this.sintactico.getLexico().getToken_actual()
-					.equals(PalabrasReservadas.TOKEN_WHILE)) {
-				ok = accionIteracion();
-			} else {
-				if (this.sintactico.getLexico().getToken_actual()
-						.equals(PalabrasReservadas.TOKEN_RESERVA)) {
-					ok = accionReserva();
-				} else {
-					if (this.sintactico.getLexico().getToken_actual()
-							.equals(PalabrasReservadas.TOKEN_LIBERA)) {
-						ok = accionLibera();
-					} else {
-						// Falta invocacion y expresion basica
-						// else{
-//						sintactico.setError(true);
-						GestorErrores.agregaError(100, sintactico.getLexico()
-								.getFila(),
-								sintactico.getLexico().getColumna(),
-								"Se esperaba una accion");
-						// }
-					}
-				}
+		try {
+			if (!accionAlternativa() && !accionIteracion() && !accionReserva()
+					&& !accionLibera()
+					&& !(sintactico.getExpresiones().expresion() != null)) {
+				throw new MiExcepcion("Se esperaba una accion");
 			}
 
-			/**
-			 * Anterior/ Tipo tipo = expresion(); if (tipo != null) { if
-			 * (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) { ok =
-			 * true; codigo.add(new LimpiarPila()); } else {
-			 * sintactico.setError(true); GestorErrores.agregaError(11,
-			 * sintactico.getLexico().getFila(),
-			 * sintactico.getLexico().getColumna(), "Falta un punto y coma"); }
-			 * } else if (sintactico.getLexico().isFin_programa()) { ok = true;
-			 * } else { sintactico.setError(true); GestorErrores.agregaError(11,
-			 * sintactico.getLexico().getFila(),
-			 * sintactico.getLexico().getColumna(),
-			 * "Se esperaba una expresion"); } /Anterior
-			 **/
-		}
+			if (!sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
+				throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
 
-		return ok;
+			return true;
+
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
 	}
 
 	private boolean accionLibera() throws Exception {
@@ -115,16 +75,16 @@ public class Acciones {
 		boolean ok = false;
 
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_IF)) {
-			Tipo tipo = expresiones.expresion2();
-			if (tipo instanceof TipoEntero) {
-				// ME QUEDO AQUI -- GABI
-			} else {
-//				sintactico.setError(true);
-				GestorErrores
-						.agregaError(101, sintactico.getLexico().getFila(),
-								sintactico.getLexico().getColumna(),
-								"Se esperaba una expresion de tipo entero (Comparacion)");
-			}
+//			Tipo tipo = expresiones.expresion2();
+//			if (tipo instanceof TipoEntero) {
+//				// ME QUEDO AQUI -- GABI
+//			} else {
+//				// sintactico.setError(true);
+//				GestorErrores
+//						.agregaError(101, sintactico.getLexico().getFila(),
+//								sintactico.getLexico().getColumna(),
+//								"Se esperaba una expresion de tipo entero (Comparacion)");
+//			}
 		}
 		return ok;
 	}
@@ -132,6 +92,15 @@ public class Acciones {
 	private boolean accionIteracion() throws Exception {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@SuppressWarnings("serial")
+	private class MiExcepcion extends Exception {
+
+		public MiExcepcion(String mensaje) {
+			super(mensaje);
+		}
+
 	}
 
 }

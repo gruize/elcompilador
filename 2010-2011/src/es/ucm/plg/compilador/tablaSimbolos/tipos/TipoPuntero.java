@@ -13,7 +13,7 @@ public class TipoPuntero implements Tipo{
 	}
 	
 	@Override
-	public int getTamaño() {
+	public int getTamanyo() {
 		return 1;
 	}
 

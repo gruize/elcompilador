@@ -3,8 +3,6 @@ package es.ucm.plg.interprete;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
-import es.ucm.plg.interprete.Interprete;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public abstract class InstruccionInterprete {
@@ -64,8 +62,9 @@ public abstract class InstruccionInterprete {
 	 * normal sera que al final de la ejecucion aumente el cp del interprete en
 	 * uno.
 	 * @param interprete El interprete que ejecuta la instruccion
+	 * @throws InterpreteExcepcion 
 	 */
-	public abstract boolean ejecutate(Interprete interprete);
+	public abstract boolean ejecutate(Interprete interprete) throws InterpreteExcepcion;
 
 	/**
 	 * @return the dato
@@ -89,14 +88,14 @@ public abstract class InstruccionInterprete {
 
 	}
 	
-    public void escribete(DataOutputStream dos){
+    public void escribete(DataOutputStream dos) throws InterpreteExcepcion{
         try {
 			dos.writeByte(getTipoIns());
 			 if (getDato() != null) {
 		            getDato().escribete(dos);
 		     }
 		} catch (IOException e) {
-			GestorErrores.agregaError(20, 0, 0, "Error en la escritura.");
+			throw new InterpreteExcepcion("InstruccionInterprete.escribete", "Error al escribir la instruccion");
 		}
        
     }

@@ -20,16 +20,16 @@ public class TipoRegistro implements Tipo{
 		return campos;
 	}
 
-	public int getTamaño() {
+	public int getTamanyo() {
 		
-		int tamaño = 0;
+		int tamanyo = 0;
 		Iterator<Campo> itCampos = campos.values().iterator();
 		
 		while (itCampos.hasNext()) {
-			tamaño += itCampos.next().getTipoBase().getTamaño();
+			tamanyo += itCampos.next().getTipoBase().getTamanyo();
 		}
 		
-		return tamaño;
+		return tamanyo;
 	}
 
 	@Override

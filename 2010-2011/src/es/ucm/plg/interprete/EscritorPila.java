@@ -7,12 +7,9 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
-import es.ucm.plg.interprete.InstruccionInterprete;
-
 public class EscritorPila {
 
-    public void escribirPrograma(ArrayList<InstruccionInterprete> programa, File f){
+    public void escribirPrograma(ArrayList<InstruccionInterprete> programa, File f) throws InterpreteExcepcion{
         DataOutputStream dos;
 		try {
 			dos = new DataOutputStream(new FileOutputStream(f));
@@ -20,7 +17,7 @@ public class EscritorPila {
 	            (it.next()).escribete(dos);
 	        }
 		} catch (FileNotFoundException e) {
-			GestorErrores.agregaError(20, 0, 0, "No se ha encontrado el archivo" + f.getName());
+			throw new InterpreteExcepcion("EscritorPila.escribirPrograma", InterpreteExcepcion.LECTURA_ESCRITURA);
 		}
     }
 

@@ -11,7 +11,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.memoria.Memoria;
 
@@ -122,8 +121,9 @@ public class Interprete {
 	/**
 	 * Dado un fichero, crea un LectorPila del que obtiene un programa valido
 	 * @param f  el fichero binario fuente
+	 * @throws InterpreteExcepcion 
 	 */
-	public void leerPrograma(File f){
+	public void leerPrograma(File f) throws InterpreteExcepcion{
 		LectorPila lector = new LectorPila();		
 		programa = lector.leerPrograma(f);
 		pila = new ArrayDeque<DatoPila>();
@@ -175,8 +175,9 @@ public class Interprete {
 
 	/**
 	 * Ejecuta el programa que se haya leido con anterioridad
+	 * @throws InterpreteExcepcion 
 	 */
-	public void ejecutarPrograma(){
+	public void ejecutarPrograma() throws InterpreteExcepcion{
 		try {
 			if (programa == null)
 				throw new NullPointerException();
@@ -194,9 +195,9 @@ public class Interprete {
 					setCp(cp + 1);
 			}
 		} catch (IOException e) {
-			GestorErrores.agregaError(20, 0, 0, "Error de lectura.");
+			throw new InterpreteExcepcion("Ejecución del programa", "Error al leer el programa");
 		} catch (NullPointerException e){
-			GestorErrores.agregaError(20, 0, 0, "Programa no iniciado");
+			throw new InterpreteExcepcion("Ejecución del programa", "Programa no iniciado");
 		}
 	}
 

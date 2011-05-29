@@ -1,8 +1,8 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class CambioSigno extends InstruccionInterprete {
@@ -11,9 +11,9 @@ public class CambioSigno extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_CAMBIO_SIGNO);
 	}
 
-	public CambioSigno(DatoPila d){
+	public CambioSigno(DatoPila d) throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_CAMBIO_SIGNO);
-		GestorErrores.agregaError("La instruccion Cambio de Signo no acepta argumentos");
+		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override

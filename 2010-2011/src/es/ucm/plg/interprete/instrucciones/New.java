@@ -1,21 +1,21 @@
 package es.ucm.plg.interprete.instrucciones;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class New extends InstruccionInterprete{
 
-	public New(){
+	public New() throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_NEW);
-		GestorErrores.agregaError("La instruccion New necesita un parametro");
+		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.FALTA_PARAMETRO);
 	}
 
-	public New(DatoPila d){
+	public New(DatoPila d) throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_NEW, d);
 		if (d.getTipo() != DatoPila.INT)
-			GestorErrores.agregaError("El parametro de esta instruccion debe ser de tipo entero");
+			throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.TIPO_INCORRECTO);
 	}
 
 	@Override

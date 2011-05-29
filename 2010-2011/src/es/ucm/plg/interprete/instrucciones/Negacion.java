@@ -2,20 +2,21 @@ package es.ucm.plg.interprete.instrucciones;
 
 import java.util.ArrayDeque;
 
-import es.ucm.plg.compilador.gestorErrores.GestorErrores;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
+import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Negacion extends InstruccionInterprete {
 
-	public Negacion(){
+	public Negacion() {
 		super(InstruccionInterprete.CODIGO_NEGACION);
 	}
 
-	public Negacion(DatoPila d){
+	public Negacion(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_NEGACION);
-		GestorErrores.agregaError("La instruccion Negacion no acepta argumentos");
+		throw new InterpreteExcepcion(this.toString(),
+				InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class Negacion extends InstruccionInterprete {
 	 * @return siempre true (nunca modifica el cp del interprete)
 	 * @throws InstruccionExc si encuentra tipos de datos no booleanos
 	 */
-	public boolean ejecutate(Interprete interprete){
+	public boolean ejecutate(Interprete interprete) throws InterpreteExcepcion {
 		ArrayDeque<DatoPila> pila = interprete.getPila();
 		DatoPila d = pila.pop();
 		DatoPila res = null;
@@ -50,8 +51,8 @@ public class Negacion extends InstruccionInterprete {
 			res = new DatoPila(DatoPila.INT, (d.getValor().equals(1) ? 0 : 1));
 			break;
 		default:
-			GestorErrores.agregaError("Tipo invalido ("
-					+ d.toString() + ")");
+			throw new InterpreteExcepcion(this.toString(),
+					InterpreteExcepcion.TIPO_INCORRECTO);
 		}
 		pila.addFirst(res);
 		return true;
