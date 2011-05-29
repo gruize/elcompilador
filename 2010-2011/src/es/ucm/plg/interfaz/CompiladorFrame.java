@@ -17,13 +17,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.HeaderTokenizer.Token;
-
 import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
 import es.ucm.plg.compilador.analizadorLexico.DatosToken;
 import es.ucm.plg.compilador.analizadorSintactico.AnalizadorSintactico;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
-import es.ucm.plg.interfaz.EjecucionThread;
 import es.ucm.plg.interprete.EscritorPila;
 import es.ucm.plg.interprete.InstruccionInterprete;
 
@@ -35,8 +32,8 @@ public class CompiladorFrame extends javax.swing.JFrame {
 	private PipedWriter pWriter = new PipedWriter();
 	private PipedReader pReader = new PipedReader();
 	private JFileChooser selectFich = new JFileChooser();
-	private JPanel opcionesCompilacionPanel, opcionesEjecucionPanel;
-	private JCheckBox checkP, checkDebug;
+	private JPanel opcionesEjecucionPanel;
+	private JCheckBox checkDebug;
 	private AnalizadorLexico analizadorLexico;
 	private AnalizadorSintactico analizadorSintactico;
 	private boolean isCompilado;

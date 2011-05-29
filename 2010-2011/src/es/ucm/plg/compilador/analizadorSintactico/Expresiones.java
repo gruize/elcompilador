@@ -9,10 +9,12 @@ import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
+import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.CambioSigno;
 import es.ucm.plg.interprete.instrucciones.CastInt;
 import es.ucm.plg.interprete.instrucciones.CastReal;
-import es.ucm.plg.interprete.instrucciones.DesapilarDir;
+import es.ucm.plg.interprete.instrucciones.Desapilar;
+import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
@@ -172,7 +174,7 @@ public class Expresiones {
 	 * expresionOut := out expresion1
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || expresion_invalida || ¬existeID(op0in.ts, id.lex)
 	 */
@@ -209,7 +211,7 @@ public class Expresiones {
 	 * expresion1 := mem = expresion2
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || expresion_invalida || tipo_incompatible
 	 */
@@ -219,18 +221,11 @@ public class Expresiones {
 		Tipo tipo2 = null;
 
 		try {
-			String id = sintactico.getLexico().getLexema();
-
 			tipo1 = reconoceAsignacion();
 
 			if (tipo1 != null) {
+								
 				tipo2 = expresion2();
-
-				if ((tipo1 instanceof TipoReal)
-						&& (tipo2 instanceof TipoEntero)) {
-					sintactico.getCodigo().add(new CastReal());
-					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-				}
 
 				if (tipo2 == null) {
 					throw new MiExcepcion(
@@ -239,9 +234,15 @@ public class Expresiones {
 				if (!(tipo1.equals(tipo2))) {
 					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
 				}
-
-				sintactico.getCodigo().add(new DesapilarDir());
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				
+				 sintactico.getCodigo().add(new DesapilarInd());
+				 sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				 
+				if ((tipo1 instanceof TipoReal)
+						&& (tipo2 instanceof TipoEntero)) {
+					sintactico.getCodigo().add(new CastReal());
+					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				}
 
 			} else {
 				tipo1 = expresion2();
@@ -261,7 +262,7 @@ public class Expresiones {
 	 * expresion2 := expresion3 op2 expresion3 | expresion3
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || !validoOperacion(expresion31.ts, expresion30.tipo, op2.op,
 	 *             expresion31.tipo) || expresion_invalida
@@ -320,7 +321,7 @@ public class Expresiones {
 	 * expresion3 = expresion4 expresion3RE
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || expresion_incorrecta || ¬existeID(op0in.ts, id.lex)
 	 */
@@ -354,14 +355,15 @@ public class Expresiones {
 	/**
 	 * expresion3RE := op3 expresion4 expresion3RE | vacio
 	 * 
-	 * @param Tipo
+	 * @param tipo1
 	 *            resultante de la parte anterior de la expresion
-	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @return tipo
+	 * @throws InterpreteExcepcion
 	 * @throws error
 	 *             || falta_expresion || !existeID(op0in.ts, id.lex)
 	 */
-	public Tipo expresion3RE(Tipo tipo1) throws SintacticoException, InterpreteExcepcion {
+	public Tipo expresion3RE(Tipo tipo1) throws SintacticoException,
+			InterpreteExcepcion {
 
 		InstruccionInterprete op;
 		Tipo tipo = tipo1;
@@ -416,7 +418,7 @@ public class Expresiones {
 	 * expresion4 := expresion5 expresion4RE
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 */
 	public Tipo expresion4() throws SintacticoException, InterpreteExcepcion {
@@ -436,15 +438,16 @@ public class Expresiones {
 	/**
 	 * expresion4RE := op4 expresion5 expresion4RE | vacio
 	 * 
-	 * @param Tipo
+	 * @param tipo1
 	 *            resultante de la parte anterior de la expresion
-	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @return tipo
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || validoOperacion(expresion5.ts, expresion4RE0.tipo, op4.op,
 	 *             expresion5.tipo)
 	 */
-	public Tipo expresion4RE(Tipo tipo1) throws SintacticoException, InterpreteExcepcion {
+	public Tipo expresion4RE(Tipo tipo1) throws SintacticoException,
+			InterpreteExcepcion {
 
 		InstruccionInterprete op;
 		Tipo tipo = tipo1;
@@ -502,7 +505,7 @@ public class Expresiones {
 	 * expresion5 := op5asoc expresion5 || op5noasoc expresion6 || expresion6
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || !validoOperacion(ts, tipo, op, NULL)
 	 */
@@ -571,7 +574,7 @@ public class Expresiones {
 	 * expresion6 := (expresion) || litInt || litReal || mem
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 *             || !validoOperacion(ts, tipo, op, NULL)
 	 */
@@ -585,8 +588,11 @@ public class Expresiones {
 			// mem
 			tipo = sintactico.getTipos().mem();
 
-			if (tipo == null) {
-
+			if (tipo != null) {
+				sintactico.getCodigo().add(new ApilarInd());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+			}
+			else {
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
 					tipo = expresion();
 					if (tipo == null) {
@@ -601,28 +607,30 @@ public class Expresiones {
 					}
 
 				}
-				// litInt
-			} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_INT)) {
-				if (cast(lex, new TipoEntero())) {
-					tipo = new TipoEntero();
-					sintactico.getCodigo().add(
-							new Apilar(new DatoPila(DatoPila.INT, lex)));
-					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-				} else {
-					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
-				}
+				if (sintactico.reconoce(PalabrasReservadas.TOKEN_INT)) {
 
-				// litReal
-			} else if (sintactico.reconoce(PalabrasReservadas.TOKEN_REAL)) {
-				if (cast(lex, new TipoReal())) {
-					tipo = new TipoReal();
-					sintactico.getCodigo().add(
-							new Apilar(new DatoPila(DatoPila.REAL, lex)));
-					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-				} else {
-					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
+					if (cast(lex, new TipoEntero())) {
+						tipo = new TipoEntero();
+						sintactico.getCodigo().add(
+								new Apilar(new DatoPila(DatoPila.INT, lex)));
+						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+					} else {
+						throw new MiExcepcion(
+								SintacticoException.TIPO_INCOMPATIBLE);
+					}
 				}
+				if (sintactico.reconoce(PalabrasReservadas.TOKEN_REAL)) {
+					if (cast(lex, new TipoReal())) {
+						tipo = new TipoReal();
+						sintactico.getCodigo().add(
+								new Apilar(new DatoPila(DatoPila.REAL, lex)));
+						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+					} else {
+						throw new MiExcepcion(
+								SintacticoException.TIPO_INCOMPATIBLE);
+					}
 
+				}
 			}
 
 			return tipo;
@@ -639,9 +647,9 @@ public class Expresiones {
 	 * Funcion semantica que comprueba si se puede realizar una conversion de un
 	 * valor a un tipo
 	 * 
-	 * @param Valor
+	 * @param valor
 	 *            que deseo convertir
-	 * @param Tipo
+	 * @param tipo
 	 *            al que quiero convertir el valor
 	 * @return True si la conversion se puede realizar, false en caso contrario
 	 */
@@ -748,19 +756,8 @@ public class Expresiones {
 			return null;
 	}
 
-	private Tipo reconoceAsignacion() throws SintacticoException, InterpreteExcepcion {
-
-		// Saco una foto del estado del léxico por si tengo que retroceder.
-		int fila = sintactico.getLexico().getFila();
-		int columna = sintactico.getLexico().getColumna();
-		int indice = sintactico.getLexico().getIndice();
-		String lexema = sintactico.getLexico().getLexema();
-		int estado = sintactico.getLexico().getEstado();
-		char next_char = sintactico.getLexico().getNext_char();
-		String token_actual = sintactico.getLexico().getToken_actual();
-		int parentesis_indice = sintactico.getLexico().getParentesis_indice();
-		int parentesis_fila = sintactico.getLexico().getParentesis_fila();
-		int parentesis_columna = sintactico.getLexico().getParentesis_columna();
+	private Tipo reconoceAsignacion() throws SintacticoException,
+			InterpreteExcepcion {
 
 		Tipo tipo = sintactico.getTipos().mem();
 
@@ -769,17 +766,8 @@ public class Expresiones {
 					.equals(PalabrasReservadas.TOKEN_ASIGNACION)) {
 				sintactico.getLexico().scanner();
 			} else {
-				sintactico.getLexico().setFila(fila);
-				sintactico.getLexico().setColumna(columna);
-				sintactico.getLexico().setIndice(indice);
-				sintactico.getLexico().setLexema(lexema);
-				sintactico.getLexico().setEstado(estado);
-				sintactico.getLexico().setNext_char(next_char);
-				sintactico.getLexico().setToken_actual(token_actual);
-				sintactico.getLexico().setParentesis_indice(parentesis_indice);
-				sintactico.getLexico().setParentesis_fila(parentesis_fila);
-				sintactico.getLexico()
-						.setParentesis_columna(parentesis_columna);
+				sintactico.getLexico().volverEstadoAnterior();
+				sintactico.getCodigo().add(new Desapilar());
 			}
 		}
 		return tipo;

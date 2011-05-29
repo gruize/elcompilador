@@ -1,0 +1,15 @@
+tipo real[2] array1;
+tipo int[4] array2;
+
+tipo rec
+
+real centimos;
+array1 cantidad;
+array2 euros;
+endrec tdinero;
+
+tdinero dinero;
+
+
+out dinero.euros = (int)(in dinero.cantidad);
+out dinero.centimos = dinero.cantidad - dinero.euros;

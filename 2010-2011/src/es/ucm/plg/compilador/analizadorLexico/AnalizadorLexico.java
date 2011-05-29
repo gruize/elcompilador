@@ -53,7 +53,7 @@ public class AnalizadorLexico {
 	private static final int BARRA = 47;
 	private static final int CORCHETE_ABIERTO = 49;
 	private static final int CORCHETE_CERRADO = 50;
-	private static final int PUNTERO = 51; //^
+	private static final int PUNTERO = 51; // ^
 	private static final int COMA = 52;
 
 	private PalabrasReservadas palabrasReserva = new PalabrasReservadas();
@@ -70,8 +70,9 @@ public class AnalizadorLexico {
 	private int parentesis_indice;
 	private int parentesis_fila;
 	private int parentesis_columna;
-    private PrintWriter writer;
-    private boolean errorLexico;
+	private PrintWriter writer;
+	private boolean errorLexico;
+	private AnalizadorLexico anteriorEstado;
 
 	/**
 	 * Convierte el programa de entrada (cadena de simbolos alfanumericos) en
@@ -93,7 +94,7 @@ public class AnalizadorLexico {
 		this.token_actual = null;
 		this.lexema = "";
 		this.estado = VACIO;
-		writer = new PrintWriter(System.out,true);
+		writer = new PrintWriter(System.out, true);
 	}
 
 	public boolean isFin_programa() {
@@ -212,7 +213,7 @@ public class AnalizadorLexico {
 	public Vector<DatosToken> getTokens() {
 		return tokens;
 	}
-	
+
 	public boolean isErrorLexico() {
 		return errorLexico;
 	}
@@ -223,13 +224,19 @@ public class AnalizadorLexico {
 	public void scanner() {
 		boolean encontrado = false;
 
+		if (anteriorEstado == null) {
+			anteriorEstado = new AnalizadorLexico(programa);
+		}
+
+		copiaEstado();
+
 		this.estado = VACIO;
 		this.lexema = "";
 
 		if (!fin_programa) {
 			while (!encontrado && !fin_programa) {
 
-				if (programa.length() < indice) 
+				if (programa.length() < indice)
 					fin_programa = true;
 
 				switch (estado) {
@@ -326,8 +333,8 @@ public class AnalizadorLexico {
 							}
 						}
 					}
-					break;				
-					
+					break;
+
 				case PUNTO_Y_COMA:
 
 					encontrado = true;
@@ -855,7 +862,7 @@ public class AnalizadorLexico {
 						transita(Y_LOGICA);
 					else {
 						encontrado = true;
-						encontrado(PalabrasReservadas.TOKEN_AMSPERSAND_VALOR);					
+						encontrado(PalabrasReservadas.TOKEN_AMSPERSAND_VALOR);
 					}
 					break;
 
@@ -868,7 +875,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					encontrado(PalabrasReservadas.TOKEN_O_LOGICA);
 					break;
-					
+
 				case PUNTERO:
 					encontrado = true;
 					encontrado(PalabrasReservadas.TOKEN_PUNTERO_FLECHA);
@@ -878,7 +885,7 @@ public class AnalizadorLexico {
 					encontrado = true;
 					encontrado(PalabrasReservadas.TOKEN_COMA);
 					break;
-					
+
 				default:
 					error();
 					break;
@@ -941,9 +948,8 @@ public class AnalizadorLexico {
 
 		if (indice < programa.length())
 			next = programa.charAt(indice);
-		else
-			if(indice > programa.length())
-				fin_programa = true;
+		else if (indice > programa.length())
+			fin_programa = true;
 		return next;
 	}
 
@@ -965,7 +971,7 @@ public class AnalizadorLexico {
 		String sal = "Error linea " + fila + " --- ";
 		switch (estado) {
 		case VACIO:
-			sal += " No existe el token" ;
+			sal += " No existe el token";
 			break;
 		case CAST_I:
 		case CAST_IN:
@@ -1007,6 +1013,32 @@ public class AnalizadorLexico {
 		writer.println("La ejecucion se ha parado por error en el analisis lexico");
 		errorLexico = true;
 
+	}
+
+	public void copiaEstado() {
+		anteriorEstado.fila = getFila();
+		anteriorEstado.columna = getColumna();
+		anteriorEstado.indice = getIndice();
+		anteriorEstado.lexema = getLexema();
+		anteriorEstado.estado = getEstado();
+		anteriorEstado.next_char = getNext_char();
+		anteriorEstado.token_actual = getToken_actual();
+		anteriorEstado.parentesis_indice = getParentesis_indice();
+		anteriorEstado.parentesis_fila = getParentesis_fila();
+		anteriorEstado.parentesis_columna = getParentesis_columna();
+	}
+	
+	public void volverEstadoAnterior() {
+		fila = anteriorEstado.getFila();
+		columna = anteriorEstado.getColumna();
+		indice = anteriorEstado.getIndice();
+		lexema = anteriorEstado.getLexema();
+		estado = anteriorEstado.getEstado();
+		next_char = anteriorEstado.getNext_char();
+		token_actual = anteriorEstado.getToken_actual();
+		parentesis_indice = anteriorEstado.getParentesis_indice();
+		parentesis_fila = anteriorEstado.getParentesis_fila();
+		parentesis_columna = anteriorEstado.getParentesis_columna();
 	}
 
 }

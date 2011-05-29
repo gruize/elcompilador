@@ -3,7 +3,6 @@ package es.ucm.plg.compilador.analizadorSintactico;
 import java.util.HashMap;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
-import es.ucm.plg.compilador.tablaSimbolos.Detalles;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Campo;
@@ -16,9 +15,7 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
-import es.ucm.plg.interprete.instrucciones.ApilarDir;
 import es.ucm.plg.interprete.instrucciones.ApilarInd;
-import es.ucm.plg.interprete.instrucciones.DesapilarDir;
 import es.ucm.plg.interprete.instrucciones.Multiplicar;
 import es.ucm.plg.interprete.instrucciones.Sumar;
 
@@ -35,15 +32,22 @@ public class Tipos {
 	/**
 	 * desctipo := id | int | real
 	 * 
-	 * @return
+	 * @return tipo
 	 * @throws errorh
 	 */
 	public Tipo desctipo() throws SintacticoException {
 
 		String id = sintactico.getLexico().getLexema();
 
-		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID))
-			return new TipoPuntero(GestorTS.getInstancia().getTipo(id));
+		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
+			if (GestorTS.getInstancia().existeID(id)
+					&& (GestorTS.getInstancia().getDetalles(id).getClase() == Clase.type)) {
+				return GestorTS.getInstancia().getTipo(id);
+			} else {
+				sintactico.getPend().add(id);
+				return new TipoPuntero(GestorTS.getInstancia().getTipo(id));
+			}
+		}
 
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_INT))
 			return new TipoEntero();
@@ -59,7 +63,7 @@ public class Tipos {
 	/**
 	 * deftipo := array | registro | puntero
 	 * 
-	 * @return
+	 * @return tipoResult
 	 * @throws errorh
 	 */
 	public Tipo defTipo() throws SintacticoException {
@@ -80,7 +84,7 @@ public class Tipos {
 	/**
 	 * registro := rec campos endrec
 	 * 
-	 * @return
+	 * @return tipoResult
 	 * @throws errorh
 	 *             | (campos.size = 0) | falta_expresion
 	 */
@@ -119,10 +123,10 @@ public class Tipos {
 	/**
 	 * array := desctipo [ litInt ]
 	 * 
-	 * @return
+	 * @return tipoResult
 	 * @throws errorh
-	 *             | cast(desctipo.ts, litInt,<t:int,tam:1>) | sintactico.referenciaErronea
-	 *             && falta_expresion
+	 *             | cast(desctipo.ts, litInt,<t:int,tam:1>) |
+	 *             sintactico.referenciaErronea && falta_expresion
 	 */
 	public Tipo array() throws SintacticoException {
 
@@ -136,7 +140,8 @@ public class Tipos {
 			if (tipoBase != null) {
 
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
-					throw new MiExcepcion(SintacticoException.FALTA_CORCHETE);
+					sintactico.getLexico().volverEstadoAnterior();
+					return null;
 				}
 
 				int num = Integer.parseInt(sintactico.getLexico().getLexema());
@@ -169,9 +174,9 @@ public class Tipos {
 	}
 
 	/**
-	 * puntero := pointer desctipo
+	 * puntero := pointer desctipo id
 	 * 
-	 * @return
+	 * @return tipoResult
 	 * @throws errorh
 	 *             | sintactico.referenciaErronea | falta_expresion
 	 */
@@ -188,11 +193,18 @@ public class Tipos {
 				if (tipoBase == null)
 					throw new MiExcepcion(SintacticoException.FALTA_DESCTIPO);
 
+				String id = sintactico.getLexico().getLexema();
+
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
+					throw new MiExcepcion(SintacticoException.FALTA_ID);
+				}
+
 				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
 
+				sintactico.getPend().remove(id);
 				tipoResult = new TipoPuntero(tipoBase);
 
 			}
@@ -209,7 +221,7 @@ public class Tipos {
 	/**
 	 * campos := campo camposRE
 	 * 
-	 * @return
+	 * @return campos
 	 * @throws errorh
 	 *             | (campos.size = 0)
 	 */
@@ -226,6 +238,7 @@ public class Tipos {
 						"No se puede declarar un registro sin campos");
 			}
 
+			campo.setDesplazamiento(0);
 			campos.put(campo.getNombre(), campo);
 			camposRE(campos);
 
@@ -289,7 +302,7 @@ public class Tipos {
 		Campo campo = null;
 
 		try {
-			if (sintactico.reconoce(PalabrasReservadas.TOKEN_COMA)) {
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
 
 				campo = campo();
 
@@ -298,7 +311,10 @@ public class Tipos {
 							"Se esperaba un campo después de la coma");
 				}
 
-				campo.setDesplazamiento(campos.size());
+				campo.setDesplazamiento(campos.get(campos.size() - 1)
+						.getDesplazamiento()
+						+ campos.get(campos.size() - 1).getTipoBase()
+								.getTamanyo());
 				campos.put(campo.getNombre(), campo);
 
 				camposRE(campos);
@@ -315,8 +331,8 @@ public class Tipos {
 	/**
 	 * mem := id memRE
 	 * 
-	 * @return
-	 * @throws InterpreteExcepcion 
+	 * @return tipo
+	 * @throws InterpreteExcepcion
 	 * @throws !existeID(mem.tsh, id.lex) | mem.tsh[id.lex].clase == var |
 	 *         sintactico.referenciaErronea
 	 */
@@ -339,12 +355,12 @@ public class Tipos {
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
 
-				sintactico.accesoVar(id);
+				sintactico.getCodigo().add(
+						new Apilar(new DatoPila(DatoPila.INT, GestorTS
+								.getInstancia().getDir(id))));
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 
 				tipo = memRE(GestorTS.getInstancia().getTipo(id));
-
-				sintactico.getCodigo().add(new DesapilarDir());
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 
 			}
 
@@ -363,10 +379,11 @@ public class Tipos {
 	 * 
 	 * @param tipoh
 	 * @return
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
 	 */
-	private Tipo memRE(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
+	private Tipo memRE(Tipo tipoh) throws SintacticoException,
+			InterpreteExcepcion {
 
 		// [ expresion2 ] memRE
 		if (tipoh instanceof TipoArray) {
@@ -389,11 +406,12 @@ public class Tipos {
 	 * 
 	 * @param tipoh
 	 * @return
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorH
 	 *             | (expresion2.tipo = <t:int,tam:1>)
 	 */
-	private Tipo memREArray(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
+	private Tipo memREArray(Tipo tipoh) throws SintacticoException,
+			InterpreteExcepcion {
 		Tipo tipo = null;
 
 		try {
@@ -434,12 +452,13 @@ public class Tipos {
 	 * 
 	 * @param tipoh
 	 * @return
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws errorh
-	 *             | !existeCampo(memRE1.camposh,id.lex) | sintactico.referenciaErronea |
-	 *             falta_expresion
+	 *             | !existeCampo(memRE1.camposh,id.lex) |
+	 *             sintactico.referenciaErronea | falta_expresion
 	 */
-	private Tipo memRERecord(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
+	private Tipo memRERecord(Tipo tipoh) throws SintacticoException,
+			InterpreteExcepcion {
 
 		String id = null;
 		Tipo tipo = null;
@@ -490,10 +509,11 @@ public class Tipos {
 	 * 
 	 * @param tipoh
 	 * @return
-	 * @throws InterpreteExcepcion 
+	 * @throws InterpreteExcepcion
 	 * @throws sintactico.referenciaErronea
 	 */
-	private Tipo memREPuntero(Tipo tipoh) throws SintacticoException, InterpreteExcepcion {
+	private Tipo memREPuntero(Tipo tipoh) throws SintacticoException,
+			InterpreteExcepcion {
 
 		Tipo tipo = null;
 
@@ -520,7 +540,6 @@ public class Tipos {
 
 		return tipo;
 	}
-
 
 	@SuppressWarnings("serial")
 	private class MiExcepcion extends Exception {
