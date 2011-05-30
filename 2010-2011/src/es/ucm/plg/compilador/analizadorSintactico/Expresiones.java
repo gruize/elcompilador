@@ -94,9 +94,8 @@ public class Expresiones {
 			tipo1 = sintactico.getTipos().mem();
 
 			if (tipo1 != null) {
-
 				// =
-				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_IGUAL)) {
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ASIGNACION)) {
 					throw new MiExcepcion(
 							SintacticoException.EXPRESION_INVALIDA);
 				}
@@ -294,8 +293,8 @@ public class Expresiones {
 								SintacticoException.EXPRESION_INVALIDA);
 					}
 
-					if ((tipo1 instanceof TipoReal || tipo1 instanceof TipoEntero)
-							&& (tipo2 instanceof TipoReal || tipo2 instanceof TipoEntero)) {
+					if ((tipo1 instanceof TipoReal && tipo2 instanceof TipoEntero)
+							|| (tipo2 instanceof TipoReal && tipo1 instanceof TipoEntero)) {
 						throw new MiExcepcion(
 								SintacticoException.TIPO_INCOMPATIBLE);
 					}
@@ -594,7 +593,7 @@ public class Expresiones {
 			}
 			else {
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
-					tipo = expresion();
+					tipo = expresion2();
 					if (tipo == null) {
 						throw new MiExcepcion(
 								SintacticoException.TIPO_INCOMPATIBLE);

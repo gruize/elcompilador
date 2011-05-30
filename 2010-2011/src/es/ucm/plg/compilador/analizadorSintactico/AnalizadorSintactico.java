@@ -52,9 +52,9 @@ public class AnalizadorSintactico {
 			this.etiqueta = 0;
 			this.pend = new ArrayList<String>();
 			this.declaraciones.declaraciones();
-			GestorTS.getInstancia().salidaTS();
 			if(pend.contains(lexico.getLexema()))
 				pend.remove(lexico.getLexema());
+			GestorTS.getInstancia().salidaTS();
 			if (pend.size() > 0) 
 				throw new Exception("Existen tipos pendientes sin declarar");
 			this.codigo = new ArrayList<InstruccionInterprete>();

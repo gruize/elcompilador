@@ -1,0 +1,7 @@
+@ Prueba 4 arit. booleana
+
+int a;
+
+a = ( 1 > 0 ) and ( 2 < 3 ) or ( 5 > 7 ) ; 
+out ( a );
+
