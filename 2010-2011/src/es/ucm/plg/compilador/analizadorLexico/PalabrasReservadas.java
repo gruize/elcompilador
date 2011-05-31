@@ -53,6 +53,7 @@ public class PalabrasReservadas {
         public static String TOKEN_END = "tkend";
         public static String TOKEN_RETURN = "tkreturn";
         public static String TOKEN_FUN = "tkfun";
+        public static String TOKEN_ELSE = "tkelse";
 
         private Hashtable<String, String> palabrasReservadas = new Hashtable<String, String>();
 
@@ -66,6 +67,7 @@ public class PalabrasReservadas {
                 palabrasReservadas.put("out", TOKEN_OUT);
                 palabrasReservadas.put("if", TOKEN_IF);
                 palabrasReservadas.put("elsif", TOKEN_ELSIF);
+                palabrasReservadas.put("else", TOKEN_ELSE);
                 palabrasReservadas.put("endif", TOKEN_END_IF);
                 palabrasReservadas.put("then", TOKEN_THEN);
                 palabrasReservadas.put("while", TOKEN_WHILE);

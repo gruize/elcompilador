@@ -3,11 +3,14 @@ package es.ucm.plg.compilador.analizadorSintactico;
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.instrucciones.Delete;
 import es.ucm.plg.interprete.instrucciones.IrA;
 import es.ucm.plg.interprete.instrucciones.IrF;
 import es.ucm.plg.interprete.instrucciones.LimpiarPila;
+import es.ucm.plg.interprete.instrucciones.New;
 
 public class Acciones {
 
@@ -67,15 +70,87 @@ public class Acciones {
 		}
 	}
 
-	private boolean accionLibera() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	/**
+	 * accionlibera := free mem ;
+	 * 
+	 * @return ok
+	 * @throws Exception
+	 */
+	public boolean accionLibera() throws Exception {
+
+		try {
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_LIBERA)) {
+
+				Tipo tipo = sintactico.getTipos().mem();
+
+				if (tipo == null) {
+					throw new MiExcepcion(SintacticoException.FALTA_ID);
+				}
+
+				if (!(tipo instanceof TipoPuntero)) {
+					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
+				}
+
+				int tam = ((TipoPuntero) tipo).getTipoBase().getTamanyo();
+
+				sintactico.getCodigo().add(
+						new Delete(new DatoPila(DatoPila.INT, tam)));
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+
+				return true;
+			}
+
+			return false;
+
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
 	}
 
-	private boolean accionReserva() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	/**
+	 * accionreserva := alloc mem ;
+	 * 
+	 * @return ok
+	 * @throws errorh
+	 *             && mem.tipo <t:puntero>
+	 * @throws InterpreteExcepcion
+	 */
+	public boolean accionReserva() throws SintacticoException,
+			InterpreteExcepcion {
+
+		try {
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_RESERVA)) {
+
+				Tipo tipo = sintactico.getTipos().mem();
+
+				if (tipo == null) {
+					throw new MiExcepcion(SintacticoException.FALTA_ID);
+				}
+
+				if (!(tipo instanceof TipoPuntero)) {
+					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
+				}
+
+				int tam = ((TipoPuntero) tipo).getTipoBase().getTamanyo();
+
+				sintactico.getCodigo().add(
+						new New(new DatoPila(DatoPila.INT, tam)));
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+
+				return true;
+			}
+
+			return false;
+
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
 	}
+
 
 	private boolean accionAlternativa() throws Exception {
 		boolean ok = false;
