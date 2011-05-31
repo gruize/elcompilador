@@ -30,7 +30,7 @@ public class IrA extends InstruccionInterprete {
 		if ((this.getDato().getTipo() == DatoPila.INT)
 				&& (interprete.getPrograma().size() > this.getDato()
 						.getEntero())) {
-			interprete.setCp(this.getDato().getEntero());
+			interprete.setCp(this.getDato().getEntero() - 1);
 			salto = true;
 		} else
 			throw new InterpreteExcepcion(this.toString(),
