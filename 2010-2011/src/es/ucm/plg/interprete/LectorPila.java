@@ -21,6 +21,8 @@ import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
 import es.ucm.plg.interprete.instrucciones.Entrada;
 import es.ucm.plg.interprete.instrucciones.Igual;
+import es.ucm.plg.interprete.instrucciones.IrA;
+import es.ucm.plg.interprete.instrucciones.IrF;
 import es.ucm.plg.interprete.instrucciones.LimpiarPila;
 import es.ucm.plg.interprete.instrucciones.Mayor;
 import es.ucm.plg.interprete.instrucciones.MayorIg;
@@ -168,6 +170,12 @@ public class LectorPila {
 				break;
 			case InstruccionInterprete.CODIGO_DELETE:
 				inst = new Delete(leerDato(dis));
+				break;	
+			case InstruccionInterprete.CODIGO_IR_A:
+				inst = new IrA(leerDato(dis));
+				break;	
+			case InstruccionInterprete.CODIGO_IR_F:
+				inst = new IrF(leerDato(dis));
 				break;				
 			default:
 				throw new IOException();

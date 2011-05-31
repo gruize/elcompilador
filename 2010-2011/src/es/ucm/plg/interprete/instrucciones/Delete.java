@@ -27,10 +27,10 @@ public class Delete extends InstruccionInterprete {
 
 	@Override
 	public boolean ejecutate(Interprete interprete) throws InterpreteExcepcion {
-		Integer dir = this.getDato().getEntero();
+		Integer tam = this.getDato().getEntero();
 		if (interprete.getPila().peek().getTipo() == DatoPila.INT) {
-			Integer tam = interprete.getPila().pop().getEntero();
-			interprete.liberar(dir, tam);
+			Integer dir = interprete.getPila().pop().getEntero();
+			interprete.liberar(tam, dir);
 		} else
 			throw new InterpreteExcepcion(this.toString(),
 					"El tamaño no se ha identificado de la forma adecuada. Debe ser un entero.");
