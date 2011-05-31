@@ -86,12 +86,12 @@ public class Acciones {
 				int irfalseAux = sintactico.getCodigo().size() - 1;
                 sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
                 ok = bloque(PalabrasReservadas.TOKEN_IF);
+                sintactico.getCodigo().add(new IrA(null));                
                 sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-                sintactico.getCodigo().set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, sintactico.getEtiqueta())));
-                sintactico.getCodigo().add(new IrA(null));
                 int irAAux = sintactico.getCodigo().size() - 1;
+                sintactico.getCodigo().set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, sintactico.getEtiqueta() + 2)));                              
                 ok = accionelse();                                      
-                sintactico.getCodigo().set(irAAux, new IrA(new DatoPila(DatoPila.INT, sintactico.getEtiqueta())));
+                sintactico.getCodigo().set(irAAux, new IrA(new DatoPila(DatoPila.INT, sintactico.getEtiqueta() + 2)));
                 if(!sintactico.reconoce(PalabrasReservadas.TOKEN_END_IF))
                 	throw new MiExcepcion("Alternativa sin finalizar. Se esperaba la palabra EndIf");                
                 if(sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
@@ -112,24 +112,22 @@ public class Acciones {
                 int irfalseAux = sintactico.getCodigo().size() - 1;
                 sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
                 ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
-                sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-                sintactico.getCodigo().set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, sintactico.getEtiqueta())));
                 sintactico.getCodigo().add(new IrA(null));
                 int irAAux = sintactico.getCodigo().size() - 1;
+                sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+                sintactico.getCodigo().set(irfalseAux, new IrF(new DatoPila(DatoPila.INT, sintactico.getEtiqueta() + 1)));               
                 ok = accionelse();                                      
                 sintactico.getCodigo().set(irAAux, new IrA(new DatoPila(DatoPila.INT, sintactico.getEtiqueta())));
-                if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF))
-                	ok = true;
             }else
             	throw new MiExcepcion("Se esperaba un entero con valor 1 o 0 y la palabra Then");            
 	    }else{
 	    	if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE)){
 		    	sintactico.reconoce(PalabrasReservadas.TOKEN_ELSE);
-		    	ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
-		    	ok = accionelse();		    	
+		    	ok = bloque(PalabrasReservadas.TOKEN_ELSE);	    	
                 if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF))
                 	ok = true;
-	    	}
+	    	}else
+	    		ok = true;	    	
 	    }
         return ok;
 	}
