@@ -344,7 +344,7 @@ public class CompiladorFrame extends javax.swing.JFrame {
 			imprimir(ai);
 
 			EscritorPila ep = new EscritorPila();
-			File f = new File("/home/naos/test/codigoP.bc");
+			File f = new File("./codigoP.bc");
 			if (!f.exists()) {
 				f.createNewFile();
 			}
