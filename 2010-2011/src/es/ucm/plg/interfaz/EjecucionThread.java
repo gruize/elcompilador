@@ -24,7 +24,7 @@ public class EjecucionThread extends Thread {
 		try {
 			Interprete interprete = new Interprete(debug, reader,
 					new PrintWriter(System.out, true));
-			File f2 = new File("/home/naos/test/codigoP.bc");
+			File f2 = new File("./codigoP.bc");
 			interprete.leerPrograma(f2);
 			interprete.ejecutarPrograma();
 		} catch (Exception e) {

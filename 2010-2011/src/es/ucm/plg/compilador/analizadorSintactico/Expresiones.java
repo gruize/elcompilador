@@ -450,9 +450,14 @@ public class Expresiones {
 
 			if (op != null) {
 
-				int parche = sintactico.getCodigo().size();
-				sintactico.getCodigo().add(null);
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				int parche = 0;				
+				
+				if (op instanceof Y_Logica) {
+					parche = sintactico.getCodigo().size();
+					sintactico.getCodigo().add(null);
+					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				}
+				
 
 				// expresion5
 				tipo2 = expresion5();
@@ -479,6 +484,8 @@ public class Expresiones {
 							parche,
 							new IrF(new DatoPila(DatoPila.INT, sintactico
 									.getEtiqueta() + 1)));
+				}else{
+					sintactico.getCodigo().add(op);
 				}
 			}
 
