@@ -1,0 +1,13 @@
+@ Prueba 8: punteros
+
+tipo pointer real TPuntReal;
+TPuntReal p;
+
+p = null ;
+alloc p ;
+p^ = 1.5 ;
+out(p^);
+free p ;
+
+
+

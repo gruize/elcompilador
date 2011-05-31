@@ -42,8 +42,7 @@ public class IrF extends InstruccionInterprete {
 					InterpreteExcepcion.DIRECCION_INVALIDA);
 		
 		if (saltar.getEntero() == 0) {
-			interprete.setCp(this.getDato().getEntero());
-			salto = true;
+			interprete.setCp(this.getDato().getEntero() - 1);
 		}
 
 		return salto;
