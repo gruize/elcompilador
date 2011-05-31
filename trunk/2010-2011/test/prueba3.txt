@@ -1,0 +1,13 @@
+@ Prueba 3 reales
+
+real r ;
+int i;
+
+r = 1.5 ; 
+i = 20;
+if r < 2.8 then
+  r = r + 10.0 * (real)i;
+endif;
+i = (int) r;
+out ( i );
+

@@ -1,0 +1,15 @@
+@ Prueba 12: recursion
+
+fun factorial(int n) returns int
+	int tmp;
+	if n<=1 then
+		tmp = 1;
+	else
+		tmp = factorial(n-1);
+	endif;
+	return n * tmp;
+end factorial;
+
+int x;
+x = factorial(4);
+out(x);

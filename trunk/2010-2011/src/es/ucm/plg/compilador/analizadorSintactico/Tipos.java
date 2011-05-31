@@ -1,6 +1,7 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
@@ -9,6 +10,7 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.Campo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoArray;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoNull;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
@@ -39,13 +41,13 @@ public class Tipos {
 
 		String id = sintactico.getLexico().getLexema();
 
+		sintactico.getLexico().copiaEstado();
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 			if (GestorTS.getInstancia().existeID(id)
 					&& (GestorTS.getInstancia().getDetalles(id).getClase() == Clase.type)) {
 				return GestorTS.getInstancia().getTipo(id);
 			} else {
-				sintactico.getPend().add(id);
-				return new TipoPuntero(GestorTS.getInstancia().getTipo(id));
+				sintactico.getLexico().volverEstadoAnterior();
 			}
 		}
 
@@ -82,7 +84,7 @@ public class Tipos {
 	}
 
 	/**
-	 * registro := rec campos endrec
+	 * registro := rec campos endrec id
 	 * 
 	 * @return tipoResult
 	 * @throws errorh
@@ -102,7 +104,7 @@ public class Tipos {
 							"Debe definir al menos un campo en el registro");
 				}
 
-				if (sintactico.reconoce(PalabrasReservadas.TOKEN_ENDREC)) {
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ENDREC)) {
 					throw new MiExcepcion(
 							"Falta ENDREC al final de la declaración del registro");
 				}
@@ -139,6 +141,7 @@ public class Tipos {
 
 			if (tipoBase != null) {
 
+				sintactico.getLexico().copiaEstado();
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
 					sintactico.getLexico().volverEstadoAnterior();
 					return null;
@@ -193,18 +196,12 @@ public class Tipos {
 				if (tipoBase == null)
 					throw new MiExcepcion(SintacticoException.FALTA_DESCTIPO);
 
-				String id = sintactico.getLexico().getLexema();
-
-				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
-					throw new MiExcepcion(SintacticoException.FALTA_ID);
-				}
 
 				if (sintactico.referenciaErronea()) {
 					throw new MiExcepcion(
 							SintacticoException.REFERENCIA_ERRONEA);
 				}
 
-				sintactico.getPend().remove(id);
 				tipoResult = new TipoPuntero(tipoBase);
 
 			}
@@ -268,17 +265,16 @@ public class Tipos {
 
 			tipoBase = desctipo();
 
-			if (tipoBase == null) {
-				throw new MiExcepcion(SintacticoException.FALTA_DESCTIPO);
+			if (tipoBase != null) {
+
+				id = sintactico.getLexico().getLexema();
+
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
+					throw new MiExcepcion(SintacticoException.FALTA_ID);
+				}
+
+				campo = new Campo(tipoBase, id, 0);
 			}
-
-			id = sintactico.getLexico().getLexema();
-
-			if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
-				throw new MiExcepcion(SintacticoException.FALTA_ID);
-			}
-
-			campo = new Campo(tipoBase, id, 0);
 
 		} catch (MiExcepcion ex) {
 			throw new SintacticoException(ex.getMessage(), sintactico
@@ -305,19 +301,24 @@ public class Tipos {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA)) {
 
 				campo = campo();
+				
+				if (campo != null) {
 
-				if (campo == null) {
-					throw new MiExcepcion(
-							"Se esperaba un campo después de la coma");
+				Iterator<Campo> it = campos.values().iterator();
+				Campo ultCampo = null;
+				while (it.hasNext())
+					ultCampo = it.next();
+
+				if (ultCampo == null) {
+					throw new MiExcepcion("Error en la obtencion de campos");
 				}
 
-				campo.setDesplazamiento(campos.get(campos.size() - 1)
-						.getDesplazamiento()
-						+ campos.get(campos.size() - 1).getTipoBase()
-								.getTamanyo());
+				campo.setDesplazamiento(ultCampo.getDesplazamiento()
+						+ ultCampo.getTipoBase().getTamanyo());
 				campos.put(campo.getNombre(), campo);
 
 				camposRE(campos);
+				}
 			}
 
 		} catch (MiExcepcion ex) {
@@ -515,7 +516,7 @@ public class Tipos {
 	private Tipo memREPuntero(Tipo tipoh) throws SintacticoException,
 			InterpreteExcepcion {
 
-		Tipo tipo = null;
+		Tipo tipo = tipoh;
 
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTERO_FLECHA)) {
@@ -539,6 +540,24 @@ public class Tipos {
 		}
 
 		return tipo;
+	}
+	
+	public boolean compatibles (Tipo tipo1, Tipo tipo2) {
+		if (tipo1.equals(tipo2)) {
+			return true;
+		}
+		else if (tipo1 instanceof TipoReal && tipo2 instanceof TipoEntero){
+			return true;
+		}
+		else if (tipo1 instanceof TipoPuntero && tipo2 instanceof TipoEntero) {
+			return true;
+		}
+		else if (tipo1 instanceof TipoPuntero && tipo2 instanceof TipoNull) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@SuppressWarnings("serial")
