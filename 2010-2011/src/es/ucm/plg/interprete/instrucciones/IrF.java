@@ -35,11 +35,12 @@ public class IrF extends InstruccionInterprete {
 		}
 		if ((this.getDato().getTipo() == DatoPila.INT)
 				&& (interprete.getPrograma().size() > this.getDato()
-						.getEntero())) {
+						.getEntero()))
+			salto = true;
+		else
 			throw new InterpreteExcepcion(this.toString(),
 					InterpreteExcepcion.DIRECCION_INVALIDA);
-
-		}
+		
 		if (saltar.getEntero() == 0) {
 			interprete.setCp(this.getDato().getEntero());
 			salto = true;
