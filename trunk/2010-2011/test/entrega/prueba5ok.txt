@@ -1,0 +1,10 @@
+@ Prueba 5 tipos (I)
+
+int a ;
+real b ;
+tipo real[10] c ;
+tipo rec int g1; real g2; endrec g;  
+tipo pointer real h;
+
+a = 1 ;
+out ( a ) ;

@@ -8,5 +8,7 @@ b = 2;
 if a > b then
   out ( a );
 elsif a < b then
-  out ( b ); 
+  out ( b );
+else
+  out ( 0 ); 
 endif;
