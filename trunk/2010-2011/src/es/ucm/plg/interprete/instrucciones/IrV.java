@@ -28,7 +28,7 @@ public class IrV extends InstruccionInterprete {
 	@Override
 	public boolean ejecutate(Interprete interprete) throws InterpreteExcepcion {
 		
-		boolean salto = false;
+		boolean salto = true;
 		DatoPila saltar = interprete.getPila().pop();
 
 		if (!(saltar.getTipo() == DatoPila.INT && (saltar.getEntero() == 0 || saltar
