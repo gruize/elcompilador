@@ -228,8 +228,6 @@ public class AnalizadorLexico {
 			anteriorEstado = new AnalizadorLexico(programa);
 		}
 
-		copiaEstado();
-
 		this.estado = VACIO;
 		this.lexema = "";
 
@@ -691,7 +689,7 @@ public class AnalizadorLexico {
 							transita(LIT_INT);
 					} else {
 						encontrado = true;
-						encontrado(PalabrasReservadas.TOKEN_REAL);
+						encontrado(PalabrasReservadas.TOKEN_INT);
 					}
 					break;
 
@@ -1027,18 +1025,20 @@ public class AnalizadorLexico {
 		anteriorEstado.parentesis_fila = getParentesis_fila();
 		anteriorEstado.parentesis_columna = getParentesis_columna();
 	}
-	
+
 	public void volverEstadoAnterior() {
-		fila = anteriorEstado.getFila();
-		columna = anteriorEstado.getColumna();
-		indice = anteriorEstado.getIndice();
-		lexema = anteriorEstado.getLexema();
-		estado = anteriorEstado.getEstado();
-		next_char = anteriorEstado.getNext_char();
-		token_actual = anteriorEstado.getToken_actual();
-		parentesis_indice = anteriorEstado.getParentesis_indice();
-		parentesis_fila = anteriorEstado.getParentesis_fila();
-		parentesis_columna = anteriorEstado.getParentesis_columna();
+		if (anteriorEstado != null) {
+			fila = anteriorEstado.getFila();
+			columna = anteriorEstado.getColumna();
+			indice = anteriorEstado.getIndice();
+			lexema = anteriorEstado.getLexema();
+			estado = anteriorEstado.getEstado();
+			next_char = anteriorEstado.getNext_char();
+			token_actual = anteriorEstado.getToken_actual();
+			parentesis_indice = anteriorEstado.getParentesis_indice();
+			parentesis_fila = anteriorEstado.getParentesis_fila();
+			parentesis_columna = anteriorEstado.getParentesis_columna();
+		}
 	}
 
 }

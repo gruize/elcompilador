@@ -56,6 +56,7 @@ public class Declaraciones {
 
 				// id
 				String id = sintactico.getLexico().getLexema();
+				sintactico.getLexico().copiaEstado();
 
 				// error = falta_expresion
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {

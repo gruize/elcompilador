@@ -55,8 +55,8 @@ public class AnalizadorSintactico {
 			if(pend.contains(lexico.getLexema()))
 				pend.remove(lexico.getLexema());
 			GestorTS.getInstancia().salidaTS();
-			if (pend.size() > 0) 
-				throw new Exception("Existen tipos pendientes sin declarar");
+//			if (pend.size() > 0) 
+//				throw new Exception("Existen tipos pendientes sin declarar");
 			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.acciones.acciones();
 		} catch (Exception ex) {
