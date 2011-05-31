@@ -210,19 +210,19 @@ public class Acciones {
 				sintactico.getCodigo().set(
 						irAAux,
 						new IrA(new DatoPila(DatoPila.INT, sintactico
-								.getEtiqueta())));
+								.getEtiqueta() + 2)));
 			} else
 				throw new MiExcepcion(
 						"Se esperaba un entero con valor 1 o 0 y la palabra Then");
 		} else {
 			if (sintactico.getLexico().getToken_actual()
-					.equals(PalabrasReservadas.TOKEN_ELSE)) {
+					.equals(PalabrasReservadas.TOKEN_ELSE)) {				
 				sintactico.reconoce(PalabrasReservadas.TOKEN_ELSE);
 				ok = bloque(PalabrasReservadas.TOKEN_ELSE);
 				if (sintactico.getLexico().getToken_actual()
 						.equals(PalabrasReservadas.TOKEN_END_IF))
 					ok = true;
-			} else
+			} else 
 				ok = true;
 		}
 		return ok;
