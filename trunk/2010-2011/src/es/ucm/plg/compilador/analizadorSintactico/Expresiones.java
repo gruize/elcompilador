@@ -277,13 +277,13 @@ public class Expresiones {
 			if (tipo1 != null) {
 
 				// op2
-				op = op2();
+				op = op2();			
 
 				if (op != null) {
 
 					// expresion3
-					tipo2 = expresion3();
-
+					tipo2 = expresion3();					
+					
 					// error = expresion inválida
 					if (tipo2 == null) {
 						throw new MiExcepcion(
@@ -295,6 +295,9 @@ public class Expresiones {
 						throw new MiExcepcion(
 								SintacticoException.TIPO_INCOMPATIBLE);
 					}
+
+					sintactico.getCodigo().add(op);
+					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 
 					// tipo = <t:int>
 					tipo = new TipoEntero();
@@ -370,6 +373,8 @@ public class Expresiones {
 				// expresion4
 				tipo2 = expresion4();
 
+				sintactico.getCodigo().add(op);
+				
 				if (tipo2 == null) {
 					throw new MiExcepcion(
 							SintacticoException.EXPRESION_INVALIDA);
