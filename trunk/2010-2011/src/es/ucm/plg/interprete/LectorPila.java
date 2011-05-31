@@ -13,6 +13,7 @@ import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.CambioSigno;
 import es.ucm.plg.interprete.instrucciones.CastInt;
 import es.ucm.plg.interprete.instrucciones.CastReal;
+import es.ucm.plg.interprete.instrucciones.Delete;
 import es.ucm.plg.interprete.instrucciones.Desapilar;
 import es.ucm.plg.interprete.instrucciones.DesapilarDir;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
@@ -28,6 +29,7 @@ import es.ucm.plg.interprete.instrucciones.MenorIg;
 import es.ucm.plg.interprete.instrucciones.Modulo;
 import es.ucm.plg.interprete.instrucciones.Multiplicar;
 import es.ucm.plg.interprete.instrucciones.Negacion;
+import es.ucm.plg.interprete.instrucciones.New;
 import es.ucm.plg.interprete.instrucciones.O_Logica;
 import es.ucm.plg.interprete.instrucciones.Parar;
 import es.ucm.plg.interprete.instrucciones.Restar;
@@ -161,6 +163,12 @@ public class LectorPila {
 			case InstruccionInterprete.CODIGO_DESAPILARIND:
 				inst = new DesapilarInd();
 				break;
+			case InstruccionInterprete.CODIGO_NEW:
+				inst = new New(leerDato(dis));
+				break;
+			case InstruccionInterprete.CODIGO_DELETE:
+				inst = new Delete(leerDato(dis));
+				break;				
 			default:
 				throw new IOException();
 			}

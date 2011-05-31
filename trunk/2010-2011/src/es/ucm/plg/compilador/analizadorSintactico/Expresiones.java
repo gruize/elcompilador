@@ -15,6 +15,7 @@ import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.CambioSigno;
 import es.ucm.plg.interprete.instrucciones.CastInt;
 import es.ucm.plg.interprete.instrucciones.CastReal;
+import es.ucm.plg.interprete.instrucciones.Delete;
 import es.ucm.plg.interprete.instrucciones.Desapilar;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.Distinto;
@@ -29,6 +30,7 @@ import es.ucm.plg.interprete.instrucciones.MenorIg;
 import es.ucm.plg.interprete.instrucciones.Modulo;
 import es.ucm.plg.interprete.instrucciones.Multiplicar;
 import es.ucm.plg.interprete.instrucciones.Negacion;
+import es.ucm.plg.interprete.instrucciones.New;
 import es.ucm.plg.interprete.instrucciones.O_Logica;
 import es.ucm.plg.interprete.instrucciones.Restar;
 import es.ucm.plg.interprete.instrucciones.Salida;
@@ -328,22 +330,16 @@ public class Expresiones {
 
 		Tipo tipo = null;
 
-//		try {
-			// expresion4
-			tipo = expresion4();
+		// try {
+		// expresion4
+		tipo = expresion4();
 
-			// expresion3RE
-			if ((tipo != null) && !(tipo instanceof TipoNull)){
-				tipo = expresion3RE(tipo);
-			}
+		// expresion3RE
+		if ((tipo != null) && !(tipo instanceof TipoNull)) {
+			tipo = expresion3RE(tipo);
+		}
 
-			return tipo;
-
-//		} catch (MiExcepcion ex) {
-//			throw new SintacticoException(ex.getMessage(), sintactico
-//					.getLexico().getLexema(), sintactico.getLexico().getFila(),
-//					sintactico.getLexico().getColumna());
-//		}
+		return tipo;
 
 	}
 
@@ -584,8 +580,7 @@ public class Expresiones {
 			if (tipo != null) {
 				sintactico.getCodigo().add(new ApilarInd());
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-			} 
-			else {
+			} else {
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
 					tipo = expresion2();
 					if (tipo == null) {
@@ -624,10 +619,11 @@ public class Expresiones {
 					}
 
 				}
-				if (sintactico.reconoce(PalabrasReservadas.TOKEN_NULL)){
+				if (sintactico.reconoce(PalabrasReservadas.TOKEN_NULL)) {
 					tipo = new TipoNull();
 					sintactico.getCodigo().add(
-							new Apilar(new DatoPila(DatoPila.REAL, Integer.MIN_VALUE)));
+							new Apilar(new DatoPila(DatoPila.REAL,
+									Integer.MIN_VALUE)));
 					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				}
 			}

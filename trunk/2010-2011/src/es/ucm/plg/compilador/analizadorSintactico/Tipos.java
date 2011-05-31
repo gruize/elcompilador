@@ -552,6 +552,9 @@ public class Tipos {
 		else if (tipo1 instanceof TipoPuntero && tipo2 instanceof TipoEntero) {
 			return true;
 		}
+		else if (tipo1 instanceof TipoPuntero && ((TipoPuntero) tipo1).getTipoBase().equals(tipo2)) {
+			return true;
+		}
 		else if (tipo1 instanceof TipoPuntero && tipo2 instanceof TipoNull) {
 			return true;
 		}
