@@ -165,10 +165,10 @@ public class Acciones {
                 sintactico.getCodigo().add(new IrF(null));
                 int irFalseAux = sintactico.getCodigo().size() - 1;
                 sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-                ok = bloque(PalabrasReservadas.TOKEN_WHILE);
+                ok = bloque(PalabrasReservadas.TOKEN_WHILE);                               
+                sintactico.getCodigo().add(new IrA(new DatoPila(DatoPila.INT, whileAux + 2)));
                 sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-                sintactico.getCodigo().set(irFalseAux, new IrF(new DatoPila(DatoPila.INT, sintactico.getEtiqueta())));
-                sintactico.getCodigo().add(new IrA(new DatoPila(DatoPila.INT, whileAux)));
+                sintactico.getCodigo().set(irFalseAux, new IrF(new DatoPila(DatoPila.INT, sintactico.getEtiqueta() + 2)));
                 if(!sintactico.reconoce(PalabrasReservadas.TOKEN_END_WHILE))
                 	throw new MiExcepcion("Bucle infinito. Se esperaba la palabra EndWhile");                                                      
                 if(sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))

@@ -372,8 +372,6 @@ public class Expresiones {
 
 				// expresion4
 				tipo2 = expresion4();
-
-				sintactico.getCodigo().add(op);
 				
 				if (tipo2 == null) {
 					throw new MiExcepcion(
