@@ -122,6 +122,14 @@ public class Acciones {
                 	ok = true;
             }else
             	throw new MiExcepcion("Se esperaba un entero con valor 1 o 0 y la palabra Then");            
+	    }else{
+	    	if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE)){
+		    	sintactico.reconoce(PalabrasReservadas.TOKEN_ELSE);
+		    	ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
+		    	ok = accionelse();		    	
+                if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF))
+                	ok = true;
+	    	}
 	    }
         return ok;
 	}
@@ -130,15 +138,22 @@ public class Acciones {
         boolean ok = false;     
         if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_IF) || tokenFinaliza.equals(PalabrasReservadas.TOKEN_ELSIF)){
             while(!sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_ELSIF)
+            		&& !sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_ELSE)
             		&& !sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF) 
             		&& !sintactico.getLexico().isFin_programa())
                     ok = accion();         
         }else{
-            if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_WHILE)){
-                while(!sintactico.getLexico().isFin_programa() && 
-                        !sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_WHILE))
-                	ok = accion();
-            }//else{ Resto de token para los que se requieren bloques
+        	if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_ELSE)){
+        		while(!sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_IF) 
+                		&& !sintactico.getLexico().isFin_programa())
+                        ok = accion();
+        	}else{
+        		if(tokenFinaliza.equals(PalabrasReservadas.TOKEN_WHILE)){
+                    while(!sintactico.getLexico().isFin_programa() && 
+                            !sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_END_WHILE))
+                    	ok = accion();
+                }	
+        	}            
         }   
         return ok;
 	}
