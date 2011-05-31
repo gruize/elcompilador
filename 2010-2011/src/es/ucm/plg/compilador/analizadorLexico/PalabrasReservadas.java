@@ -49,6 +49,10 @@ public class PalabrasReservadas {
         public static String TOKEN_RESERVA = "tkalloc";
         public static String TOKEN_LIBERA = "tkfree";
         public static String TOKEN_TIPO = "tkTipo";
+        public static String TOKEN_NULL = "tknull";
+        public static String TOKEN_END = "tkend";
+        public static String TOKEN_RETURN = "tkreturn";
+        public static String TOKEN_FUN = "tkfun";
 
         private Hashtable<String, String> palabrasReservadas = new Hashtable<String, String>();
 
@@ -56,27 +60,27 @@ public class PalabrasReservadas {
          * Gestiona las palabras reservadas del programa
          */
         public PalabrasReservadas() {
-                palabrasReservadas.put("int", "tkint");
-                palabrasReservadas.put("real", "tkreal");
-                palabrasReservadas.put("in", "tkin");
-                palabrasReservadas.put("out", "tkout");
-                palabrasReservadas.put("if", "tkif");
-                palabrasReservadas.put("elsif", "tkelsif");
-                palabrasReservadas.put("endif", "tkendif");
-                palabrasReservadas.put("then", "tkthen");
-                palabrasReservadas.put("while", "tkwhile");
-                palabrasReservadas.put("do", "tkdo");
-                palabrasReservadas.put("endwhile", "tkendwhile");
-                palabrasReservadas.put("tipo", "tktipo");
-                palabrasReservadas.put("rec", "tkrec");
-                palabrasReservadas.put("endrec", "tkendrec");
-                palabrasReservadas.put("pointer", "tkpointer");
-                palabrasReservadas.put("null", "tknull");
-                palabrasReservadas.put("alloc", "tkalloc");
-                palabrasReservadas.put("free", "tkfree");
-                palabrasReservadas.put("end", "tkend");
-                palabrasReservadas.put("return", "tkreturn");
-                palabrasReservadas.put("fun", "tkfun");
+                palabrasReservadas.put("int", TOKEN_INT);
+                palabrasReservadas.put("real", TOKEN_REAL);
+                palabrasReservadas.put("in", TOKEN_IN);
+                palabrasReservadas.put("out", TOKEN_OUT);
+                palabrasReservadas.put("if", TOKEN_IF);
+                palabrasReservadas.put("elsif", TOKEN_ELSIF);
+                palabrasReservadas.put("endif", TOKEN_END_IF);
+                palabrasReservadas.put("then", TOKEN_THEN);
+                palabrasReservadas.put("while", TOKEN_WHILE);
+                palabrasReservadas.put("do", TOKEN_DO);
+                palabrasReservadas.put("endwhile", TOKEN_END_WHILE);
+                palabrasReservadas.put("tipo", TOKEN_TIPO);
+                palabrasReservadas.put("rec", TOKEN_REC);
+                palabrasReservadas.put("endrec", TOKEN_ENDREC);
+                palabrasReservadas.put("pointer", TOKEN_POINTER);
+                palabrasReservadas.put("null", TOKEN_NULL);
+                palabrasReservadas.put("alloc", TOKEN_RESERVA);
+                palabrasReservadas.put("free", TOKEN_LIBERA);
+                palabrasReservadas.put("end", TOKEN_END);
+                palabrasReservadas.put("return", TOKEN_RETURN);
+                palabrasReservadas.put("fun", TOKEN_FUN);
         }
 
         /**
