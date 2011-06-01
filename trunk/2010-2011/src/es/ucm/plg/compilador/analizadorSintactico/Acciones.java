@@ -41,6 +41,7 @@ public class Acciones {
 
 		try {
 			sintactico.getCodigo().add(new LimpiarPila());
+			sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 			if (!sintactico.getLexico().isFin_programa()) {
 				accion();
 				accionesRE();
@@ -180,12 +181,12 @@ public class Acciones {
 				sintactico.getCodigo().set(
 						irfalseAux,
 						new IrF(new DatoPila(DatoPila.INT, sintactico
-								.getEtiqueta() + 2)));
+								.getEtiqueta())));
 				ok = accionelse();
 				sintactico.getCodigo().set(
 						irAAux,
 						new IrA(new DatoPila(DatoPila.INT, sintactico
-								.getEtiqueta() + 2)));
+								.getEtiqueta())));
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END_IF))
 					throw new MiExcepcion(
 							"Alternativa sin finalizar. Se esperaba la palabra EndIf");
@@ -209,19 +210,24 @@ public class Acciones {
 				sintactico.getCodigo().add(new IrF(null));
 				int irfalseAux = sintactico.getCodigo().size() - 1;
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				
 				ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
+				
 				sintactico.getCodigo().add(new IrA(null));
 				int irAAux = sintactico.getCodigo().size() - 1;
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				
 				sintactico.getCodigo().set(
 						irfalseAux,
 						new IrF(new DatoPila(DatoPila.INT, sintactico
-								.getEtiqueta() + 1)));
+								.getEtiqueta())));
+				
 				ok = accionelse();
+				
 				sintactico.getCodigo().set(
 						irAAux,
 						new IrA(new DatoPila(DatoPila.INT, sintactico
-								.getEtiqueta() + 2)));
+								.getEtiqueta())));
 			} else
 				throw new MiExcepcion(
 						"Se esperaba un entero con valor 1 o 0 y la palabra Then");
@@ -273,7 +279,7 @@ public class Acciones {
 		boolean ok = false;
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_WHILE)) {
 			int whileAux = sintactico.getEtiqueta();
-			Tipo tipo = sintactico.getExpresiones().expresion2();
+			Tipo tipo = sintactico.getExpresiones().expresion2();			
 			if (tipo instanceof TipoEntero
 					&& sintactico.reconoce(PalabrasReservadas.TOKEN_DO)) {
 				sintactico.getCodigo().add(new IrF(null));
@@ -281,12 +287,12 @@ public class Acciones {
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				ok = bloque(PalabrasReservadas.TOKEN_WHILE);
 				sintactico.getCodigo().add(
-						new IrA(new DatoPila(DatoPila.INT, whileAux + 2)));
+						new IrA(new DatoPila(DatoPila.INT, whileAux)));
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				sintactico.getCodigo().set(
 						irFalseAux,
 						new IrF(new DatoPila(DatoPila.INT, sintactico
-								.getEtiqueta() + 2)));
+								.getEtiqueta())));
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END_WHILE))
 					throw new MiExcepcion(
 							"Bucle infinito. Se esperaba la palabra EndWhile");
