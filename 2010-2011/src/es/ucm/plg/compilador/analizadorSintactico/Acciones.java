@@ -186,8 +186,6 @@ public class Acciones {
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END_IF))
 					throw new MiExcepcion(
 							"Alternativa sin finalizar. Se esperaba la palabra EndIf");
-				if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
-					ok = true;
 			} else
 				throw new MiExcepcion(
 						"Se esperaba un entero con valor 1 o 0 y la palabra Then");
@@ -291,9 +289,7 @@ public class Acciones {
 								.getEtiqueta())));
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END_WHILE))
 					throw new MiExcepcion(
-							"Bucle infinito. Se esperaba la palabra EndWhile");
-				if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
-					ok = true;
+							"Bucle infinito. Se esperaba la palabra EndWhile");				
 			} else
 				throw new MiExcepcion(
 						"Se esperaba una expresion entera y la palabra DO");
