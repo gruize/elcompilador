@@ -294,37 +294,42 @@ public class Interprete {
 	}
 
 	public void liberar(Integer dir, Integer tam) {
-		Iterator<Hueco> iterator = memoria.getHuecos().iterator();
-		Hueco huecoAux = null;
-		Hueco pred;
-
-		while (iterator.hasNext()) {
-			pred = huecoAux;
-			huecoAux = iterator.next();
-			if (huecoAux.getDir() + huecoAux.getTam() == dir) {
-				huecoAux.setTam(huecoAux.getTam() + tam);
-				if (pred != null) {
-					int tamanyo = pred.getTam();
-					if (huecoAux.getDir() + huecoAux.getTam() == pred.getDir()) {
-						memoria.getHuecos().remove(pred);
-						huecoAux.setTam(huecoAux.getTam() + tamanyo);
+		{
+			Iterator<Hueco> iterator = memoria.getHuecos().iterator();
+			Hueco huecoAux = null;
+			Hueco pred;
+			// buscar un hueco que acabe donde nosotros empezamos
+			while (iterator.hasNext()) {
+				pred = huecoAux;
+				huecoAux = iterator.next();
+				if (huecoAux.getDir() + huecoAux.getTam() == dir) {
+					// el hueco acaba dónde nosotros empezamos
+					huecoAux.setTam(huecoAux.getTam() + tam);
+					if (pred != null) {
+						int tamanyo = pred.getTam();
+						// intentamos fusionar huecos
+						if (huecoAux.getDir() + huecoAux.getTam() == pred
+								.getDir()) {
+							memoria.getHuecos().remove(pred);
+							huecoAux.setTam(huecoAux.getTam() + tamanyo);
+						}
 					}
+					return;
 				}
-				return;
 			}
-		}
-
-		iterator = memoria.getHuecos().iterator();
-		while (iterator.hasNext()) {
-			huecoAux = iterator.next();
-			if (huecoAux.getDir() == dir + tam) {
-				huecoAux.setDir(dir);
-				huecoAux.setTam(huecoAux.getTam() + tam);
-				return;
+			// buscar un hueco que empiece donde nosotros acabamos
+			iterator = memoria.getHuecos().iterator();
+			while (iterator.hasNext()) {
+				huecoAux = iterator.next();
+				if (huecoAux.getDir() == dir + tam) {
+					huecoAux.setDir(dir);
+					huecoAux.setTam(huecoAux.getTam() + tam);			
+					return;
+				}
 			}
-		}
+			// si no funciona nada, creamos un nuevo hueco
+			memoria.getHuecos().add(new Hueco(dir, tam));
 
-		memoria.getHuecos().add(new Hueco(dir, tam));
+		}
 	}
-
 }
