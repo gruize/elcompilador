@@ -143,7 +143,8 @@ public class Interprete {
 		boolean tiene_algo = false;
 		sb.append("Contenido de la memoria:\n");
 		for (int i = 0; i < memoria.getMemoria().length; i++) {
-			if (memoria.getMemoria()[i] != null) {
+			if ((memoria.getMemoria()[i] != null) && 
+					(memoria.getMemoria()[i].getEntero() != Integer.MIN_VALUE)) {
 				sb.append("\t" + i + ") " + memoria.getMemoria()[i] + "\n");
 				tiene_algo = true;
 			}

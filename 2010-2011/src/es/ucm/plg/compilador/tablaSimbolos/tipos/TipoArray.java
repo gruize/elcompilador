@@ -21,7 +21,7 @@ public class TipoArray implements Tipo {
 	
 	@Override
 	public boolean equals(Tipo tipo) {
-		return tipoBase.equals(tipo) && (tipoBase.getTamanyo() == this.getTamanyo());
+		return tipoBase.equals(((TipoArray) tipo).getTipoBase()) && (tipoBase.getTamanyo() == ((TipoArray) tipo).getTipoBase().getTamanyo());
 	}
 	
 }

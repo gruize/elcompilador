@@ -12,6 +12,9 @@ public class Memoria {
 	
 	public Memoria(int longMem){
 		this.memoria = new DatoPila[longMem];
+		for (int i = 0; i < longMem; i++) {
+			memoria[i] = new DatoPila(DatoPila.INT, Integer.MIN_VALUE);
+		}
 		this.huecos = new Vector<Hueco>();
 		int primerHueco = (int) (longMem * 70 * 0.01);
 		huecos.add(new Hueco(primerHueco, longMem - primerHueco));
