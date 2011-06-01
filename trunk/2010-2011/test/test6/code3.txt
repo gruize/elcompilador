@@ -1,3 +1,0 @@
-int euros;
-euros = 5;
-output euros;

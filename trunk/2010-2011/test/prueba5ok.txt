@@ -2,7 +2,7 @@
 
 int a ;
 real b ;
-h tipoPend
+h tipoPend;
 tipo real[10] c ;
 tipo pointer real h;
 

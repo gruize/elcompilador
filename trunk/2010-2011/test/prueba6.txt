@@ -2,7 +2,7 @@
 
 tipo real[10] Tarray10;
 tipo rec int x; int y; endrec Tpunto;  
-tipo pointer real Tpuntreal;
+pointer real Tpuntreal;
 
 Tarray10 var1;
 Tpunto var2;
