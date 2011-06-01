@@ -12,7 +12,6 @@ import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
-import es.ucm.plg.interprete.instrucciones.ApilarDir;
 import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.CambioSigno;
 import es.ucm.plg.interprete.instrucciones.CastInt;
@@ -198,11 +197,16 @@ public class Expresiones {
 
 					for (int i = dir1; i < dir1 + tipo1.getTamanyo(); i++) {
 						sintactico.getCodigo().add(
-								new DesapilarDir(new DatoPila(DatoPila.INT,
+								new Apilar(new DatoPila(DatoPila.INT,
+										i)));
+						sintactico.getCodigo().add(
+								new Apilar(new DatoPila(DatoPila.INT,
 										dir2)));
 						sintactico.getCodigo().add(
-								new ApilarDir(new DatoPila(DatoPila.INT, i)));
-						sintactico.setEtiqueta(sintactico.getEtiqueta() + 2);
+								new ApilarInd());
+						sintactico.getCodigo().add(
+								new DesapilarInd());
+						sintactico.setEtiqueta(sintactico.getEtiqueta() + 4);
 						dir2++;
 					}
 
