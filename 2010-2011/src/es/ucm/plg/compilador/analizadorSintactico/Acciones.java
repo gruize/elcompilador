@@ -2,8 +2,10 @@ package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoFuncion;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
@@ -59,7 +61,7 @@ public class Acciones {
 
 		try {
 			if (!accionAlternativa() && !accionIteracion() && !accionReserva()
-					&& !accionLibera()
+					&& !accionLibera() && !accionInvocacion()
 					&& !(sintactico.getExpresiones().expresion() != null)) {
 				throw new MiExcepcion("Se esperaba una accion");
 			}
@@ -74,6 +76,48 @@ public class Acciones {
 					.getLexico().getLexema(), sintactico.getLexico().getFila(),
 					sintactico.getLexico().getColumna());
 		}
+	}
+
+	/**
+	 * accioninvoca ≡ id ( Aparams )
+	 * @return ok
+	 * @throws Exception
+	 */
+	private boolean accionInvocacion() throws Exception{
+		boolean ok = false;
+		String id = sintactico.getLexico().getLexema();
+		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
+			if (!(GestorTS.getInstancia().existeID(id) && GestorTS
+					.getInstancia().getDetalles(id).getTipo() instanceof TipoFuncion
+					&& GestorTS.getInstancia().getDetalles(id).getClase() == Clase.fun)) {
+				throw new MiExcepcion(
+						SintacticoException.FUNCION_NO_DECLARADA);
+			}else{
+				ok = aparams();
+				if(ok){
+					sintactico.apilarRet(sintactico.getEtiqueta());								
+					sintactico.getCodigo().add(new IrA(new DatoPila(DatoPila.INT, GestorTS.getInstancia().getDetalles(id).getInicio())));
+					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				}
+			}
+		}
+		return ok;
+	}
+
+	/**
+	 * Aparams ≡ expresiones
+	 * Aparams ≡ λ
+	 * 
+	 * @return ok
+	 * @throws Exception
+	 */
+	private boolean aparams() throws Exception{
+		boolean ok = true;
+		sintactico.inicioPaso();
+		if(sintactico.getExpresiones().expresiones()){
+			
+		}
+		return ok;
 	}
 
 	/**

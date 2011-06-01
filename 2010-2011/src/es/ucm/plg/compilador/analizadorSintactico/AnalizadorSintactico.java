@@ -155,7 +155,7 @@ public class AnalizadorSintactico {
 		this.codigo.add(new Sumar());
 		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, ret)));
 		this.codigo.add(new DesapilarInd());
-		this.etiqueta += 4;
+		this.etiqueta += 5;
 	}
 
 	public void prologo(int nivel, int tamLocales) throws InterpreteExcepcion {

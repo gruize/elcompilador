@@ -16,6 +16,7 @@ import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.CambioSigno;
 import es.ucm.plg.interprete.instrucciones.CastInt;
 import es.ucm.plg.interprete.instrucciones.CastReal;
+import es.ucm.plg.interprete.instrucciones.Copia;
 import es.ucm.plg.interprete.instrucciones.Desapilar;
 import es.ucm.plg.interprete.instrucciones.DesapilarDir;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
@@ -39,7 +40,7 @@ import es.ucm.plg.interprete.instrucciones.Y_Logica;
 
 public class Expresiones {
 
-	public AnalizadorSintactico sintactico;
+	public AnalizadorSintactico sintactico;	
 
 	public Expresiones(AnalizadorSintactico sintactico) {
 		this.sintactico = sintactico;
@@ -751,6 +752,31 @@ public class Expresiones {
 		return tipo;
 	}
 
+	public boolean expresiones() throws SintacticoException, InterpreteExcepcion {
+		boolean ok = false;
+		//FIXME: Falta el modo de expresion2.
+		Tipo tipo = expresion2();
+		//sintactico.pasoParametro(modoReal, pFormal)
+		ok = expresionesRE();
+		return ok;
+	}
+	
+	/**
+	 * expresionesRE ≡ expresion2 expresionesRE
+	 * expresionesRE ≡ , expresion2 expresionesRE
+	 * expresionesRE ≡ λ
+	 * @return
+	 */
+	private boolean expresionesRE() {
+		boolean ok = false;
+		if(sintactico.reconoce(PalabrasReservadas.TOKEN_COMA)){
+			sintactico.getCodigo().add(new Copia());
+			sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+			//GABI - Me quedo Aqui
+		}
+		return ok;
+	}
+
 	@SuppressWarnings("serial")
 	private class MiExcepcion extends Exception {
 
@@ -759,5 +785,5 @@ public class Expresiones {
 		}
 
 	}
-
+	
 }
