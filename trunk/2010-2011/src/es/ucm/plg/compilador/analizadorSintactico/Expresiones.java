@@ -548,7 +548,7 @@ public class Expresiones {
 					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 					tipo = new TipoEntero();
 				} else {
-					sintactico.getCodigo().add(new CastInt());
+					sintactico.getCodigo().add(new CastReal());
 					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 					tipo = new TipoReal();
 				}
