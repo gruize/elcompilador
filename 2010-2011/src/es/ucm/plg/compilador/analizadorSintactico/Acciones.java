@@ -288,7 +288,7 @@ public class Acciones {
 				ok = bloque(PalabrasReservadas.TOKEN_WHILE);
 				sintactico.getCodigo().add(
 						new IrA(new DatoPila(DatoPila.INT, whileAux)));
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				sintactico.setEtiqueta(sintactico.getEtiqueta());
 				sintactico.getCodigo().set(
 						irFalseAux,
 						new IrF(new DatoPila(DatoPila.INT, sintactico
