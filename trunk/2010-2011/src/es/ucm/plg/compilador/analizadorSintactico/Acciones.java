@@ -7,6 +7,8 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoPuntero;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
+import es.ucm.plg.interprete.instrucciones.Apilar;
+import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.Delete;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.IrA;
@@ -83,6 +85,7 @@ public class Acciones {
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_LIBERA)) {
 
+				String id = sintactico.getLexico().getLexema();
 				Tipo tipo = sintactico.getTipos().mem();
 
 				if (tipo == null) {
@@ -93,10 +96,18 @@ public class Acciones {
 					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
 				}
 
+				sintactico.getCodigo().add(new ApilarInd());
 				sintactico.getCodigo().add(
 						new Delete(
 								new DatoPila(DatoPila.INT, tipo.getTamanyo())));
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				sintactico.getCodigo().add(
+						new Apilar(new DatoPila(DatoPila.INT, GestorTS
+								.getInstancia().getDir(id))));
+				sintactico.getCodigo().add(
+						new Apilar(
+								new DatoPila(DatoPila.INT, Integer.MIN_VALUE)));
+				sintactico.getCodigo().add(new DesapilarInd());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 5);
 
 				return true;
 			}
@@ -216,13 +227,13 @@ public class Acciones {
 						"Se esperaba un entero con valor 1 o 0 y la palabra Then");
 		} else {
 			if (sintactico.getLexico().getToken_actual()
-					.equals(PalabrasReservadas.TOKEN_ELSE)) {				
+					.equals(PalabrasReservadas.TOKEN_ELSE)) {
 				sintactico.reconoce(PalabrasReservadas.TOKEN_ELSE);
 				ok = bloque(PalabrasReservadas.TOKEN_ELSE);
 				if (sintactico.getLexico().getToken_actual()
 						.equals(PalabrasReservadas.TOKEN_END_IF))
 					ok = true;
-			} else 
+			} else
 				ok = true;
 		}
 		return ok;
