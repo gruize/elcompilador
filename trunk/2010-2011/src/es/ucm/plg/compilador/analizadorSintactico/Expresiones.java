@@ -455,7 +455,6 @@ public class Expresiones {
 					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				}
 				
-
 				// expresion5
 				tipo2 = expresion5();
 
@@ -480,9 +479,10 @@ public class Expresiones {
 					sintactico.getCodigo().set(
 							parche,
 							new IrF(new DatoPila(DatoPila.INT, sintactico
-									.getEtiqueta() + 1)));
+									.getEtiqueta() + 1)));					
 				}else{
 					sintactico.getCodigo().add(op);
+					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				}
 			}
 
