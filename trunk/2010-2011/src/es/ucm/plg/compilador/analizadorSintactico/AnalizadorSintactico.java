@@ -5,8 +5,8 @@ import java.util.List;
 
 import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles;
-import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
+import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
@@ -54,9 +54,9 @@ public class AnalizadorSintactico {
 			this.declaraciones.declaraciones();
 			if(pend.contains(lexico.getLexema()))
 				pend.remove(lexico.getLexema());
-			GestorTS.getInstancia().salidaTS();
-//			if (pend.size() > 0) 
-//				throw new Exception("Existen tipos pendientes sin declarar");
+			GestorTS.getInstancia().ts().salidaTS();
+			if (pend.size() > 0) 
+				throw new Exception("Existen tipos pendientes sin declarar");
 			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.acciones.acciones();
 		} catch (Exception ex) {
@@ -196,7 +196,7 @@ public class AnalizadorSintactico {
 
 	public void accesoVar(String id) throws InterpreteExcepcion {
 
-		Detalles info = GestorTS.getInstancia().getDetalles(id);
+		Detalles info = GestorTS.getInstancia().ts().getDetalles(id);
 //		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, info
 //				.getNivel() + 1)));
 		this.codigo.add(new Apilar(new DatoPila(DatoPila.INT, info.getDir())));
@@ -207,13 +207,8 @@ public class AnalizadorSintactico {
 			this.codigo.add(new ApilarInd());
 			this.etiqueta += 1;
 		}
-
 	}
 
-	public boolean referenciaErronea() {
-		// TODO HACER!!!
-		return false;
-	}
 	
 	public void inicioPaso() throws InterpreteExcepcion {
 		this.codigo.add(new ApilarDir(new DatoPila(DatoPila.INT, 0)));
