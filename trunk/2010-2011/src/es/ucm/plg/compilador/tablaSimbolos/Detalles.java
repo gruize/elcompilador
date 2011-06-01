@@ -5,7 +5,7 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 public class Detalles {
 
 	public enum Clase {
-		var, type
+		var, type, fun
 	};
 
 	private String id;
@@ -13,6 +13,7 @@ public class Detalles {
 	private Tipo tipo;
 	private Clase clase;
 	private int nivel;
+	private int inicio;
 
 	public Detalles(String id, Integer dir, Tipo tipo, Clase clase, int nivel) {
 		super();
@@ -20,7 +21,25 @@ public class Detalles {
 		this.dir = dir;
 		this.tipo = tipo;
 		this.clase = clase;
+		this.nivel = nivel;		
+	}
+	
+	public Detalles(String id, Integer dir, Tipo tipo, Clase clase, int nivel, int inicio) {
+		super();
+		this.id = id;
+		this.dir = dir;
+		this.tipo = tipo;
+		this.clase = clase;
 		this.nivel = nivel;
+		this.inicio = inicio;
+	}
+
+	public int getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(int inicio) {
+		this.inicio = inicio;
 	}
 
 	public String getId() {
