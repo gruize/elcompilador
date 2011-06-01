@@ -1,0 +1,16 @@
+@Prueba basica del IF THEN ELSE ENDIF
+int ok;
+real muestraOK;
+real muestraNOK;
+
+ok = 1;
+muestraOK = 5.0;
+muestraNOK = 0.5;
+
+if ok then
+	out muestraOK;
+else
+	out muestraNOK;
+endif;
+
+
