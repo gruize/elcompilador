@@ -3,6 +3,7 @@
 int a ;
 real b ;
 real[10] c ;
+rec int g1; real g2; endrec g;  
 pointer real h;
 
 a = 1 ;

@@ -1,8 +1,0 @@
-tipo real[2] array1;
-tipo int[4] array2;
-real centimos;
-array1 cantidad;
-array2 euros;
-
-out euros[1] = (int)(in cantidad[1]);
-out centimos = cantidad[1] - euros[1];
