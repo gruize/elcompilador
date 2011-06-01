@@ -768,6 +768,7 @@ public class Expresiones {
 			} else {
 				sintactico.getLexico().volverEstadoAnterior();
 				sintactico.getCodigo().add(new Desapilar());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				tipo = null;
 			}
 		}

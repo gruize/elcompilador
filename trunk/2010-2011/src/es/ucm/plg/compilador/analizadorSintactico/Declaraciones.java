@@ -48,7 +48,8 @@ public class Declaraciones {
 	private boolean declaracionVar() throws SintacticoException {
 
 		try {
-
+			sintactico.getLexico().copiaEstado();
+			
 			// desctipo
 			Tipo tipo = sintactico.getTipos().desctipo();
 
@@ -56,7 +57,6 @@ public class Declaraciones {
 
 				// id
 				String id = sintactico.getLexico().getLexema();
-				sintactico.getLexico().copiaEstado();
 
 				// error = falta_expresion
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
@@ -175,6 +175,9 @@ public class Declaraciones {
 				// FIXME Cambiar cuando se cambie la TS
 				GestorTS.getInstancia().annadeID(id, sintactico.getDir(), tipo,
 						Clase.type, sintactico.getNivel());
+				if (sintactico.getPend().contains(id)){
+					sintactico.getPend().remove(id);
+				}
 
 				return true;
 			} else {

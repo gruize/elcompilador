@@ -29,7 +29,7 @@ public class Delete extends InstruccionInterprete {
 	public boolean ejecutate(Interprete interprete) throws InterpreteExcepcion {
 		Integer tam = this.getDato().getEntero();
 		if (interprete.getPila().peek().getTipo() == DatoPila.INT) {
-			Integer dir = interprete.getPila().pop().getEntero();
+			Integer dir = interprete.getPila().getFirst().getEntero();
 			interprete.liberar(dir, tam);
 		} else
 			throw new InterpreteExcepcion(this.toString(),

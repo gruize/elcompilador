@@ -10,6 +10,7 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 import es.ucm.plg.interprete.instrucciones.Apilar;
 import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.Delete;
+import es.ucm.plg.interprete.instrucciones.Desapilar;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.IrA;
 import es.ucm.plg.interprete.instrucciones.IrF;
@@ -86,7 +87,6 @@ public class Acciones {
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_LIBERA)) {
 
-				String id = sintactico.getLexico().getLexema();
 				Tipo tipo = sintactico.getTipos().mem();
 
 				if (tipo == null) {
@@ -97,18 +97,14 @@ public class Acciones {
 					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
 				}
 
-				sintactico.getCodigo().add(new ApilarInd());
 				sintactico.getCodigo().add(
 						new Delete(
 								new DatoPila(DatoPila.INT, tipo.getTamanyo())));
 				sintactico.getCodigo().add(
-						new Apilar(new DatoPila(DatoPila.INT, GestorTS
-								.getInstancia().getDir(id))));
-				sintactico.getCodigo().add(
 						new Apilar(
 								new DatoPila(DatoPila.INT, Integer.MIN_VALUE)));
 				sintactico.getCodigo().add(new DesapilarInd());
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 5);
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 3);
 
 				return true;
 			}
@@ -151,7 +147,7 @@ public class Acciones {
 				sintactico.getCodigo().add(
 						new New(new DatoPila(DatoPila.INT, tam)));
 				sintactico.getCodigo().add(new DesapilarInd());
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 2);
 
 				return true;
 			}
@@ -172,8 +168,8 @@ public class Acciones {
 			if (tipo instanceof TipoEntero
 					&& sintactico.reconoce(PalabrasReservadas.TOKEN_THEN)) {
 				sintactico.getCodigo().add(new IrF(null));
-				int irfalseAux = sintactico.getCodigo().size() - 1;
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				int irfalseAux = sintactico.getCodigo().size() - 1;
 				ok = bloque(PalabrasReservadas.TOKEN_IF);
 				sintactico.getCodigo().add(new IrA(null));
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
@@ -208,14 +204,14 @@ public class Acciones {
 			if (tipo instanceof TipoEntero
 					&& sintactico.reconoce(PalabrasReservadas.TOKEN_THEN)) {
 				sintactico.getCodigo().add(new IrF(null));
-				int irfalseAux = sintactico.getCodigo().size() - 1;
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				int irfalseAux = sintactico.getCodigo().size() - 1;
 				
 				ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
 				
 				sintactico.getCodigo().add(new IrA(null));
-				int irAAux = sintactico.getCodigo().size() - 1;
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				int irAAux = sintactico.getCodigo().size() - 1;
 				
 				sintactico.getCodigo().set(
 						irfalseAux,
@@ -283,12 +279,12 @@ public class Acciones {
 			if (tipo instanceof TipoEntero
 					&& sintactico.reconoce(PalabrasReservadas.TOKEN_DO)) {
 				sintactico.getCodigo().add(new IrF(null));
-				int irFalseAux = sintactico.getCodigo().size() - 1;
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+				int irFalseAux = sintactico.getCodigo().size() - 1;
 				ok = bloque(PalabrasReservadas.TOKEN_WHILE);
 				sintactico.getCodigo().add(
 						new IrA(new DatoPila(DatoPila.INT, whileAux)));
-				sintactico.setEtiqueta(sintactico.getEtiqueta());
+				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				sintactico.getCodigo().set(
 						irFalseAux,
 						new IrF(new DatoPila(DatoPila.INT, sintactico

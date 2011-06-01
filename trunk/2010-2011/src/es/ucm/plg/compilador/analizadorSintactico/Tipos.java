@@ -41,13 +41,13 @@ public class Tipos {
 
 		String id = sintactico.getLexico().getLexema();
 
-		sintactico.getLexico().copiaEstado();
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 			if (GestorTS.getInstancia().existeID(id)
 					&& (GestorTS.getInstancia().getDetalles(id).getClase() == Clase.type)) {
 				return GestorTS.getInstancia().getTipo(id);
 			} else {
-				sintactico.getLexico().volverEstadoAnterior();
+				sintactico.getPend().add(id);
+				return new TipoPuntero(null);
 			}
 		}
 
