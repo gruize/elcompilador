@@ -413,7 +413,7 @@ public class Tipos {
 	 */
 	private Tipo memREArray(Tipo tipoh) throws SintacticoException,
 			InterpreteExcepcion {
-		Tipo tipo = null;
+		Tipo tipo = tipoh;
 
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_AB)) {
