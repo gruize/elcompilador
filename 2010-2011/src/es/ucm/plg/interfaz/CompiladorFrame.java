@@ -336,7 +336,7 @@ public class CompiladorFrame extends javax.swing.JFrame {
 
 			analizadorLexico = new AnalizadorLexico(codigo);
 			analizadorSintactico = new AnalizadorSintactico(analizadorLexico);
-			GestorTS.getInstancia().limpiar();
+			GestorTS.getInstancia().ts().limpiar();
 
 			analizadorSintactico.iniciaSintactico();
 			ArrayList<InstruccionInterprete> ai = analizadorSintactico

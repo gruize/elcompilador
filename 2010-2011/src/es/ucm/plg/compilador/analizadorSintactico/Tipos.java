@@ -42,9 +42,9 @@ public class Tipos {
 		String id = sintactico.getLexico().getLexema();
 
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
-			if (GestorTS.getInstancia().existeID(id)
-					&& (GestorTS.getInstancia().getDetalles(id).getClase() == Clase.type)) {
-				return GestorTS.getInstancia().getTipo(id);
+			if (GestorTS.getInstancia().ts().existeID(id)
+					&& (GestorTS.getInstancia().ts().getDetalles(id).getClase() == Clase.type)) {
+				return GestorTS.getInstancia().ts().getTipo(id);
 			} else {
 				sintactico.getPend().add(id);
 				return new TipoPuntero(null);
@@ -156,12 +156,7 @@ public class Tipos {
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_CORCHETE_CE)) {
 					throw new MiExcepcion(SintacticoException.FALTA_CORCHETE);
 				}
-
-				if (sintactico.referenciaErronea()) {
-					throw new MiExcepcion(
-							SintacticoException.REFERENCIA_ERRONEA);
-				}
-
+				
 				tipoResult = new TipoArray(tipoBase, num);
 
 			}
@@ -195,12 +190,6 @@ public class Tipos {
 
 				if (tipoBase == null)
 					throw new MiExcepcion(SintacticoException.FALTA_DESCTIPO);
-
-
-				if (sintactico.referenciaErronea()) {
-					throw new MiExcepcion(
-							SintacticoException.REFERENCIA_ERRONEA);
-				}
 
 				tipoResult = new TipoPuntero(tipoBase);
 
@@ -345,23 +334,18 @@ public class Tipos {
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 
-				if (!(GestorTS.getInstancia().existeID(id) && GestorTS
-						.getInstancia().getDetalles(id).getClase() == Clase.var)) {
+				if (!(GestorTS.getInstancia().ts().existeID(id) && GestorTS
+						.getInstancia().ts().getDetalles(id).getClase() == Clase.var)) {
 					throw new MiExcepcion(
 							SintacticoException.VARIABLE_NO_DECLARADA);
 				}
 
-				if (sintactico.referenciaErronea()) {
-					throw new MiExcepcion(
-							SintacticoException.REFERENCIA_ERRONEA);
-				}
-
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.INT, GestorTS
-								.getInstancia().getDir(id))));
+								.getInstancia().ts().getDir(id))));
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 
-				tipo = memRE(GestorTS.getInstancia().getTipo(id));
+				tipo = memRE(GestorTS.getInstancia().ts().getTipo(id));
 
 			}
 
@@ -478,11 +462,6 @@ public class Tipos {
 							"No existe ningún campo con ese identificador");
 				}
 
-				if (sintactico.referenciaErronea()) {
-					throw new MiExcepcion(
-							SintacticoException.REFERENCIA_ERRONEA);
-				}
-
 				tipo = ((TipoRegistro) tipoh).getCampos().get(id).getTipoBase();
 
 				sintactico.getCodigo().add(
@@ -518,13 +497,7 @@ public class Tipos {
 
 		Tipo tipo = tipoh;
 
-		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTERO_FLECHA)) {
-
-				if (sintactico.referenciaErronea()) {
-					throw new MiExcepcion(
-							SintacticoException.REFERENCIA_ERRONEA);
-				}
 
 				sintactico.getCodigo().add(new ApilarInd());
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
@@ -532,12 +505,6 @@ public class Tipos {
 				memRE(tipo);
 
 			}
-
-		} catch (MiExcepcion ex) {
-			throw new SintacticoException(ex.getMessage(), sintactico
-					.getLexico().getLexema(), sintactico.getLexico().getFila(),
-					sintactico.getLexico().getColumna());
-		}
 
 		return tipo;
 	}
@@ -569,6 +536,5 @@ public class Tipos {
 		public MiExcepcion(String mensaje) {
 			super(mensaje);
 		}
-
 	}
 }

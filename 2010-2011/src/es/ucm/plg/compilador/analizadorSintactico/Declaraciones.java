@@ -49,7 +49,7 @@ public class Declaraciones {
 
 		try {
 			sintactico.getLexico().copiaEstado();
-			
+
 			// desctipo
 			Tipo tipo = sintactico.getTipos().desctipo();
 
@@ -63,7 +63,7 @@ public class Declaraciones {
 
 					// error = existeID(desctipo.ts, id.lex) &&
 					// desctipo.ts[id.lex].n == desctipo.n
-					if (GestorTS.getInstancia().existeID(id)) { // FIXME Añadir
+					if (GestorTS.getInstancia().ts().existeID(id)) { // FIXME Añadir
 																// la
 																// comprobación
 																// de niveles
@@ -80,7 +80,7 @@ public class Declaraciones {
 
 					// ts = añadeID(desctipo.ts, id.lex, <clase:var, dir:
 					// desctipo.dirh, tipo: desctipo.tipo, nivel: desctipo.n>)
-					GestorTS.getInstancia().annadeID(id, sintactico.getDir(),
+					GestorTS.getInstancia().ts().annadeID(id, sintactico.getDir(),
 							tipo, Clase.var, sintactico.getNivel());
 
 					// dir = dir + desctipo.tipo.tam
@@ -105,30 +105,41 @@ public class Declaraciones {
 
 	}
 
-	/*
-	 * declaracionfun ≡ fun id ( listaparametros ) tiporeturn cuerpo end id ;
+	/**
+	 * declaracionfun := fun id ( listaparametros ) tiporeturn cuerpo end id ;
+	 * 
+	 * @return
+	 * @throws SintacticoException
 	 */
 	private boolean declaracionFun() throws SintacticoException {
-		// try {
-		// if (sintactico.reconoce(PalabrasReservadas.TOKEN_TIPO)) {
-		//
-		// if
-		//
-		//
-		// return true;
-		// }
-		// else {
-		// return false;
-		// }
-		//
-		// // error = falta_expresion && (existeID(deftipo.ts, id.lex)
-		// deftipo.ts[id.lex].n == deftipo.n)
-		// } catch (MiExcepcion ex) {
-		// throw new SintacticoException(ex.getMessage(), sintactico
-		// .getLexico().getLexema(), sintactico.getLexico().getFila(),
-		// sintactico.getLexico().getColumna());
-		// }
-		return false;
+
+		try {
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_FUN)) {
+
+				String id = sintactico.getLexico().getLexema();
+
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
+					throw new MiExcepcion(SintacticoException.FALTA_ID);
+				}
+				
+				// FIXME Añadir la comprobación de niveles
+				if (GestorTS.getInstancia().existe(id)) {
+					throw new MiExcepcion(
+							SintacticoException.VARIABLE_DUPLICADA);
+				}
+				
+				
+
+			}
+
+			return false;
+
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
+
 	}
 
 	/*
@@ -158,7 +169,7 @@ public class Declaraciones {
 
 				// error = existeID(deftipo.ts, id.lex) deftipo.ts[id.lex].n ==
 				// deftipo.n
-				if (GestorTS.getInstancia().existeID(id)) { // FIXME Añadir la
+				if (GestorTS.getInstancia().ts().existeID(id)) { // FIXME Añadir la
 															// comprobación de
 															// niveles
 					throw new MiExcepcion(
@@ -173,9 +184,9 @@ public class Declaraciones {
 				// ts = añadeID(deftipo.ts, id.lex, <clase:tipo, tipo:
 				// deftipo.tipo, nivel: deftipo.n>)
 				// FIXME Cambiar cuando se cambie la TS
-				GestorTS.getInstancia().annadeID(id, sintactico.getDir(), tipo,
+				GestorTS.getInstancia().ts().annadeID(id, sintactico.getDir(), tipo,
 						Clase.type, sintactico.getNivel());
-				if (sintactico.getPend().contains(id)){
+				if (sintactico.getPend().contains(id)) {
 					sintactico.getPend().remove(id);
 				}
 

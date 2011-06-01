@@ -18,7 +18,6 @@ import es.ucm.plg.interprete.instrucciones.CastInt;
 import es.ucm.plg.interprete.instrucciones.CastReal;
 import es.ucm.plg.interprete.instrucciones.Copia;
 import es.ucm.plg.interprete.instrucciones.Desapilar;
-import es.ucm.plg.interprete.instrucciones.DesapilarDir;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.Distinto;
 import es.ucm.plg.interprete.instrucciones.Dividir;
@@ -99,17 +98,17 @@ public class Expresiones {
 					throw new MiExcepcion(SintacticoException.FALTA_ID);
 				}
 
-				if (!GestorTS.getInstancia().existeID(id)) {
+				if (!GestorTS.getInstancia().ts().existeID(id)) {
 					throw new MiExcepcion(
 							SintacticoException.VARIABLE_NO_DECLARADA);
 				}
 
 				sintactico.getCodigo().add(
 						new Entrada(new DatoPila(DatoPila.INT, GestorTS
-								.getInstancia().getDir(id))));
+								.getInstancia().ts().getDir(id))));
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 
-				tipo = GestorTS.getInstancia().getTipo(id);
+				tipo = GestorTS.getInstancia().ts().getTipo(id);
 
 			}
 
@@ -193,8 +192,8 @@ public class Expresiones {
 				if ((tipo1 instanceof TipoArray)
 						|| (tipo1 instanceof TipoRegistro)) {
 
-					int dir1 = GestorTS.getInstancia().getDir(id1);
-					int dir2 = GestorTS.getInstancia().getDir(id2);
+					int dir1 = GestorTS.getInstancia().ts().getDir(id1);
+					int dir2 = GestorTS.getInstancia().ts().getDir(id2);
 
 					for (int i = dir1; i < dir1 + tipo1.getTamanyo(); i++) {
 						sintactico.getCodigo().add(
