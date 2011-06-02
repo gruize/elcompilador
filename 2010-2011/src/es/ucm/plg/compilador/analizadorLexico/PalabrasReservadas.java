@@ -52,6 +52,7 @@ public class PalabrasReservadas {
         public static String TOKEN_NULL = "tknull";
         public static String TOKEN_END = "tkend";
         public static String TOKEN_RETURN = "tkreturn";
+        public static String TOKEN_RETURNS = "tkreturns";
         public static String TOKEN_FUN = "tkfun";
         public static String TOKEN_ELSE = "tkelse";
 
@@ -83,6 +84,7 @@ public class PalabrasReservadas {
                 palabrasReservadas.put("end", TOKEN_END);
                 palabrasReservadas.put("return", TOKEN_RETURN);
                 palabrasReservadas.put("fun", TOKEN_FUN);
+                palabrasReservadas.put("returns", TOKEN_RETURNS);
         }
 
         /**
