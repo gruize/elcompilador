@@ -3,6 +3,15 @@ package es.ucm.plg.compilador.analizadorLexico;
 import java.io.PrintWriter;
 import java.util.Vector;
 
+/**
+ * @author Alicia Pérez y Gabriela Ruíz Clase que implementa el Analizador
+ *         Léxico
+ */
+
+/**
+ * @author Alicia
+ * 
+ */
 public class AnalizadorLexico {
 
 	private static final int VACIO = 0;
@@ -205,11 +214,6 @@ public class AnalizadorLexico {
 		this.tokens = tokens;
 	}
 
-	/**
-	 * Devuelve un vector con los componentes lexicos procesados
-	 * 
-	 * @return Tokens procesados
-	 */
 	public Vector<DatosToken> getTokens() {
 		return tokens;
 	}
@@ -962,9 +966,12 @@ public class AnalizadorLexico {
 		this.token_actual = token;
 		this.tokens.add(new DatosToken(token_actual, fila, columna, indice));
 		this.estado = VACIO;
-		// this.lexema = "";
 	}
 
+	/**
+	 * Esta función se encarga de gestionar los errores del analizador léxico en
+	 * función de dónde se produzcan
+	 */
 	public void error() {
 		String sal = "Error linea " + fila + " --- ";
 		switch (estado) {
@@ -1013,6 +1020,12 @@ public class AnalizadorLexico {
 
 	}
 
+	/**
+	 * En el analizador sintáctico a veces es necesario volver atrás en el
+	 * léxico. Esta función se utiliza para "tomar una fotografía" del estado
+	 * del analizador léxico en un momento dado y poder volver a este estado en
+	 * otro momento
+	 */
 	public void copiaEstado() {
 		anteriorEstado.fila = getFila();
 		anteriorEstado.columna = getColumna();
@@ -1026,6 +1039,12 @@ public class AnalizadorLexico {
 		anteriorEstado.parentesis_columna = getParentesis_columna();
 	}
 
+	/**
+	 * En el analizador sintáctico a veces es necesario volver atrás en el
+	 * léxico. Esta función se utiliza para volver a "una fotografía" del estado
+	 * del analizador léxico que se haya tomado con la función copiaEstado()
+	 * previamente
+	 */
 	public void volverEstadoAnterior() {
 		if (anteriorEstado != null) {
 			fila = anteriorEstado.getFila();

@@ -40,7 +40,7 @@ public class GestorTS {
 
 	public void cerrarAmbitoActual() {		
 		TS temporal = gestor.pilaTS.pop();
-		Enumeration e = temporal.getTabla().keys();
+		Enumeration<String> e = temporal.getTabla().keys();
 		String obj;
 		while (e.hasMoreElements()) {
 		     obj = (String) e.nextElement();

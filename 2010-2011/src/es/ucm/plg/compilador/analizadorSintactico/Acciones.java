@@ -60,11 +60,8 @@ public class Acciones {
 	private boolean accion() throws Exception {
 
 		try {
-			if (!accionAlternativa() 
-					&& !accionIteracion() 
-					&& !accionReserva()
-					&& !accionLibera() 
-					&& !accionInvocacion()
+			if (!accionAlternativa() && !accionIteracion() && !accionReserva()
+					&& !accionLibera() && !accionInvocacion()
 					&& !accionReturn()
 					&& !(sintactico.getExpresiones().expresion() != null)) {
 				throw new MiExcepcion("Se esperaba una accion");
@@ -99,37 +96,42 @@ public class Acciones {
 				sintactico.getLexico().volverEstadoAnterior();
 				ok = false;
 			} else {
-				if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_PARENTESIS_AP)){
+				if (sintactico.getLexico().getToken_actual()
+						.equals(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
 					Vector<Params> params = new Vector<Params>();
 					ok = aparams(params, id);
-					TipoFuncion funTipo = (TipoFuncion) GestorTS.getInstancia().ts().getTipo(id);
-					if(funTipo.getNparams() == params.size()){
+					TipoFuncion funTipo = (TipoFuncion) GestorTS.getInstancia()
+							.ts().getTipo(id);
+					if (funTipo.getNparams() == params.size()) {
 						boolean valido = true;
 						int i = 0;
-						while(valido && i < funTipo.getNparams()){
-							if(!funTipo.getParams().get(i).getTipo().equals(params.get(i).getTipo()) &&
-									!funTipo.getParams().get(i).getModo().equals(params.get(i).getModo()))
+						while (valido && i < funTipo.getNparams()) {
+							if (!funTipo.getParams().get(i).getTipo()
+									.equals(params.get(i).getTipo())
+									&& !funTipo.getParams().get(i).getModo()
+											.equals(params.get(i).getModo()))
 								valido = false;
 							i++;
 						}
-						if(!valido)
-							throw new MiExcepcion(SintacticoException.PARAMETROS_INVALIDOS);						
-					}else
-						throw new MiExcepcion(SintacticoException.NUM_PARAMETROS_INVALIDO);					
+						if (!valido)
+							throw new MiExcepcion(
+									SintacticoException.PARAMETROS_INVALIDOS);
+					} else
+						throw new MiExcepcion(
+								SintacticoException.NUM_PARAMETROS_INVALIDO);
 					if (ok) {
 						sintactico.apilarRet(sintactico.getEtiqueta());
 						sintactico.getCodigo().add(
-								new IrA(
-										new DatoPila(DatoPila.INT, GestorTS
-												.getInstancia().buscaGlobal(id)
-												.getInicio())));
+								new IrA(new DatoPila(DatoPila.INT, GestorTS
+										.getInstancia().buscaGlobal(id)
+										.getInicio())));
 						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-					}					
-				}else
-					throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS_AP);
+					}
+				} else
+					throw new MiExcepcion(
+							SintacticoException.FALTA_PARENTESIS_AP);
 			}
-		}
-		else {
+		} else {
 			ok = false;
 		}
 		return ok;
@@ -143,27 +145,33 @@ public class Acciones {
 	 */
 	private boolean aparams(Vector<Params> params, String id) throws Exception {
 		boolean ok = true;
-		if(sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)){
-			if(!sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_PARENTESIS_CE)){
+		if (sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
+			if (!sintactico.getLexico().getToken_actual()
+					.equals(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
 				sintactico.inicioPaso();
-				if (sintactico.getExpresiones().expresiones(params,id)) {				
+				if (sintactico.getExpresiones().expresiones(params, id)) {
 					sintactico.finPaso();
-				}else
-					throw new MiExcepcion(SintacticoException.ESPERABA_PARAMETROS);				
-				if(!sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE))
-					throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS_CE);			
+				} else
+					throw new MiExcepcion(
+							SintacticoException.ESPERABA_PARAMETROS);
+				if (!sintactico
+						.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE))
+					throw new MiExcepcion(
+							SintacticoException.FALTA_PARENTESIS_CE);
 			}
 		}
 		return ok;
 	}
-	
+
 	/**
 	 * accionreturn := return expresion2 ;
-	 * @throws InterpreteExcepcion 
-	 * @throws SintacticoException 
+	 * 
+	 * @throws InterpreteExcepcion
+	 * @throws SintacticoException
 	 * 
 	 */
-	public boolean accionReturn() throws SintacticoException, InterpreteExcepcion {
+	public boolean accionReturn() throws SintacticoException,
+			InterpreteExcepcion {
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_RETURN)) {
 
@@ -411,7 +419,8 @@ public class Acciones {
 
 	/**
 	 * cuerpo := declaraciones acciones
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	public void cuerpo() throws Exception {
