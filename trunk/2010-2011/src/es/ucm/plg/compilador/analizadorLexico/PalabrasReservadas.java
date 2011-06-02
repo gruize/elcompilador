@@ -2,6 +2,10 @@ package es.ucm.plg.compilador.analizadorLexico;
 
 import java.util.Hashtable;
 
+/**
+ * @author Alicia Pérez y Gabriela Ruíz
+ *
+ */
 public class PalabrasReservadas {
                 
         public static String TOKEN_INT = "tkint";

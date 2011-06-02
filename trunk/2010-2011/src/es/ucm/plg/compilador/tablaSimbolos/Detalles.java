@@ -2,6 +2,10 @@ package es.ucm.plg.compilador.tablaSimbolos;
 
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 
+/**
+ * @author Alicia Pérez y Gabriela Ruíz Gestiona los campos de cada entrada de
+ *         la tabla de símbolos
+ */
 public class Detalles {
 
 	public enum Clase {
@@ -21,10 +25,11 @@ public class Detalles {
 		this.dir = dir;
 		this.tipo = tipo;
 		this.clase = clase;
-		this.nivel = nivel;		
+		this.nivel = nivel;
 	}
-	
-	public Detalles(String id, Integer dir, Tipo tipo, Clase clase, int nivel, int inicio) {
+
+	public Detalles(String id, Integer dir, Tipo tipo, Clase clase, int nivel,
+			int inicio) {
 		super();
 		this.id = id;
 		this.dir = dir;
@@ -66,12 +71,6 @@ public class Detalles {
 		this.tipo = tipo;
 	}
 
-	@Override
-	public String toString() {
-		return "Detalles [id=" + id + ", dir=" + dir + ", tipo=" + tipo
-				+ ", clase=" + clase + "]";
-	}
-
 	public void setClase(Clase clase) {
 		this.clase = clase;
 	}
@@ -86,5 +85,11 @@ public class Detalles {
 
 	public int getNivel() {
 		return nivel;
+	}
+
+	@Override
+	public String toString() {
+		return "id:" + id + "\t dir:" + dir + "\t tipo:" + tipo.toString()
+				+ "\t clase:" + clase;
 	}
 }

@@ -43,6 +43,10 @@ public class TS {
 		return tabla.get(id);
 	}
 
+	public void limpiar() {
+		this.tabla.clear();
+	}
+
 	public void salidaTS() {
 		Set<String> clave = tabla.keySet();
 		Iterator<String> it = clave.iterator();
@@ -53,10 +57,6 @@ public class TS {
 			details = tabla.get(clave_actual);
 			System.out.println(details.toString());
 		}
-	}
-
-	public void limpiar() {
-		this.tabla.clear();
 	}
 
 	public Hashtable<String, Detalles> getTabla() {
