@@ -6,6 +6,8 @@ import java.util.List;
 import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo.Modo;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.InterpreteExcepcion;
@@ -14,6 +16,7 @@ import es.ucm.plg.interprete.instrucciones.Apilar;
 import es.ucm.plg.interprete.instrucciones.ApilarDir;
 import es.ucm.plg.interprete.instrucciones.ApilarInd;
 import es.ucm.plg.interprete.instrucciones.Copia;
+import es.ucm.plg.interprete.instrucciones.Desapilar;
 import es.ucm.plg.interprete.instrucciones.DesapilarDir;
 import es.ucm.plg.interprete.instrucciones.DesapilarInd;
 import es.ucm.plg.interprete.instrucciones.Mueve;
@@ -214,16 +217,21 @@ public class AnalizadorSintactico {
 		this.etiqueta += 2;		
 	}
 	
-	public void pasoParametro(Detalles modoReal, Detalles pFormal) throws InterpreteExcepcion {
+	public void pasoParametro(Modo modoReal, Tipo pFormal) throws InterpreteExcepcion {
 		
-		if (modoReal.getClase() == Clase.var && pFormal.getClase() == Clase.var) {
-			this.codigo.add(new Mueve(new DatoPila(DatoPila.INT, pFormal.getTipo().getTamanyo())));
+		if (modoReal == Modo.var && pFormal.getModo() == Modo.valor) {
+			this.codigo.add(new Mueve(new DatoPila(DatoPila.INT, pFormal.getTamanyo())));
 		}
 		else {
 			this.codigo.add(new DesapilarInd());
 		}
 		this.etiqueta += 1;		
 		
+	}
+	
+	public void finPaso() throws InterpreteExcepcion {
+		this.codigo.add(new Desapilar());
+		this.etiqueta += 1;
 	}
 
 }

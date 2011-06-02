@@ -1,26 +1,27 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo.Modo;
 
 public class Params {
 
-	String modo;
+	Modo modo;
 	Tipo tipo;
 	
 	public Params(){		 
 	}
 	
-	public Params(String modo, Tipo tipo) {
+	public Params(Modo modo, Tipo tipo) {
 		super();
 		this.modo = modo;
 		this.tipo = tipo;
 	}
 
-	public String getModo() {
+	public Modo getModo() {
 		return modo;
 	}
 
-	public void setModo(String modo) {
+	public void setModo(Modo modo) {
 		this.modo = modo;
 	}
 

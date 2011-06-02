@@ -1,10 +1,14 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
+import java.util.Vector;
+
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoArray;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoFuncion;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoNull;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
@@ -275,10 +279,12 @@ public class Expresiones {
 					tipo = new TipoEntero();
 
 				} else {
-					tipo = tipo1;
+					tipo = tipo1;					
 				}
 			}
 
+			
+			
 			return tipo;
 
 		} catch (MiExcepcion ex) {
@@ -754,12 +760,16 @@ public class Expresiones {
 	 * @throws SintacticoException
 	 * @throws InterpreteExcepcion
 	 */
-	public boolean expresiones() throws SintacticoException, InterpreteExcepcion {
-		boolean ok = false;
-		//FIXME: Falta el modo de expresion2.
+	public boolean expresiones(Vector<Params> params, String id) throws SintacticoException, InterpreteExcepcion {
+		boolean ok = false;			
+		sintactico.getCodigo().add(new Copia());
+		sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 		Tipo tipo = expresion2();
-		//sintactico.pasoParametro(modoReal, pFormal)
-		ok = expresionesRE();
+		params.add(new Params(tipo.getModo(), tipo));
+		TipoFuncion tipoReal = (TipoFuncion)GestorTS.getInstancia().ts().getTipo(id);
+		if(params.size() > 0)
+			sintactico.pasoParametro(tipoReal.getParams().get(params.size() - 1).getModo(), tipo);
+		ok = expresionesRE(params, id);
 		return ok;
 	}
 	
@@ -767,13 +777,22 @@ public class Expresiones {
 	 * expresionesRE ≡ , expresion2 expresionesRE
 	 * expresionesRE ≡ λ
 	 * @return
+	 * @throws InterpreteExcepcion 
+	 * @throws SintacticoException 
 	 */
-	private boolean expresionesRE() {
+	private boolean expresionesRE(Vector<Params> params, String id) throws SintacticoException, InterpreteExcepcion {
 		boolean ok = true;
 		if(sintactico.reconoce(PalabrasReservadas.TOKEN_COMA)){
 			sintactico.getCodigo().add(new Copia());
 			sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-			//GABI - Me quedo Aqui
+			Tipo tipo = expresion2();
+			sintactico.direccionParFormal(sintactico.getDir());
+			sintactico.setDir(sintactico.getDir() + tipo.getTamanyo());			
+			params.add(new Params(tipo.getModo(), tipo));
+			TipoFuncion tipoReal = (TipoFuncion)GestorTS.getInstancia().ts().getTipo(id);
+			if(params.size() > 0)
+				sintactico.pasoParametro(tipoReal.getParams().get(params.size() - 1).getModo(), tipo);
+			ok = expresionesRE(params, id);
 		}
 		return ok;
 	}
