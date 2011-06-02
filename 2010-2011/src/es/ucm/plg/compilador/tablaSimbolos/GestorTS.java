@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 
 public class GestorTS {
-	
+
 	/**
 	 * La utilidad de este gestor es tener una unica instancia de la pila tabla
 	 * de simbolos, por lo que se requiere el uso del patron Singlenton
@@ -12,7 +12,7 @@ public class GestorTS {
 
 	private static GestorTS gestor;
 	private ArrayDeque<TS> pilaTS;
-	private int ambitoActual;
+	private int n;
 
 	public static GestorTS getInstancia() {
 		if (gestor == null) {
@@ -26,14 +26,18 @@ public class GestorTS {
 	private GestorTS() {
 	}
 
+	public int getN() {
+		return n;
+	}
+
 	public void nuevoAmbito() {
 		gestor.pilaTS.push(new TS());
-		gestor.ambitoActual++;
+		gestor.n++;
 	}
 
 	public void cerrarAmbitoActual() {
 		gestor.pilaTS.pop();
-		gestor.ambitoActual--;
+		gestor.n--;
 	}
 
 	public Detalles buscaGlobal(String id) {

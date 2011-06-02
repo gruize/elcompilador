@@ -2,6 +2,7 @@ package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
+import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoFuncion;
@@ -77,23 +78,29 @@ public class Acciones {
 
 	/**
 	 * accioninvoca ≡ id ( Aparams )
+	 * 
 	 * @return ok
 	 * @throws Exception
 	 */
-	private boolean accionInvocacion() throws Exception{
+	private boolean accionInvocacion() throws Exception {
 		boolean ok = false;
 		String id = sintactico.getLexico().getLexema();
+		sintactico.getLexico().copiaEstado();
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
-			if (!(GestorTS.getInstancia().existeID(id) && GestorTS
-					.getInstancia().getDetalles(id).getTipo() instanceof TipoFuncion
-					&& GestorTS.getInstancia().getDetalles(id).getClase() == Clase.fun)) {
-				throw new MiExcepcion(
-						SintacticoException.FUNCION_NO_DECLARADA);
-			}else{
+			if (!(GestorTS.getInstancia().ts().existeID(id)
+					&& GestorTS.getInstancia().ts().getTipo(id) instanceof TipoFuncion && GestorTS
+					.getInstancia().buscaGlobal(id).getClase() == Clase.fun)) {
+				sintactico.getLexico().volverEstadoAnterior();
+				return false;
+			} else {
 				ok = aparams();
-				if(ok){
-					sintactico.apilarRet(sintactico.getEtiqueta());								
-					sintactico.getCodigo().add(new IrA(new DatoPila(DatoPila.INT, GestorTS.getInstancia().getDetalles(id).getInicio())));
+				if (ok) {
+					sintactico.apilarRet(sintactico.getEtiqueta());
+					sintactico.getCodigo().add(
+							new IrA(
+									new DatoPila(DatoPila.INT, GestorTS
+											.getInstancia().buscaGlobal(id)
+											.getInicio())));
 					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				}
 			}
@@ -102,17 +109,16 @@ public class Acciones {
 	}
 
 	/**
-	 * Aparams ≡ expresiones
-	 * Aparams ≡ λ
+	 * Aparams ≡ expresiones Aparams ≡ λ
 	 * 
 	 * @return ok
 	 * @throws Exception
 	 */
-	private boolean aparams() throws Exception{
+	private boolean aparams() throws Exception {
 		boolean ok = true;
 		sintactico.inicioPaso();
-		if(sintactico.getExpresiones().expresiones()){
-			
+		if (sintactico.getExpresiones().expresiones()) {
+
 		}
 		return ok;
 	}
@@ -245,20 +251,20 @@ public class Acciones {
 				sintactico.getCodigo().add(new IrF(null));
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				int irfalseAux = sintactico.getCodigo().size() - 1;
-				
+
 				ok = bloque(PalabrasReservadas.TOKEN_ELSIF);
-				
+
 				sintactico.getCodigo().add(new IrA(null));
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				int irAAux = sintactico.getCodigo().size() - 1;
-				
+
 				sintactico.getCodigo().set(
 						irfalseAux,
 						new IrF(new DatoPila(DatoPila.INT, sintactico
 								.getEtiqueta())));
-				
+
 				ok = accionelse();
-				
+
 				sintactico.getCodigo().set(
 						irAAux,
 						new IrA(new DatoPila(DatoPila.INT, sintactico
@@ -314,7 +320,7 @@ public class Acciones {
 		boolean ok = false;
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_WHILE)) {
 			int whileAux = sintactico.getEtiqueta();
-			Tipo tipo = sintactico.getExpresiones().expresion2();			
+			Tipo tipo = sintactico.getExpresiones().expresion2();
 			if (tipo instanceof TipoEntero
 					&& sintactico.reconoce(PalabrasReservadas.TOKEN_DO)) {
 				sintactico.getCodigo().add(new IrF(null));
@@ -330,13 +336,28 @@ public class Acciones {
 								.getEtiqueta())));
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END_WHILE))
 					throw new MiExcepcion(
-							"Bucle infinito. Se esperaba la palabra EndWhile");				
+							"Bucle infinito. Se esperaba la palabra EndWhile");
 			} else
 				throw new MiExcepcion(
 						"Se esperaba una expresion entera y la palabra DO");
 		}
 		return ok;
 	}
+
+	/**
+	 * cuerpo := declaraciones acciones
+	 * @throws Exception 
+	 * 
+	 */
+	public void cuerpo() throws Exception {
+		sintactico.getDeclaraciones().declaraciones();
+		acciones();
+	}
+
+	/**
+	 * cuerpo := acciones
+	 * 
+	 */
 
 	@SuppressWarnings("serial")
 	private class MiExcepcion extends Exception {
