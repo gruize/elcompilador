@@ -3,23 +3,19 @@ package es.ucm.plg;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 
 import es.ucm.plg.compilador.analizadorLexico.AnalizadorLexico;
 import es.ucm.plg.compilador.analizadorSintactico.AnalizadorSintactico;
 import es.ucm.plg.interprete.EscritorPila;
-import es.ucm.plg.interprete.Interprete;
 
-public class Practica {
+public class Compila {
 
 	public static void main(String[] args) {
 		String programa = "";
 		String path = "";
-		InputStreamReader isr = new InputStreamReader(System.in);
-		BufferedReader in = new BufferedReader(isr);
-		System.out.print("Introduzca la ruta del codigo: ");
+		
 		try {
-			path = in.readLine();
+			path = args[0];
 			File input = new File(path);
 
 			BufferedReader br = new BufferedReader(new FileReader(input));
@@ -34,42 +30,22 @@ public class Practica {
 				}
 			}
 			
-			System.out.println();
-			System.out.println(programa);
-			System.out.println();
-			System.out.print("�Desea ejecutar el programa en modo depuracion? (s/n)");
-			System.out.println();
-			
-			String sn = in.readLine();
-			boolean depuracion = (sn.equals("s"));
-
 			AnalizadorLexico lexico = new AnalizadorLexico(programa);
 			AnalizadorSintactico sintactico = new AnalizadorSintactico(lexico);
 
 			sintactico.iniciaSintactico();
-			System.out.println();
-			System.out.println();
-			if (depuracion) {
-				System.out.println("INSTRUCCIONES LEIDAS POR EL ANALIZADOR SINTACTICO: ");
-				System.out.print(sintactico.getCodigo().toString());
-			}
-			System.out.println();
-			System.out.println();
-
+			
 			EscritorPila ep = new EscritorPila();
-			File f = new File(input.getParent() + "\\codigoP.bc");
+			File f = new File(args[1]);
+			
 			if (!f.exists()) {
 				f.createNewFile();
 			}
+			
 			ep.escribirPrograma(sintactico.getCodigo(), f);
 
-			Interprete interprete = new Interprete(depuracion);
-
-			interprete.leerPrograma(f);
-			interprete.ejecutarPrograma();
-
 		} catch (Exception e2) {
-			System.out.println("Error");
+			e2.printStackTrace();
 		}
 	}
 
