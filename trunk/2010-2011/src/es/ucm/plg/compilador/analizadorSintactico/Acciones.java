@@ -129,6 +129,9 @@ public class Acciones {
 					throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS_AP);
 			}
 		}
+		else {
+			ok = false;
+		}
 		return ok;
 	}
 
@@ -412,9 +415,11 @@ public class Acciones {
 	 * 
 	 */
 	public void cuerpo() throws Exception {
+		boolean findecs = sintactico.getDeclaraciones().isFinDecs();
 		sintactico.getDeclaraciones().declaraciones();
 		while (!accionReturn())
 			accion();
+		sintactico.getDeclaraciones().setFinDecs(findecs);
 	}
 
 	/**

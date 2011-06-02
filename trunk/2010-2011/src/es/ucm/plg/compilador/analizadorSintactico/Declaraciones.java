@@ -17,6 +17,14 @@ public class Declaraciones {
 		this.finDecs = false;
 	}
 
+	public boolean isFinDecs() {
+		return finDecs;
+	}
+
+	public void setFinDecs(boolean finDecs) {
+		this.finDecs = finDecs;
+	}
+
 	/*
 	 * declaraciones ≡ declaracion declaracionesRE
 	 */
@@ -114,7 +122,7 @@ public class Declaraciones {
 	 * declaracionfun := fun id ( listaparametros ) tiporeturn cuerpo end id ;
 	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private boolean declaracionFun() throws Exception {
 
@@ -146,27 +154,29 @@ public class Declaraciones {
 						.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
 					throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS);
 				}
-				
+
 				Tipo tipo = tipoReturns();
-				
+
 				sintactico.getAcciones().cuerpo();
 
 				if (tipo == null) {
 					throw new MiExcepcion("Error en la sintaxis del return");
 				}
-				
-				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END)){
-					throw new MiExcepcion("Falta un end para terminar la funcion");
+
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_END)) {
+					throw new MiExcepcion(
+							"Falta un end para terminar la funcion");
 				}
-				
+
 				String id2 = sintactico.getLexico().getLexema();
-				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID) || !id.equals(id2)) {
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID)
+						|| !id.equals(id2)) {
 					throw new MiExcepcion("Error al terminar la funcion");
 				}
 
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
 					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
-				
+
 				return true;
 
 			}
@@ -196,13 +206,13 @@ public class Declaraciones {
 		try {
 
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_RETURNS)) {
-				
+
 				tipo = sintactico.getTipos().desctipo();
 
 				if (tipo == null) {
 					throw new MiExcepcion("Falta un tipo tras el returns");
 				}
-			
+
 			}
 
 		} catch (MiExcepcion ex) {
@@ -346,7 +356,8 @@ public class Declaraciones {
 					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
 				}
 
-				// ts = añadeID(deftipo.ts, id.lex, <clase:tipo, tipo: deftipo.tipo, nivel: deftipo.n>)
+				// ts = añadeID(deftipo.ts, id.lex, <clase:tipo, tipo:
+				// deftipo.tipo, nivel: deftipo.n>)
 				// FIXME Cambiar cuando se cambie la TS
 				GestorTS.getInstancia()
 						.ts()
