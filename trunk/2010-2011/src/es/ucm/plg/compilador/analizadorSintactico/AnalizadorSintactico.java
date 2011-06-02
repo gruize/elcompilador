@@ -26,7 +26,6 @@ public class AnalizadorSintactico {
 
 	private ArrayList<InstruccionInterprete> codigo;
 	private int dir;
-	private int nivel;
 	private int etiqueta;
 	private boolean error;
 	private List<String> pend;
@@ -51,13 +50,13 @@ public class AnalizadorSintactico {
 			this.dir = 0;
 			this.etiqueta = 0;
 			this.pend = new ArrayList<String>();
+			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.declaraciones.declaraciones();
 			if(pend.contains(lexico.getLexema()))
 				pend.remove(lexico.getLexema());
 			GestorTS.getInstancia().ts().salidaTS();
 			if (pend.size() > 0) 
 				throw new Exception("Existen tipos pendientes sin declarar");
-			this.codigo = new ArrayList<InstruccionInterprete>();
 			this.acciones.acciones();
 		} catch (Exception ex) {
 			error = true;
@@ -114,14 +113,6 @@ public class AnalizadorSintactico {
 
 	public Declaraciones getDeclaraciones() {
 		return declaraciones;
-	}
-
-	public void setNivel(int nivel) {
-		this.nivel = nivel;
-	}
-
-	public int getNivel() {
-		return nivel;
 	}
 
 	public void setPend(List<String> pend) {

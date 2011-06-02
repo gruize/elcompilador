@@ -20,7 +20,7 @@ public class Declaraciones {
 	/*
 	 * declaraciones ≡ declaracion declaracionesRE
 	 */
-	public void declaraciones() throws SintacticoException, InterpreteExcepcion {
+	public void declaraciones() throws Exception {
 		declaracion();
 		declaracionesRE();
 	}
@@ -28,7 +28,7 @@ public class Declaraciones {
 	/*
 	 * declaracionesRE ≡ declaracion declaracionesRE | vacio
 	 */
-	public void declaracionesRE() throws SintacticoException, InterpreteExcepcion {
+	public void declaracionesRE() throws Exception {
 		declaracion();
 		if (!finDecs)
 			declaracionesRE();
@@ -37,7 +37,7 @@ public class Declaraciones {
 	/*
 	 * declaracion ≡ declaracionVar | declaracionFun | declaracionTipo
 	 */
-	public void declaracion() throws SintacticoException, InterpreteExcepcion {
+	public void declaracion() throws Exception {
 
 		if (!declaracionVar() && !declaracionFun() && !declaracionTipo())
 			finDecs = true;
@@ -86,7 +86,7 @@ public class Declaraciones {
 					GestorTS.getInstancia()
 							.ts()
 							.annadeID(id, sintactico.getDir(), tipo, Clase.var,
-									sintactico.getNivel());
+									GestorTS.getInstancia().getN());
 
 					// dir = dir + desctipo.tipo.tam
 					sintactico.setDir(sintactico.getDir() + tipo.getTamanyo());
@@ -114,11 +114,9 @@ public class Declaraciones {
 	 * declaracionfun := fun id ( listaparametros ) tiporeturn cuerpo end id ;
 	 * 
 	 * @return
-	 * @throws SintacticoException
-	 * @throws InterpreteExcepcion
+	 * @throws Exception 
 	 */
-	private boolean declaracionFun() throws SintacticoException,
-			InterpreteExcepcion {
+	private boolean declaracionFun() throws Exception {
 
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_FUN)) {
@@ -145,11 +143,13 @@ public class Declaraciones {
 				parametros();
 
 				if (!sintactico
-						.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)) {
+						.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE)) {
 					throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS);
 				}
 				
 				Tipo tipo = tipoReturns();
+				
+				sintactico.getAcciones().cuerpo();
 
 				if (tipo == null) {
 					throw new MiExcepcion("Error en la sintaxis del return");
@@ -163,6 +163,11 @@ public class Declaraciones {
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_ID) || !id.equals(id2)) {
 					throw new MiExcepcion("Error al terminar la funcion");
 				}
+
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
+					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
+				
+				return true;
 
 			}
 
@@ -190,7 +195,7 @@ public class Declaraciones {
 
 		try {
 
-			if (sintactico.reconoce(PalabrasReservadas.TOKEN_RETURN)) {
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_RETURNS)) {
 				
 				tipo = sintactico.getTipos().desctipo();
 
@@ -264,7 +269,7 @@ public class Declaraciones {
 		Tipo tipo = null;
 
 		try {
-			tipo = sintactico.getTipos().mem();
+			tipo = sintactico.getTipos().desctipo();
 			Clase clase;
 
 			if (tipo != null) {
@@ -346,7 +351,7 @@ public class Declaraciones {
 				GestorTS.getInstancia()
 						.ts()
 						.annadeID(id, sintactico.getDir(), tipo, Clase.type,
-								sintactico.getNivel());
+								GestorTS.getInstancia().getN());
 				if (sintactico.getPend().contains(id)) {
 					sintactico.getPend().remove(id);
 				}

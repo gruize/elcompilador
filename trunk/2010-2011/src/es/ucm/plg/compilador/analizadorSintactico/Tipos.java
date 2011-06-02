@@ -42,8 +42,7 @@ public class Tipos {
 		String id = sintactico.getLexico().getLexema();
 
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
-			if (GestorTS.getInstancia().ts().existeID(id)
-					&& (GestorTS.getInstancia().ts().getDetalles(id).getClase() == Clase.type)) {
+			if (GestorTS.getInstancia().ts().existeID(id)) {
 				return GestorTS.getInstancia().ts().getTipo(id);
 			} else {
 				sintactico.getPend().add(id);
@@ -334,8 +333,12 @@ public class Tipos {
 		try {
 			if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 
-				if (!(GestorTS.getInstancia().ts().existeID(id) && GestorTS
-						.getInstancia().ts().getDetalles(id).getClase() == Clase.var)) {
+				if (!(GestorTS.getInstancia().ts().existeID(id) && (GestorTS
+						.getInstancia().ts().getDetalles(id).getClase() == Clase.var ||
+						GestorTS
+						.getInstancia().ts().getDetalles(id).getClase() == Clase.val ||
+						GestorTS
+						.getInstancia().ts().getDetalles(id).getClase() == Clase.ref))) {
 					throw new MiExcepcion(
 							SintacticoException.VARIABLE_NO_DECLARADA);
 				}

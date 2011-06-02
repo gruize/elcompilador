@@ -55,9 +55,6 @@ public class Expresiones {
 
 		Tipo tipo = null;
 
-		// expresionMem
-		// tipo = expresionMem();
-
 		// expresionIn
 		if (tipo == null) {
 			tipo = expresionIn();

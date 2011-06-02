@@ -60,8 +60,12 @@ public class Acciones {
 	private boolean accion() throws Exception {
 
 		try {
-			if (!accionAlternativa() && !accionIteracion() && !accionReserva()
-					&& !accionLibera() && !accionInvocacion()
+			if (!accionAlternativa() 
+					&& !accionIteracion() 
+					&& !accionReserva()
+					&& !accionLibera() 
+					&& !accionInvocacion()
+					&& !accionReturn()
 					&& !(sintactico.getExpresiones().expresion() != null)) {
 				throw new MiExcepcion("Se esperaba una accion");
 			}
@@ -98,7 +102,6 @@ public class Acciones {
 				if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_PARENTESIS_AP)){
 					Vector<Params> params = new Vector<Params>();
 					ok = aparams(params);
-					if()
 					if (ok) {
 						sintactico.apilarRet(sintactico.getEtiqueta());
 						sintactico.getCodigo().add(
@@ -135,6 +138,37 @@ public class Acciones {
 				throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS_CE);
 		}
 		return ok;
+	}
+	
+	/**
+	 * accionreturn := return expresion2 ;
+	 * @throws InterpreteExcepcion 
+	 * @throws SintacticoException 
+	 * 
+	 */
+	public boolean accionReturn() throws SintacticoException, InterpreteExcepcion {
+		try {
+			if (sintactico.reconoce(PalabrasReservadas.TOKEN_RETURN)) {
+
+				Tipo tipo = sintactico.getExpresiones().expresion2();
+
+				if (tipo == null) {
+					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
+				}
+
+				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
+					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
+
+				return true;
+			}
+
+			return false;
+
+		} catch (MiExcepcion ex) {
+			throw new SintacticoException(ex.getMessage(), sintactico
+					.getLexico().getLexema(), sintactico.getLexico().getFila(),
+					sintactico.getLexico().getColumna());
+		}
 	}
 
 	/**
@@ -365,7 +399,8 @@ public class Acciones {
 	 */
 	public void cuerpo() throws Exception {
 		sintactico.getDeclaraciones().declaraciones();
-		acciones();
+		while (!accionReturn())
+			accion();
 	}
 
 	/**
