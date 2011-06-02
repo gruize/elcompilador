@@ -3,7 +3,6 @@ package es.ucm.plg.compilador.analizadorSintactico;
 import java.util.Vector;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
-import es.ucm.plg.compilador.tablaSimbolos.Detalles;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoArray;
