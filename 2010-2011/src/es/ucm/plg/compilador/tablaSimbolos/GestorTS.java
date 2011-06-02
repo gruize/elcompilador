@@ -1,7 +1,10 @@
 package es.ucm.plg.compilador.tablaSimbolos;
 
 import java.util.ArrayDeque;
+import java.util.Enumeration;
 import java.util.Iterator;
+
+import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 
 public class GestorTS {
 
@@ -35,8 +38,17 @@ public class GestorTS {
 		gestor.n++;
 	}
 
-	public void cerrarAmbitoActual() {
-		gestor.pilaTS.pop();
+	public void cerrarAmbitoActual() {		
+		TS temporal = gestor.pilaTS.pop();
+		Enumeration e = temporal.getTabla().keys();
+		String obj;
+		while (e.hasMoreElements()) {
+		     obj = (String) e.nextElement();
+		     if(temporal.getTabla().get(obj).getClase() == Clase.fun){
+		    	 Detalles temp = temporal.getTabla().get(obj);
+		    	 gestor.pilaTS.peek().annadeID(obj, temp.getDir(), temp.getTipo(), temp.getClase(), temp.getNivel(), temp.getInicio());
+		     }
+		}		
 		gestor.n--;
 	}
 

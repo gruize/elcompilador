@@ -20,6 +20,12 @@ public class TS {
 		tabla.put(id, new Detalles(id, dir, tipo, clase, nivel));
 		return dir + tipo.getTamanyo();
 	}
+	
+	public Integer annadeID(String id, Integer dir, Tipo tipo, Clase clase,
+			int nivel, int inicio) {
+		tabla.put(id, new Detalles(id, dir, tipo, clase, nivel, inicio));
+		return dir + tipo.getTamanyo();
+	}
 
 	public Tipo getTipo(String id) {
 		return tabla.get(id).getTipo();
@@ -52,5 +58,15 @@ public class TS {
 	public void limpiar() {
 		this.tabla.clear();
 	}
+
+	public Hashtable<String, Detalles> getTabla() {
+		return tabla;
+	}
+
+	public void setTabla(Hashtable<String, Detalles> tabla) {
+		this.tabla = tabla;
+	}
+	
+	
 
 }

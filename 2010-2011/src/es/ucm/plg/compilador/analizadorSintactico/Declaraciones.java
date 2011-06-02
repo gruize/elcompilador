@@ -177,6 +177,8 @@ public class Declaraciones {
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
 					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
 
+				GestorTS.getInstancia().cerrarAmbitoActual();
+				
 				return true;
 
 			}
