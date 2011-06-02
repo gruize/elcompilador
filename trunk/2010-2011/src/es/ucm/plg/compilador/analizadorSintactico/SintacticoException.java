@@ -14,6 +14,7 @@ public class SintacticoException extends Exception{
 	public static final String VARIABLE_DUPLICADA = "Ya existe una variable con ese identificador";
 	public static final String TIPO_INCOMPATIBLE = "Los tipos no son compatibles";
 	public static final String FUNCION_NO_DECLARADA = "Funcion no declarada";
+	public static final String FALTA_PARAMETRO = "Se esperaba un parametro";
 	
 	private String message;
 	private String lexema;

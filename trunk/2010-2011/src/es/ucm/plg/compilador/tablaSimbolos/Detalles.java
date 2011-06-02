@@ -5,7 +5,7 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 public class Detalles {
 
 	public enum Clase {
-		var, type, fun
+		var, type, fun, val, ref
 	};
 
 	private String id;
