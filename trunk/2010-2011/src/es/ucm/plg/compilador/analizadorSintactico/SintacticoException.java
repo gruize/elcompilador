@@ -17,6 +17,9 @@ public class SintacticoException extends Exception{
 	public static final String FALTA_PARAMETRO = "Se esperaba un parametro";
 	public static final String FALTA_PARENTESIS_AP = "Se esperaba un parentesis de apertura";
 	public static final String FALTA_PARENTESIS_CE = "Se esperaba un parentesis de cierre";
+	public static final String NUM_PARAMETROS_INVALIDO = "El numero de parametros no se corresponde con lo esperado por la funcion";
+	public static final String PARAMETROS_INVALIDOS = "Los parametros no se corresponden con lo esperado por la funcion";
+	public static final String ESPERABA_PARAMETROS = "Se esperaba el cierre de la invocacion o algun parametro";
 	
 	private String message;
 	private String lexema;

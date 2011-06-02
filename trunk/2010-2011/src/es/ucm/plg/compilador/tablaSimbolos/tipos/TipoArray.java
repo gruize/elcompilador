@@ -1,6 +1,6 @@
 package es.ucm.plg.compilador.tablaSimbolos.tipos;
 
-public class TipoArray implements Tipo {
+public class TipoArray extends Tipo {
 	
 	private Tipo tipoBase;
 	private int num;

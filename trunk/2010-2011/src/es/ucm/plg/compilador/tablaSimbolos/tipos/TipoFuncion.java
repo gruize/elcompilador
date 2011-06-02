@@ -4,7 +4,7 @@ import java.util.Vector;
 
 import es.ucm.plg.compilador.analizadorSintactico.Params;
 
-public class TipoFuncion implements Tipo {
+public class TipoFuncion extends Tipo {
 
 	int nparams;
 	

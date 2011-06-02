@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class TipoRegistro implements Tipo{
+public class TipoRegistro extends Tipo{
 	
 	private HashMap<String, Campo> campos;
 		

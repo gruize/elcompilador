@@ -1,6 +1,6 @@
 package es.ucm.plg.compilador.tablaSimbolos.tipos;
 
-public class TipoEntero implements Tipo {
+public class TipoEntero extends Tipo {
 	
 	@Override
 	public int getTamanyo() {

@@ -1,6 +1,6 @@
 package es.ucm.plg.compilador.tablaSimbolos.tipos;
 
-public class TipoPuntero implements Tipo{
+public class TipoPuntero extends Tipo{
 	
 	private Tipo tipoBase;
 	
