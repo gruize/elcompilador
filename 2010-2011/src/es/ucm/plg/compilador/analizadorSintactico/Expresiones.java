@@ -12,6 +12,7 @@ import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoFuncion;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoNull;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoReal;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoRegistro;
+import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo.Modo;
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
@@ -277,7 +278,7 @@ public class Expresiones {
 
 					// tipo = <t:int>
 					tipo = new TipoEntero();
-
+					tipo.setModo(Modo.valor);
 				} else {
 					tipo = tipo1;					
 				}
@@ -367,6 +368,7 @@ public class Expresiones {
 
 				// expresion3RE
 				tipo = expresion3RE(tipo);
+				tipo.setModo(Modo.valor);
 
 				sintactico.getCodigo().add(op);
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
@@ -463,6 +465,7 @@ public class Expresiones {
 					sintactico.getCodigo().add(op);
 					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 				}
+				tipo.setModo(Modo.valor);
 			}
 
 			return tipo;
@@ -493,7 +496,8 @@ public class Expresiones {
 			if ((op = op5asoc()) != null) {
 
 				tipo = expresion5();
-
+				tipo.setModo(Modo.valor);
+				
 				if (op instanceof Negacion) {
 					if (!(tipo instanceof TipoEntero)) {
 						throw new MiExcepcion(
@@ -517,6 +521,7 @@ public class Expresiones {
 			} else if ((op = op5noAsoc()) != null) {
 
 				tipo = expresion6();
+				tipo.setModo(Modo.valor);
 
 				if (!(tipo instanceof TipoReal || tipo instanceof TipoEntero)) {
 					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
@@ -561,6 +566,7 @@ public class Expresiones {
 			tipo = sintactico.getTipos().mem();
 
 			if (tipo != null) {
+				tipo.setModo(Modo.var);
 				sintactico.getCodigo().add(new ApilarInd());
 				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 			} else {
@@ -582,6 +588,7 @@ public class Expresiones {
 
 					if (cast(lex, new TipoEntero())) {
 						tipo = new TipoEntero();
+						tipo.setModo(Modo.valor);
 						sintactico.getCodigo().add(
 								new Apilar(new DatoPila(DatoPila.INT, lex)));
 						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
@@ -593,6 +600,7 @@ public class Expresiones {
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_REAL)) {
 					if (cast(lex, new TipoReal())) {
 						tipo = new TipoReal();
+						tipo.setModo(Modo.valor);
 						sintactico.getCodigo().add(
 								new Apilar(new DatoPila(DatoPila.REAL, lex)));
 						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
@@ -604,6 +612,7 @@ public class Expresiones {
 				}
 				if (sintactico.reconoce(PalabrasReservadas.TOKEN_NULL)) {
 					tipo = new TipoNull();
+					tipo.setModo(Modo.valor);
 					sintactico.getCodigo().add(
 							new Apilar(new DatoPila(DatoPila.REAL,
 									Integer.MIN_VALUE)));
