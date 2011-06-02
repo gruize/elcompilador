@@ -338,11 +338,13 @@ public class Tipos {
 						GestorTS
 						.getInstancia().ts().getDetalles(id).getClase() == Clase.val ||
 						GestorTS
-						.getInstancia().ts().getDetalles(id).getClase() == Clase.ref))) {
-					throw new MiExcepcion(
+						.getInstancia().ts().getDetalles(id).getClase() == Clase.ref ||
+						GestorTS.getInstancia().ts().getDetalles(id).getClase() == Clase.fun))) {
+						throw new MiExcepcion(
 							SintacticoException.VARIABLE_NO_DECLARADA);
 				}
-
+				if(GestorTS.getInstancia().ts().getDetalles(id).getClase() == Clase.fun)
+					System.out.print("HOLA");
 				sintactico.getCodigo().add(
 						new Apilar(new DatoPila(DatoPila.INT, GestorTS
 								.getInstancia().ts().getDir(id))));
