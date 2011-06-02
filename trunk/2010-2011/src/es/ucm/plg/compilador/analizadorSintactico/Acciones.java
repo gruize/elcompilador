@@ -1,5 +1,7 @@
 package es.ucm.plg.compilador.analizadorSintactico;
 
+import java.util.Vector;
+
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
@@ -93,16 +95,21 @@ public class Acciones {
 				sintactico.getLexico().volverEstadoAnterior();
 				return false;
 			} else {
-				ok = aparams();
-				if (ok) {
-					sintactico.apilarRet(sintactico.getEtiqueta());
-					sintactico.getCodigo().add(
-							new IrA(
-									new DatoPila(DatoPila.INT, GestorTS
-											.getInstancia().buscaGlobal(id)
-											.getInicio())));
-					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-				}
+				if(sintactico.getLexico().getToken_actual().equals(PalabrasReservadas.TOKEN_PARENTESIS_AP)){
+					Vector<Params> params = new Vector<Params>();
+					ok = aparams(params);
+					if()
+					if (ok) {
+						sintactico.apilarRet(sintactico.getEtiqueta());
+						sintactico.getCodigo().add(
+								new IrA(
+										new DatoPila(DatoPila.INT, GestorTS
+												.getInstancia().buscaGlobal(id)
+												.getInicio())));
+						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+					}
+				}else
+					throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS_AP);
 			}
 		}
 		return ok;
@@ -114,11 +121,18 @@ public class Acciones {
 	 * @return ok
 	 * @throws Exception
 	 */
-	private boolean aparams() throws Exception {
+	private boolean aparams(Vector<Params> params) throws Exception {
 		boolean ok = true;
-		sintactico.inicioPaso();
-		if (sintactico.getExpresiones().expresiones()) {
-
+		if(sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_AP)){
+			sintactico.inicioPaso();
+			if (sintactico.getExpresiones().expresiones()) {
+	
+			}
+			
+			
+			
+			if(!sintactico.reconoce(PalabrasReservadas.TOKEN_PARENTESIS_CE))
+				throw new MiExcepcion(SintacticoException.FALTA_PARENTESIS_CE);
 		}
 		return ok;
 	}

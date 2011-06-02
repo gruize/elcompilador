@@ -15,6 +15,8 @@ public class SintacticoException extends Exception{
 	public static final String TIPO_INCOMPATIBLE = "Los tipos no son compatibles";
 	public static final String FUNCION_NO_DECLARADA = "Funcion no declarada";
 	public static final String FALTA_PARAMETRO = "Se esperaba un parametro";
+	public static final String FALTA_PARENTESIS_AP = "Se esperaba un parentesis de apertura";
+	public static final String FALTA_PARENTESIS_CE = "Se esperaba un parentesis de cierre";
 	
 	private String message;
 	private String lexema;

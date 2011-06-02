@@ -751,6 +751,12 @@ public class Expresiones {
 		return tipo;
 	}
 
+	/**
+	 * expresiones ≡ expresion2 expresionesRE
+	 * @return
+	 * @throws SintacticoException
+	 * @throws InterpreteExcepcion
+	 */
 	public boolean expresiones() throws SintacticoException, InterpreteExcepcion {
 		boolean ok = false;
 		//FIXME: Falta el modo de expresion2.
@@ -760,14 +766,13 @@ public class Expresiones {
 		return ok;
 	}
 	
-	/**
-	 * expresionesRE ≡ expresion2 expresionesRE
+	/** 
 	 * expresionesRE ≡ , expresion2 expresionesRE
 	 * expresionesRE ≡ λ
 	 * @return
 	 */
 	private boolean expresionesRE() {
-		boolean ok = false;
+		boolean ok = true;
 		if(sintactico.reconoce(PalabrasReservadas.TOKEN_COMA)){
 			sintactico.getCodigo().add(new Copia());
 			sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
