@@ -343,14 +343,14 @@ public class Tipos {
 						throw new MiExcepcion(
 							SintacticoException.VARIABLE_NO_DECLARADA);
 				}
-				if(GestorTS.getInstancia().ts().getDetalles(id).getClase() == Clase.fun)
-					System.out.print("HOLA");
-				sintactico.getCodigo().add(
-						new Apilar(new DatoPila(DatoPila.INT, GestorTS
-								.getInstancia().ts().getDir(id))));
-				sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-
-				tipo = memRE(GestorTS.getInstancia().ts().getTipo(id));
+				if(GestorTS.getInstancia().ts().getDetalles(id).getClase() != Clase.fun){				
+					sintactico.getCodigo().add(
+							new Apilar(new DatoPila(DatoPila.INT, GestorTS
+									.getInstancia().ts().getDir(id))));
+					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+	
+					tipo = memRE(GestorTS.getInstancia().ts().getTipo(id));
+				}
 
 			}
 
