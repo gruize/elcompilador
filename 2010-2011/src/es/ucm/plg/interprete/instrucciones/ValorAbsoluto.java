@@ -2,7 +2,6 @@ package es.ucm.plg.interprete.instrucciones;
 
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
-import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class ValorAbsoluto extends InstruccionInterprete {
@@ -11,11 +10,6 @@ public class ValorAbsoluto extends InstruccionInterprete {
 
 	public ValorAbsoluto() {
 		super(InstruccionInterprete.CODIGO_ABS);
-	}
-
-	public ValorAbsoluto(DatoPila d) throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_ABS, d);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override

@@ -7,12 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Mueve extends InstruccionInterprete {
 
-	public Mueve() throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_MUEVE);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.FALTA_PARAMETRO);
-	}
-
 	public Mueve(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_MUEVE, d);
 		if (d.getTipo() != DatoPila.INT)

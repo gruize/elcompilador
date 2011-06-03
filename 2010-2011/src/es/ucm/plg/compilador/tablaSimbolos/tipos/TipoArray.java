@@ -23,5 +23,9 @@ public class TipoArray extends Tipo {
 	public boolean equals(Tipo tipo) {
 		return tipoBase.equals(((TipoArray) tipo).getTipoBase()) && (tipoBase.getTamanyo() == ((TipoArray) tipo).getTipoBase().getTamanyo());
 	}
-	
+
+	@Override
+	public String toString() {
+		return "TipoArray";
+	}	
 }

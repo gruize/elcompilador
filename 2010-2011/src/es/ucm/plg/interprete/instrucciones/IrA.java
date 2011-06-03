@@ -7,12 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class IrA extends InstruccionInterprete {
 
-	public IrA() throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_IR_A);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.FALTA_PARAMETRO);
-	}
-
 	public IrA(DatoPila d) {
 		super(InstruccionInterprete.CODIGO_IR_A, d);
 	}

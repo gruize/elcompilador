@@ -7,12 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Delete extends InstruccionInterprete {
 
-	public Delete() throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_DELETE);
-		throw new InterpreteExcepcion(this.toString(),
-				"La instruccion Delete necesita un parametro");
-	}
-
 	public Delete(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_DELETE, d);
 		if (d.getTipo() != DatoPila.INT)

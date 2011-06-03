@@ -12,4 +12,9 @@ public class TipoNull extends Tipo{
 		return tipo instanceof TipoNull;
 	}
 
+	@Override
+	public String toString() {
+		return "TipoNull";
+	}
+
 }

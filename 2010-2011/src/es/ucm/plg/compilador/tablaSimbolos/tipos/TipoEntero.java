@@ -11,4 +11,9 @@ public class TipoEntero extends Tipo {
 	public boolean equals(Tipo tipo) {
 		return tipo instanceof TipoEntero;
 	}
+	
+	@Override
+	public String toString() {
+		return "TipoEntero";
+	}	
 }

@@ -12,13 +12,11 @@ public class TipoFuncion extends Tipo {
 	
 	@Override
 	public boolean equals(Tipo tipo) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public int getTamanyo() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 
@@ -36,6 +34,11 @@ public class TipoFuncion extends Tipo {
 
 	public void setParams(Vector<Params> params) {
 		this.params = params;
+	}
+	
+	@Override
+	public String toString() {
+		return "TipoFuncion";
 	}	
 
 }

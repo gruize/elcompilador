@@ -13,12 +13,6 @@ public class Negacion extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_NEGACION);
 	}
 
-	public Negacion(DatoPila d) throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_NEGACION);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.SOBRA_PARAMETRO);
-	}
-
 	@Override
 	public String toString() {
 		return "negacion";

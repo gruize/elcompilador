@@ -90,6 +90,6 @@ public class Detalles {
 	@Override
 	public String toString() {
 		return "id:" + id + "\t dir:" + dir + "\t tipo:" + tipo.toString()
-				+ "\t clase:" + clase;
+				+ "\t\t clase:" + clase;
 	}
 }

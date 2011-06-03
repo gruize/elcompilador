@@ -60,7 +60,7 @@ public class DatoPila {
 
 	@Override
 	public String toString() {
-		return "Dato [tipo = " + tipo + ", valor = " + valor + "]";
+		return valor.toString();
 	}
 
 }

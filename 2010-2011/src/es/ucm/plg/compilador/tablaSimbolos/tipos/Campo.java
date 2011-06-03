@@ -35,5 +35,10 @@ public class Campo {
 	public int getDesplazamiento() {
 		return desplazamiento;
 	}
+
+	@Override
+	public String toString() {
+		return "Campo [nombre=" + nombre + "]";
+	}
 	
 }

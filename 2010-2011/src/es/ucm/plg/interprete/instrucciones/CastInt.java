@@ -2,18 +2,12 @@ package es.ucm.plg.interprete.instrucciones;
 
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
-import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class CastInt extends InstruccionInterprete {
 
 	public CastInt() {
 		super(InstruccionInterprete.CODIGO_CASTINT);
-	}
-
-	public CastInt(DatoPila d) throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_CASTINT);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override

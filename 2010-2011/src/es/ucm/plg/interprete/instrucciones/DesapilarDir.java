@@ -7,10 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class DesapilarDir extends InstruccionInterprete {
 
-	public DesapilarDir() {
-		super(InstruccionInterprete.CODIGO_DESAPILARDIR);
-	}
-
 	public DesapilarDir(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_DESAPILARDIR, d);
 		if (d.getTipo() != DatoPila.INT)

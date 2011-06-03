@@ -73,11 +73,7 @@ public class Declaraciones {
 
 					// error = existeID(desctipo.ts, id.lex) &&
 					// desctipo.ts[id.lex].n == desctipo.n
-					if (GestorTS.getInstancia().ts().existeID(id)) { // FIXME
-																		// Añadir
-						// la
-						// comprobación
-						// de niveles
+					if (GestorTS.getInstancia().ts().existeID(id)) { 
 						throw new MiExcepcion(
 								SintacticoException.VARIABLE_DUPLICADA);
 					}
@@ -135,7 +131,6 @@ public class Declaraciones {
 					throw new MiExcepcion(SintacticoException.FALTA_ID);
 				}
 
-				// FIXME Añadir la comprobación de niveles
 				if (GestorTS.getInstancia().existe(id)) {
 					throw new MiExcepcion(
 							SintacticoException.VARIABLE_DUPLICADA);

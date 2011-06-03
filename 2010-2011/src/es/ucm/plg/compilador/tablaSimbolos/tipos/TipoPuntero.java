@@ -22,4 +22,9 @@ public class TipoPuntero extends Tipo{
 		return (tipo instanceof TipoPuntero) && (((TipoPuntero) tipo).getTipoBase() == this.tipoBase);
 	}
 
+	@Override
+	public String toString() {
+		return "TipoPuntero";
+	}
+
 }

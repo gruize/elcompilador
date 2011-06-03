@@ -2,7 +2,6 @@ package es.ucm.plg.interprete.instrucciones;
 
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
-import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Mayor extends InstruccionInterprete {
@@ -10,11 +9,6 @@ public class Mayor extends InstruccionInterprete {
 	public Mayor(){
 		super(InstruccionInterprete.CODIGO_MAYOR);
 	}
-
-	public Mayor(DatoPila d) throws InterpreteExcepcion{
-		super(InstruccionInterprete.CODIGO_MAYOR);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
-	}	
 	
 	@Override
 	public String toString() {
