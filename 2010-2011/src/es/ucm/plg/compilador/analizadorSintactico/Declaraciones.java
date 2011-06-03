@@ -2,6 +2,7 @@ package es.ucm.plg.compilador.analizadorSintactico;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
 import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoNull;
@@ -152,7 +153,7 @@ public class Declaraciones {
 
 				Tipo tipo = tipoReturns();
 
-				sintactico.getAcciones().cuerpo();
+				int inicio = sintactico.getAcciones().cuerpo();
 
 				if (tipo == null) {
 					throw new MiExcepcion("Error en la sintaxis del return");
@@ -170,15 +171,21 @@ public class Declaraciones {
 				}
 
 				if (!sintactico.reconoce(PalabrasReservadas.TOKEN_PUNTO_COMA))
-					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);
+					throw new MiExcepcion(SintacticoException.FALTA_PUNTO_COMA);				
 
-				
 				sintactico.setDir(GestorTS.getInstancia()
 						.ts()
 						.annadeID(id, sintactico.getDir(), tipo, Clase.fun,
-								GestorTS.getInstancia().getN()));
-
+								GestorTS.getInstancia().getN(), inicio));
+				
+				Detalles aux = GestorTS.getInstancia().ts().getDetalles(id);
+				
 				GestorTS.getInstancia().cerrarAmbitoActual();
+				
+				GestorTS.getInstancia()
+				.ts()
+				.annadeID(id, aux.getDir(), aux.getTipo(), aux.getClase(),
+						aux.getNivel(), aux.getInicio());
 
 				return true;
 

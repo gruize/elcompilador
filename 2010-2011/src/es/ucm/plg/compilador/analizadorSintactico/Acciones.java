@@ -85,13 +85,13 @@ public class Acciones {
 	 * @return ok
 	 * @throws Exception
 	 */
-	private boolean accionInvocacion() throws Exception {
+	public boolean accionInvocacion() throws Exception {
 		boolean ok = true;
 		String id = sintactico.getLexico().getLexema();
 		sintactico.getLexico().copiaEstado();
 		if (sintactico.reconoce(PalabrasReservadas.TOKEN_ID)) {
 			if (!(GestorTS.getInstancia().ts().existeID(id)
-					&& GestorTS.getInstancia().ts().getTipo(id) instanceof TipoFuncion && GestorTS
+					&& GestorTS
 					.getInstancia().buscaGlobal(id).getClase() == Clase.fun)) {
 				sintactico.getLexico().volverEstadoAnterior();
 				ok = false;
@@ -423,12 +423,14 @@ public class Acciones {
 	 * @throws Exception
 	 * 
 	 */
-	public void cuerpo() throws Exception {
+	public int cuerpo() throws Exception {
 		boolean findecs = sintactico.getDeclaraciones().isFinDecs();
 		sintactico.getDeclaraciones().declaraciones();
+		int inicio = sintactico.getEtiqueta();
 		while (!accionReturn())
 			accion();
 		sintactico.getDeclaraciones().setFinDecs(findecs);
+		return inicio;
 	}
 
 	/**

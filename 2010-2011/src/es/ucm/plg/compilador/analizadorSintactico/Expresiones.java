@@ -3,7 +3,9 @@ package es.ucm.plg.compilador.analizadorSintactico;
 import java.util.Vector;
 
 import es.ucm.plg.compilador.analizadorLexico.PalabrasReservadas;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles;
 import es.ucm.plg.compilador.tablaSimbolos.GestorTS;
+import es.ucm.plg.compilador.tablaSimbolos.Detalles.Clase;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.Tipo;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoArray;
 import es.ucm.plg.compilador.tablaSimbolos.tipos.TipoEntero;
@@ -53,9 +55,10 @@ public class Expresiones {
 	 * expresion := expresionMem || expresionIn || expresionOut || expresion1
 	 * 
 	 * @return Tipo
+	 * @throws Exception 
 	 * @throws errorh
 	 */
-	public Tipo expresion() throws SintacticoException, InterpreteExcepcion {
+	public Tipo expresion() throws Exception {
 
 		Tipo tipo = null;
 
@@ -127,11 +130,11 @@ public class Expresiones {
 	 * expresionOut := out expresion1
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion
+	 * @throws Exception 
 	 * @throws errorh
 	 *             || expresion_invalida || ¬existeID(op0in.ts, id.lex)
 	 */
-	public Tipo expresionOut() throws SintacticoException, InterpreteExcepcion {
+	public Tipo expresionOut() throws Exception {
 
 		Tipo tipo = null;
 
@@ -164,11 +167,11 @@ public class Expresiones {
 	 * expresion1 := mem = expresion2
 	 * 
 	 * @return Tipo
-	 * @throws InterpreteExcepcion
+	 * @throws Exception 
 	 * @throws errorh
 	 *             || expresion_invalida || tipo_incompatible
 	 */
-	public Tipo expresion1() throws SintacticoException, InterpreteExcepcion {
+	public Tipo expresion1() throws Exception {
 
 		Tipo tipo1 = null;
 		Tipo tipo2 = null;
@@ -180,42 +183,45 @@ public class Expresiones {
 			if (tipo1 != null) {
 
 				String id2 = sintactico.getLexico().getLexema();
-				tipo2 = expresion2();
-
-				if (tipo2 == null) {
-					throw new MiExcepcion(
-							SintacticoException.EXPRESION_INVALIDA);
-				}
-				if (!sintactico.getTipos().compatibles(tipo1, tipo2)) {
-					throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
-				}
-
-				if ((tipo1 instanceof TipoArray)
-						|| (tipo1 instanceof TipoRegistro)) {
-
-					int dir1 = GestorTS.getInstancia().ts().getDir(id1);
-					int dir2 = GestorTS.getInstancia().ts().getDir(id2);
-
-					for (int i = dir1; i < dir1 + tipo1.getTamanyo(); i++) {
-						sintactico.getCodigo().add(
-								new Apilar(new DatoPila(DatoPila.INT,
-										i)));
-						sintactico.getCodigo().add(
-								new Apilar(new DatoPila(DatoPila.INT,
-										dir2)));
-						sintactico.getCodigo().add(
-								new ApilarInd());
-						sintactico.getCodigo().add(
-								new DesapilarInd());
-						sintactico.setEtiqueta(sintactico.getEtiqueta() + 4);
-						dir2++;
+				if(GestorTS.getInstancia().ts().existeID(id2) && GestorTS.getInstancia().ts().getDetalles(id2).getClase() == Clase.fun){
+					sintactico.getAcciones().accionInvocacion();
+				}else{					
+					tipo2 = expresion2();
+	
+					if (tipo2 == null) {
+						throw new MiExcepcion(
+								SintacticoException.EXPRESION_INVALIDA);
 					}
-
-				} else {
-					sintactico.getCodigo().add(new DesapilarInd());
-					sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
-				}
-
+					if (!sintactico.getTipos().compatibles(tipo1, tipo2)) {
+						throw new MiExcepcion(SintacticoException.TIPO_INCOMPATIBLE);
+					}
+	
+					if ((tipo1 instanceof TipoArray)
+							|| (tipo1 instanceof TipoRegistro)) {
+	
+						int dir1 = GestorTS.getInstancia().ts().getDir(id1);
+						int dir2 = GestorTS.getInstancia().ts().getDir(id2);
+	
+						for (int i = dir1; i < dir1 + tipo1.getTamanyo(); i++) {
+							sintactico.getCodigo().add(
+									new Apilar(new DatoPila(DatoPila.INT,
+											i)));
+							sintactico.getCodigo().add(
+									new Apilar(new DatoPila(DatoPila.INT,
+											dir2)));
+							sintactico.getCodigo().add(
+									new ApilarInd());
+							sintactico.getCodigo().add(
+									new DesapilarInd());
+							sintactico.setEtiqueta(sintactico.getEtiqueta() + 4);
+							dir2++;
+						}
+	
+					} else {
+						sintactico.getCodigo().add(new DesapilarInd());
+						sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
+					}
+				}					
 			} else {
 				tipo1 = expresion2();
 			}
@@ -774,6 +780,8 @@ public class Expresiones {
 		sintactico.setEtiqueta(sintactico.getEtiqueta() + 1);
 		Tipo tipo = expresion2();
 		params.add(new Params(tipo.getModo(), tipo));
+		Detalles aux = GestorTS.getInstancia().ts().getDetalles(id);
+		//PROBLEMA: Las funciones guardan como tipo el tipo que devuelven (eso es tbloque) y deberian guardar el TipoFuncion con los parametros dentro
 		TipoFuncion tipoReal = (TipoFuncion)GestorTS.getInstancia().ts().getTipo(id);
 		if(params.size() > 0)
 			sintactico.pasoParametro(tipoReal.getParams().get(params.size() - 1).getModo(), tipo);

@@ -40,15 +40,15 @@ public class GestorTS {
 
 	public void cerrarAmbitoActual() {		
 		TS temporal = gestor.pilaTS.pop();
-		Enumeration<String> e = temporal.getTabla().keys();
+		/**Enumeration<String> e = temporal.getTabla().keys();
 		String obj;
 		while (e.hasMoreElements()) {
 		     obj = (String) e.nextElement();
 		     if(temporal.getTabla().get(obj).getClase() == Clase.fun){
 		    	 Detalles temp = temporal.getTabla().get(obj);
-		    	 gestor.pilaTS.peek().annadeID(obj, temp.getDir(), temp.getTipo(), temp.getClase(), temp.getNivel(), temp.getInicio());
+		    	 gestor.ts().annadeID(obj, temp.getDir(), temp.getTipo(), temp.getClase(), temp.getNivel(), temp.getInicio());
 		     }
-		}		
+		}*/		
 		gestor.n--;
 	}
 
