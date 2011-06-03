@@ -11,12 +11,6 @@ public class Y_Logica extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_Y);
 	}
 
-	public Y_Logica(DatoPila d) throws InterpreteExcepcion{
-		super(InstruccionInterprete.CODIGO_Y);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
-	}
-	
-	@Override
 	public String toString() {
 		return "y";
 	}

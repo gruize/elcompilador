@@ -11,11 +11,6 @@ public class O_Logica extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_O);
 	}
 
-	public O_Logica(DatoPila d) throws InterpreteExcepcion{
-		super(InstruccionInterprete.CODIGO_O);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
-	}
-
 	@Override
 	public String toString() {
 		return "o";

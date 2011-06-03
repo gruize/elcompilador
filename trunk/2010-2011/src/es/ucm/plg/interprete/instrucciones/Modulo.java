@@ -11,12 +11,6 @@ public class Modulo extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_MODULO);
 	}
 
-	public Modulo(DatoPila d) throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_MODULO);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.SOBRA_PARAMETRO);
-	}
-
 	@Override
 	public String toString() {
 		return "modulo";

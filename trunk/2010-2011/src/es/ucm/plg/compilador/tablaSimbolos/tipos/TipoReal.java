@@ -12,4 +12,9 @@ public class TipoReal extends Tipo {
 		return tipo instanceof TipoReal;
 	}
 
+	@Override
+	public String toString() {
+		return "TipoReal";
+	}
+
 }

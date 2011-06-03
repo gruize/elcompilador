@@ -55,4 +55,9 @@ public class TipoRegistro extends Tipo{
 		return (campos.size() == 0);
 	}
 	
+	@Override
+	public String toString() {
+		return "TipoRegistro";
+	}
+	
 }

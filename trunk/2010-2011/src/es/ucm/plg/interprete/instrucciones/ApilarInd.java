@@ -11,15 +11,9 @@ public class ApilarInd extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_APILARIND);
 	}
 
-	public ApilarInd(DatoPila d) throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_APILARIND);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.SOBRA_PARAMETRO);
-	}
-
 	@Override
 	public String toString() {
-		return "ApilarInd";
+		return "apilaind";
 	}
 
 	@Override

@@ -42,13 +42,6 @@ import es.ucm.plg.interprete.instrucciones.Y_Logica;
 
 public class LectorPila {
 
-	/**
-	 * Este metodo lee un dato de un DataInputStream
-	 * 
-	 * @param dis
-	 * @return el dato leido
-	 * @throws InterpreteExcepcion 
-	 */
 	private DatoPila leerDato(DataInputStream dis) throws InterpreteExcepcion {
 		try {
 			byte tipo = dis.readByte();
@@ -69,13 +62,6 @@ public class LectorPila {
 
 	}
 
-	/**
-	 * Este metodo lee una instruccion de un DataInputStream
-	 * 
-	 * @param dis
-	 * @return la InstruccionInterprete leida
-	 * @throws InterpreteExcepcion 
-	 */
 	private InstruccionInterprete leerInstruccion(DataInputStream dis) throws InterpreteExcepcion {
 		InstruccionInterprete inst = null;
 		try {

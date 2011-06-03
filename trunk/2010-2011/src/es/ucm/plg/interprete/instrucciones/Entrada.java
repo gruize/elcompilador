@@ -8,10 +8,6 @@ import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Entrada extends InstruccionInterprete {
-	public Entrada() throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_ENTRADA);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.FALTA_PARAMETRO);
-	}
 
 	public Entrada(DatoPila d){
 		super(InstruccionInterprete.CODIGO_ENTRADA, d);

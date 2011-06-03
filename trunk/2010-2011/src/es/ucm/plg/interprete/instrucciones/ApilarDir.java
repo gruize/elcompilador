@@ -7,11 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class ApilarDir extends InstruccionInterprete {
 
-	public ApilarDir() throws InterpreteExcepcion{
-		super(InstruccionInterprete.CODIGO_APILARDIR);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.FALTA_PARAMETRO);
-	}
-
 	public ApilarDir(DatoPila d) throws InterpreteExcepcion{
 		super(InstruccionInterprete.CODIGO_APILARDIR, d);
 		if (d.getTipo() != DatoPila.INT)
@@ -20,7 +15,7 @@ public class ApilarDir extends InstruccionInterprete {
 
 	@Override
 	public String toString() {
-		return "ApilarDir " + this.getDato().getValor();
+		return "apiladir " + this.getDato().getValor();
 	}
 
 	@Override

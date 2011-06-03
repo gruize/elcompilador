@@ -57,25 +57,12 @@ public abstract class InstruccionInterprete {
 		this.dato = dato;
 	}
 
-	/**
-	 * Ha de enmascararse para darle una implementacion a la instruccion. Lo
-	 * normal sera que al final de la ejecucion aumente el cp del interprete en
-	 * uno.
-	 * @param interprete El interprete que ejecuta la instruccion
-	 * @throws InterpreteExcepcion 
-	 */
 	public abstract boolean ejecutate(Interprete interprete) throws InterpreteExcepcion;
 
-	/**
-	 * @return the dato
-	 */
 	public DatoPila getDato() {
 		return dato;
 	}
 
-	/**
-	 * @return el byte que identifica el tipo de instruccion
-	 */
 	public byte getTipoIns() {
 		return tipoIns;
 	}

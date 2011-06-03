@@ -11,15 +11,9 @@ public class DesapilarInd extends InstruccionInterprete {
 		super(InstruccionInterprete.CODIGO_DESAPILARIND);
 	}
 
-	public DesapilarInd(DatoPila d) throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_DESAPILARIND);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.SOBRA_PARAMETRO);
-	}
-
 	@Override
 	public String toString() {
-		return "desapilarInd";
+		return "desapilarind";
 	}
 
 	@Override

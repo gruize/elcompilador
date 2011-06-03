@@ -2,18 +2,12 @@ package es.ucm.plg.interprete.instrucciones;
 
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
-import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class CambioSigno extends InstruccionInterprete {
 
 	public CambioSigno(){
 		super(InstruccionInterprete.CODIGO_CAMBIO_SIGNO);
-	}
-
-	public CambioSigno(DatoPila d) throws InterpreteExcepcion{
-		super(InstruccionInterprete.CODIGO_CAMBIO_SIGNO);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override

@@ -7,12 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class IrV extends InstruccionInterprete {
 
-	public IrV() throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_IR_V);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.FALTA_PARAMETRO);
-	}
-
 	public IrV(DatoPila d) throws InterpreteExcepcion {
 		super(InstruccionInterprete.CODIGO_IR_V, d);
 		if (d.getTipo() != DatoPila.INT)

@@ -7,12 +7,6 @@ import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class IrF extends InstruccionInterprete {
 
-	public IrF() throws InterpreteExcepcion {
-		super(InstruccionInterprete.CODIGO_IR_F);
-		throw new InterpreteExcepcion(this.toString(),
-				InterpreteExcepcion.FALTA_PARAMETRO);
-	}
-
 	public IrF(DatoPila d) {
 		super(InstruccionInterprete.CODIGO_IR_F, d);
 	}

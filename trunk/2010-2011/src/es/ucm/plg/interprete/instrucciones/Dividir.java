@@ -2,18 +2,12 @@ package es.ucm.plg.interprete.instrucciones;
 
 import es.ucm.plg.interprete.InstruccionInterprete;
 import es.ucm.plg.interprete.Interprete;
-import es.ucm.plg.interprete.InterpreteExcepcion;
 import es.ucm.plg.interprete.datoPila.DatoPila;
 
 public class Dividir extends InstruccionInterprete {
 
 	public Dividir(){
 		super(InstruccionInterprete.CODIGO_DIVIDE);
-	}
-
-	public Dividir(DatoPila d) throws InterpreteExcepcion{
-		super(InstruccionInterprete.CODIGO_DIVIDE);
-		throw new InterpreteExcepcion(this.toString(), InterpreteExcepcion.SOBRA_PARAMETRO);
 	}
 
 	@Override

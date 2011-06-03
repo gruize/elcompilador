@@ -27,14 +27,6 @@ public class Interprete {
 	private BufferedReader reader;
 	private PrintWriter writer;
 
-	/**
-	 * Crea un interprete con tantas posiciones de memoria como se le indique
-	 * 
-	 * @param longMem
-	 *            Tamanyo de la memoria
-	 * @param depuracion
-	 *            Indica si debe mostrar traza o no
-	 */
 	public Interprete(int longMem, boolean depuracion, Reader reader,
 			PrintWriter salida) {
 		programa = null;
@@ -49,93 +41,35 @@ public class Interprete {
 		writer = salida;
 	}
 
-	/**
-	 * Crea un interprete con tantas posiciones de memoria como se le indique
-	 * 
-	 * @param longMem
-	 *            Tamanyo de la memoria
-	 * @param depuracion
-	 *            Indica si debe mostrar traza o no
-	 * @param in
-	 *            Stream de entrada de datos en las instrucciones de lectura
-	 * @param salida
-	 *            Salida para los datos de salida
-	 */
 	public Interprete(int longMem, boolean depuracion, InputStream in,
 			PrintWriter salida) {
 		this(longMem, depuracion, new InputStreamReader(in), salida);
 	}
 
-	/**
-	 * Crea un interprete con tantas posiciones de memoria como se le indique
-	 * 
-	 * @param longMem
-	 *            Tamanyo de la memoria
-	 * @param depuracion
-	 *            Indica si debe mostrar traza o no
-	 */
 	public Interprete(int longMem, boolean depuracion) {
 		this(longMem, depuracion, new InputStreamReader(System.in),
 				new PrintWriter(System.out, true));
 	}
 
-	/**
-	 * Crea un interprete con un tamanyo de memoria por defecto (1000)
-	 * 
-	 * @param depuracion
-	 *            Indica si debe mostrar traza o no
-	 */
 	public Interprete(boolean depuracion) {
 		this(1000, depuracion);
 	}
 
-	/**
-	 * Crea un interprete con un tamanyo de memoria por defecto (1000)
-	 * 
-	 * @param depuracion
-	 *            Indica si debe mostrar traza o no
-	 * @param entrada
-	 *            Stream de entrada de datos en las instrucciones de lectura
-	 * @param salida
-	 *            Salida para los datos de salida
-	 */
 	public Interprete(boolean depuracion, InputStream entrada,
 			PrintWriter salida) {
 		this(1000, depuracion, entrada, salida);
 	}
 
-	/**
-	 * Crea un interprete con un tamanyo de memoria por defecto (1000)
-	 * 
-	 * @param depuracion
-	 *            Indica si debe mostrar traza o no
-	 * @param reader
-	 *            Lector de entrada de datos en las instrucciones de lectura
-	 * @param salida
-	 *            Salida para los datos de salida
-	 */
 	public Interprete(boolean depuracion, Reader reader, PrintWriter salida) {
 		this(1000, depuracion, reader, salida);
 	}
 
-	/**
-	 * Dado un fichero, crea un LectorPila del que obtiene un programa valido
-	 * 
-	 * @param f
-	 *            el fichero binario fuente
-	 * @throws InterpreteExcepcion
-	 */
 	public void leerPrograma(File f) throws InterpreteExcepcion {
 		LectorPila lector = new LectorPila();
 		programa = lector.leerPrograma(f);
 		pila = new ArrayDeque<DatoPila>();
 	}
 
-	/**
-	 * Muestra el estado de la maquina P en un momento dado
-	 * 
-	 * @return El estado de la maquina P
-	 */
 	public String mostrarEstado() {
 
 		sb.delete(0, sb.length()); // se resetea
@@ -175,11 +109,6 @@ public class Interprete {
 		return new String(sb);
 	}
 
-	/**
-	 * Ejecuta el programa que se haya leido con anterioridad
-	 * 
-	 * @throws InterpreteExcepcion
-	 */
 	public void ejecutarPrograma() throws InterpreteExcepcion {
 		try {
 			if (programa == null)
@@ -206,65 +135,36 @@ public class Interprete {
 		}
 	}
 
-	/**
-	 * @return la pila
-	 */
 	public ArrayDeque<DatoPila> getPila() {
 		return pila;
 	}
 
-	/**
-	 * @return si se esta o no con la maquina parada
-	 */
 	public boolean isParar() {
 		return parar;
 	}
 
-	/**
-	 * @param parar
-	 *            si la maquina debe pararse
-	 */
 	public void setParar(boolean parar) {
 		this.parar = parar;
 	}
 
-	/**
-	 * @return el contador de programa (la posicion de la instruccion que se
-	 *         esta ejecutando en este momento)
-	 */
 	public int getCp() {
 		return cp;
 	}
 
-	/**
-	 * Fija el contador de programa a un valor dado
-	 * 
-	 * @param cp
-	 *            nuevo contador de programa
-	 */
 	public void setCp(int cp) {
 		if (cp == programa.size())
 			setParar(true);
 		this.cp = cp;
 	}
 
-	/**
-	 * @return la memoria de la maquina
-	 */
 	public Memoria getMemoria() {
 		return memoria;
 	}
 
-	/**
-	 * @return the reader
-	 */
 	public BufferedReader getReader() {
 		return reader;
 	}
 
-	/**
-	 * @return the writer
-	 */
 	public PrintWriter getWriter() {
 		return writer;
 	}
@@ -282,7 +182,6 @@ public class Interprete {
 			huecoAux = iterator.next();
 			if (huecoAux.getTam() > tam) {
 				direccion = huecoAux.getDir() + huecoAux.getTam() - tam;
-				// el tamaño es el que tenía menos lo que le quitamos
 				huecoAux.setTam(huecoAux.getTam() - tam);
 				break;
 			} else if (huecoAux.getTam() == tam) {
@@ -299,16 +198,16 @@ public class Interprete {
 			Iterator<Hueco> iterator = memoria.getHuecos().iterator();
 			Hueco huecoAux = null;
 			Hueco pred;
-			// buscar un hueco que acabe donde nosotros empezamos
+
 			while (iterator.hasNext()) {
 				pred = huecoAux;
 				huecoAux = iterator.next();
 				if (huecoAux.getDir() + huecoAux.getTam() == dir) {
-					// el hueco acaba dónde nosotros empezamos
+
 					huecoAux.setTam(huecoAux.getTam() + tam);
 					if (pred != null) {
 						int tamanyo = pred.getTam();
-						// intentamos fusionar huecos
+
 						if (huecoAux.getDir() + huecoAux.getTam() == pred
 								.getDir()) {
 							memoria.getHuecos().remove(pred);
@@ -318,7 +217,7 @@ public class Interprete {
 					return;
 				}
 			}
-			// buscar un hueco que empiece donde nosotros acabamos
+			
 			iterator = memoria.getHuecos().iterator();
 			while (iterator.hasNext()) {
 				huecoAux = iterator.next();
@@ -328,7 +227,7 @@ public class Interprete {
 					return;
 				}
 			}
-			// si no funciona nada, creamos un nuevo hueco
+
 			memoria.getHuecos().add(new Hueco(dir, tam));
 
 		}
